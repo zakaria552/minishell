@@ -16,7 +16,7 @@ typedef struct s_arena
 t_arena *init_arena(size_t size);
 void *arena_alloc(t_arena *arena, size_t size, void *content);
 t_arena *tail_arena(t_arena *arena);
-uintptr_t allign_p(t_arena *arena, size_t size);
+size_t allign_p(t_arena *arena, size_t size);
 void destroy_arena(t_arena *arena);
 
 #define ALIGNMENT (sizeof(void *))
