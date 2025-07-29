@@ -13,17 +13,20 @@ HEADERS		:= -I ./include -I libft
 
 ## Sources
 OBJ_DIR 	:= obj
-VPATH 		:= src:src/arena_allocator
+VPATH 		:= src:src/arena_allocator:src/utils
 SRC_ARENA	:= arena.c arena_utils.c
+SRC_UTILS	:= clean_up.c prompt.c
 SRC 		:= \
 			main.c \
-			$(SRC_ARENA)
+			$(SRC_ARENA) \
+			$(SRC_UTILS)
 
 OBJS 		:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 ## External modules
 LIBFT_DIR 	:= libft
 LIBFT 		:= $(LIBFT_DIR)/libft
+LINKER_LIBS	:= -lreadline
 
 #╔════════════════════════════════════════════╗
 #║           🛠️  Build Protocols             ║
@@ -32,7 +35,7 @@ LIBFT 		:= $(LIBFT_DIR)/libft
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(HEADERS) $^ -o $@
+	$(CC) $(CFLAGS) $(HEADERS) $^ -o $@ $(LINKER_LIBS)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
