@@ -31,7 +31,7 @@ LIBFT 		:= $(LIBFT_DIR)/libft
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS)
+$(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(HEADERS) $^ -o $@
 
 $(OBJ_DIR)/%.o: %.c
