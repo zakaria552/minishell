@@ -7,5 +7,6 @@
 #include "libft.h"
 #include "arena.h"
 #include "utils.h"
+#include "parsing.h"
 
 #endif
