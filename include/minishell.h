@@ -8,6 +8,7 @@
 #include "arena.h"
 #include "utils.h"
 #include "vector.h"
+#include "parsing.h"
 
 t_arena *get_allocator();
 

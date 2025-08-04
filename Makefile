@@ -9,7 +9,7 @@ NAME		:= minishell
 ## Compiler config
 CC			:= cc 
 CFLAGS		:= -Wall -Wextra -Werror
-HEADERS		:= -I ./include -I libft
+HEADERS		:= -I ./include -I ./libft
 
 ## Sources
 OBJ_DIR 	:= obj
@@ -17,16 +17,18 @@ VPATH 		:= src:src/arena_allocator:src/utils:src/vector
 SRC_ARENA	:= arena.c arena_utils.c
 SRC_UTILS	:= clean_up.c prompt.c
 SRC_VECTOR	:= vector.c utils.c
+SRC_PARSING	:= parsing.c
 SRC 		:= \
 			main.c \
 			$(SRC_ARENA) \
 			$(SRC_UTILS) \
-			$(SRC_VECTOR)
+			$(SRC_VECTOR) \
+			$(SRC_PARSING)
 
 OBJS 		:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 ## External modules
-LIBFT_DIR 	:= libft
+LIBFT_DIR 	:= ./libft
 LIBFT 		:= $(LIBFT_DIR)/libft
 LINKER_LIBS	:= -lreadline
 
@@ -36,10 +38,10 @@ LINKER_LIBS	:= -lreadline
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT) 
 	$(CC) $(CFLAGS) $(HEADERS) $^ -o $@ $(LINKER_LIBS)
 
-$(OBJ_DIR)/%.o: %.c
+$(OBJ_DIR)/%.o: %.c $(LIBFT)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
