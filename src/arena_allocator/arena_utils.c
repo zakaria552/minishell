@@ -19,7 +19,7 @@ void destroy_arena(t_arena *arena)
     {
         free(arena->buffer);
         tmp = arena;
-        arena->next = arena->next;
+        arena = arena->next;
         free(tmp);
     }
     free(arena->buffer);
@@ -30,7 +30,6 @@ size_t allign_p(t_arena *arena, size_t size)
 {
     const size_t modulo = (arena->offset) % ALIGNMENT;
 
-    ft_printf("Size: %d, off: %d, modulo: %d\n", size, arena->offset, modulo);
     if (size > modulo && modulo != 0)
         return arena->offset + ALIGNMENT - modulo + size;
     return arena->offset + size;
