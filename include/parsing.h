@@ -6,7 +6,8 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/04 16:42:32 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 13:22:03 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:22:51 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +38,4 @@ typedef struct s_token
 }	t_token;
 
 void	parse_input(char *s, t_arena *arena);
-
 #endif

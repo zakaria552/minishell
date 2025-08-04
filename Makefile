@@ -13,7 +13,7 @@ HEADERS		:= -I ./include -I ./libft
 
 ## Sources
 OBJ_DIR 	:= obj
-VPATH 		:= src:src/arena_allocator:src/utils:src/vector
+VPATH 		:= src:src/arena_allocator:src/utils:src/parsing:src/vector
 SRC_ARENA	:= arena.c arena_utils.c
 SRC_UTILS	:= clean_up.c prompt.c
 SRC_VECTOR	:= vector.c utils.c
