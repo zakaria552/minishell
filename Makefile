@@ -8,7 +8,7 @@ NAME		:= minishell
 
 ## Compiler config
 CC			:= cc 
-CFLAGS		:= -Wall -Wextra -Werror
+CFLAGS		:= -Wall -Wextra -Werror -g
 HEADERS		:= -I ./include -I ./libft
 
 ## Sources

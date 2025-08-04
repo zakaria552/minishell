@@ -4,18 +4,20 @@ int main(void)
 {
     const t_arena *arena = get_allocator();
     char *prompt;
-
-    if (!arena)
-        exit(1);
+  
     while (true)
     {
+		arena = init_arena(ARENA_SIZE);
+		if (!arena)
+        	exit(1);
         prompt = read_prompt();
-        if (!prompt)
+		if (!prompt)
             break;
+		parse_input(prompt, arena);
         free(prompt);
+		clean_up((t_arena *)arena);
     }
-    clean_up((t_arena *)arena);
-    return (0);
+	return (0);
 }
 
 t_arena *get_allocator()
