@@ -20,8 +20,8 @@ SRC_VECTOR	:= vector.c utils.c
 SRC 		:= \
 			main.c \
 			$(SRC_ARENA) \
-			$(SRC_VECTOR) \
-			$(SRC_UTILS)
+			$(SRC_UTILS) \
+			$(SRC_VECTOR)
 
 OBJS 		:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 
