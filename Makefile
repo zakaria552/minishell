@@ -13,11 +13,13 @@ HEADERS		:= -I ./include -I libft
 
 ## Sources
 OBJ_DIR 	:= obj
-VPATH 		:= src:src/arena_allocator
+VPATH 		:= src:src/arena_allocator:src/vector
 SRC_ARENA	:= arena.c arena_utils.c
+SRC_VECTOR	:= vector.c utils.c
 SRC 		:= \
 			main.c \
-			$(SRC_ARENA)
+			$(SRC_ARENA) \
+			$(SRC_VECTOR)
 
 OBJS 		:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 
