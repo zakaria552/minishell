@@ -6,12 +6,28 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 13:33:59 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 13:35:26 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/05 12:20:59 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include "arena.h"
+
+//Different functions for different token types
+static t_token_length_func	get_length_function(t_token_type type)
+{
+	if (type == QUOTE_SINGLE)
+		return single_quote_length;
+	if (type == QUOTE_DOUBLE)
+		return double_quote_length;
+	if (type == STRING)
+		return string_length;
+	if (type == EXPANSION)
+		return expansion_length;
+	else
+		return dummy_length;
+}
 
 /*
 	calculate how much of the input string belongs to the same token 
@@ -19,9 +35,12 @@
 */
 static ssize_t	token_length(char *s, t_token_type type)
 {
-	(void)s;
-	(void)type;
-	return (0);
+	t_token_length_func	token_length_func;
+	ssize_t				length;
+
+	token_length_func = get_length_function(type);
+	length = token_length_func(s);
+	return (length);
 }
 
 /*
