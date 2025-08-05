@@ -6,7 +6,6 @@
 #include <readline/history.h>
 #include "libft.h"
 #include "arena.h"
-#include "vector.h"
 #include "utils.h"
 #include "vector.h"
 
