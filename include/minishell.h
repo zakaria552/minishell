@@ -8,5 +8,6 @@
 #include "arena.h"
 #include "vector.h"
 #include "utils.h"
+#include "vector.h"
 
 #endif
