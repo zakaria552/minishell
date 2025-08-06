@@ -6,13 +6,14 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 13:35:08 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 13:36:51 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
+#include "vector.h"
 #include "arena.h"
 
 //token length counting functions for all types conform to this typedef
@@ -39,12 +40,13 @@ typedef struct s_token
 	int				read_chars;
 }	t_token;
 
-void	parse_input(char *s, t_arena *arena);
-
-ssize_t single_quote_length(char *s);
-ssize_t double_quote_length(char *s);
-ssize_t string_length(char *s);
-ssize_t expansion_length(char *s);
-ssize_t dummy_length(char *s);
+t_vector	*tokenize_input(char *s, t_arena *arena);
+ssize_t 	single_quote_length(char *s);
+ssize_t 	double_quote_length(char *s);
+ssize_t 	string_length(char *s);
+ssize_t 	expansion_length(char *s);
+ssize_t		empty_length(char *s);
+ssize_t 	dummy_length(char *s);
+void		print_token(t_token *tok);
 
 #endif

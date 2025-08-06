@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:45:11 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/05 17:02:41 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:03:59 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -79,8 +79,19 @@ ssize_t expansion_length(char *s)
 	return (length);
 }
 
+ssize_t	empty_length(char *s)
+{
+	ssize_t length;
+
+	length = 1;
+	while (s[length] && ft_isspace(s[length]))
+		++length;
+	return (length);
+}
+
 ssize_t dummy_length(char *s)
 {
-	(void)s;
+	if (*s == '>' && *(s + 1) == '>')
+		return (2);
 	return (1);
 }

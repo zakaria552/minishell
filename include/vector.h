@@ -1,5 +1,5 @@
-# ifndef VECTORS_H
-# define VECTORS_H
+#ifndef VECTOR_H
+# define VECTOR_H
 
 #include <stdlib.h>
 #include "minishell.h"
@@ -30,4 +30,4 @@ void    *pop(t_vector *vector);
 void    free_vector(t_vector *vector);
 void    clear_vector(t_vector *vector);
 
-# endif
+#endif

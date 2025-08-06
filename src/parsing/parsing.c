@@ -6,13 +6,20 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 13:35:26 by nraatika         ###   ########.fr       */
-/*   Updated: 2025/08/05 12:20:59 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 13:38:26 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
-#include "arena.h"
+#include "minishell.h"
+
+void	print_token(t_token *tok)
+{
+	const char *names[] = {"EMPTY", "PIPE", "INPUT_REDIR", "OUTPUT_REDIR",\
+		"OUTPUT_APPEND", "HERE_DOC", "QUOTE_SINGLE", "QUOTE_DOUBLE", \
+		"EXPANSION", "STRING"};
+
+	ft_printf("Type:%s\nContent:%s\n", names[tok->type], tok->content);
+}
 
 //Different functions for different token types
 static t_token_length_func	get_length_function(t_token_type type)
@@ -24,6 +31,8 @@ static t_token_length_func	get_length_function(t_token_type type)
 	if (type == STRING)
 		return string_length;
 	if (type == EXPANSION)
+		return expansion_length;
+	if (type == EMPTY)
 		return expansion_length;
 	else
 		return dummy_length;
@@ -80,38 +89,48 @@ static t_token_type get_type(char *s)
 
 /*
 	check the type of token, then make a token that contains the type, length
-	and content of the token
+	and content of the token.  
 */
 static t_token	*get_next_token(char *s, t_arena *arena)
 {
 	t_token	tok;
 	char	*content;
+	void	*p;
 
 	tok.type = get_type(s);
 	tok.read_chars = token_length(s, tok.type);
 	if (tok.read_chars != -1)
 	{
 		content = ft_calloc(1, tok.read_chars + 1);
+		if (content == NULL)
+			ft_exit();
 		ft_memcpy(content, s, tok.read_chars);
 		tok.content = arena_alloc(arena, tok.read_chars + 1, content);
 		free(content);
 	}
 	else
 		tok.content = NULL;
-	return (arena_alloc(arena, sizeof(t_token), &tok));
+	p = arena_alloc(arena, sizeof(t_token), &tok);
+	return (p);
 }
 
-//parse the input string, store the parsed input as a vector of tokens (TODO)
-void	parse_input(char *s, t_arena *arena)
+//tokenize the input string, return a vector of tokens
+t_vector	*tokenize_input(char *s, t_arena *arena)
 {
 	size_t		len;
 	t_token		*tok;
+	void		*test;
+	t_vector	*vec;
 
 	len = ft_strlen(s);
+	vec = init_vector(5, sizeof(t_token *), NULL);
 	while (s && len > 0)
 	{
 		tok = get_next_token(s, arena);
+		vec->push(vec, &tok);
+		test = vec->get(vec, 0);
 		s += tok->read_chars;
 		len -= tok->read_chars;
 	}
+	return (vec);
 }

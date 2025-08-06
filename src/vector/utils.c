@@ -1,4 +1,4 @@
-#include "vector.h"
+#include "minishell.h"
 
 void    *append(t_vector *vector, void *content)
 {
@@ -36,6 +36,8 @@ void    *pop(t_vector *vector)
 
 void    *get_vector_elem(t_vector *vector, int index)
 {
+	void	*temp;
+
     if (index > vector->size)
         return (NULL);
     return *(vector->data + index);
