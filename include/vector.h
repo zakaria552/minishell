@@ -1,5 +1,5 @@
-# ifndef VECTORS_H
-# define VECTORS_H
+#ifndef VECTOR_H
+# define VECTOR_H
 
 #include <stdlib.h>
 #include "minishell.h"
@@ -17,8 +17,7 @@ typedef struct s_vector
     void *(*get)(t_vector *vector, int index);
     void  (*free)(t_vector *vector);
     void  (*clear)(t_vector *vector);
-} t_vector;
-
+}	t_vector;
 
 t_vector *init_vector(int capacity, size_t elem_size, void *content);
 
@@ -29,4 +28,4 @@ void    pop(t_vector *vector);
 void    free_vector(t_vector *vector);
 void    clear_vector(t_vector *vector);
 
-# endif
+#endif
