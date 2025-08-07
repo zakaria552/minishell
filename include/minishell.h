@@ -13,6 +13,5 @@
 #include "parsing.h"
 
 t_arena *get_allocator();
-int	ft_exit(void);
 
 #endif

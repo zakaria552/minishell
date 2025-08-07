@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 14:19:43 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 16:30:34 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,6 @@ ssize_t 	expansion_length(char *s);
 ssize_t		empty_length(char *s);
 ssize_t 	dummy_length(char *s);
 void		print_token(t_token *tok);
+int 		is_string_delimiter(char c);
 
 #endif

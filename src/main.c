@@ -1,15 +1,9 @@
 # include "minishell.h"
 
-//TODO:cleanup and perror, strerror setting before exit
-int	ft_exit(void)
-{
-	exit(1);
-}
-
 int main(void)
 {
-    t_arena *arena = get_allocator();
-    char *prompt;
+	t_arena		*arena;
+    char 		*prompt;
  	t_vector	*vec;
 	t_token		*tok;
 	int			i;

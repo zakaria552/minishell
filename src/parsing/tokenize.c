@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 14:55:56 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 16:53:52 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static t_token_type get_type(char *s)
 		type = QUOTE_DOUBLE;
 	if (*s == '$')
 		type = EXPANSION;
-	if (ft_isalnum(*s))
+	if (!is_string_delimiter(*s))
 		type = STRING;
 	return (type);
 }
@@ -95,42 +95,40 @@ static t_token_type get_type(char *s)
 */
 static t_token	*get_next_token(char *s, t_arena *arena)
 {
-	t_token	tok;
+	t_token	*tok;
 	char	*content;
-	void	*p;
 
-	tok.type = get_type(s);
-	tok.read_chars = token_length(s, tok.type);
-	if (tok.read_chars != -1)
+	tok = arena_alloc(arena, sizeof(t_token), NULL);
+	tok->type = get_type(s);
+	tok->read_chars = token_length(s, tok->type);
+	if (tok->read_chars != -1)
 	{
-		content = ft_calloc(1, tok.read_chars + 1);
+		content = arena_alloc(arena, tok->read_chars + 1, NULL);
 		if (content == NULL)
-			ft_exit();
-		ft_memcpy(content, s, tok.read_chars);
-		tok.content = arena_alloc(arena, tok.read_chars + 1, content);
-		free(content);
+			clean_exit(arena, 1, "arena_alloc returned NULL");
+		ft_memcpy(content, s, tok->read_chars);
+		tok->content = content;
 	}
 	else
-		tok.content = NULL;
-	p = arena_alloc(arena, sizeof(t_token), &tok);
-	return (p);
+		tok->content = NULL;
+	return (tok);
 }
 
 //tokenize the input string, return a vector of tokens
 t_vector	*tokenize_input(char *s, t_arena *arena)
 {
-	size_t		len;
 	t_token		*tok;
 	t_vector	*vec;
 
-	len = ft_strlen(s);
 	vec = init_vector(5, NULL, arena);
-	while (s && len > 0)
+	while (s && *s)
 	{
 		tok = get_next_token(s, arena);
 		vec->push(vec, tok);
-		s += tok->read_chars;
-		len -= tok->read_chars;
+		if (tok->read_chars > 0)
+			s += tok->read_chars;
+		else 
+			clean_exit(arena, 3, "token length < 1");
 	}
 	return (vec);
 }
