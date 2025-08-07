@@ -9,4 +9,6 @@
 #include "utils.h"
 #include "vector.h"
 
+t_arena *get_allocator();
+
 #endif
