@@ -6,15 +6,17 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 13:36:51 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 13:40:13 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-#include "vector.h"
-#include "arena.h"
+//forward declaration of used structures, 
+//actual definitions in arena.h and vector.h
+typedef struct s_arena	t_arena;
+typedef struct s_vector	t_vector;
 
 //token length counting functions for all types conform to this typedef
 typedef ssize_t (*t_token_length_func)(char *);
@@ -39,6 +41,15 @@ typedef struct s_token
 	char			*content;
 	int				read_chars;
 }	t_token;
+
+typedef struct s_command
+{
+	char		*command;
+	char		*options;
+	t_vector	*arguments;
+	char		*input_redir;
+	char		*output_redir;
+}	t_command;
 
 t_vector	*tokenize_input(char *s, t_arena *arena);
 ssize_t 	single_quote_length(char *s);
