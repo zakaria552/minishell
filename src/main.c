@@ -31,7 +31,7 @@ int main(void)
 			++i;
 		}
         free(prompt);
-		clean_up((t_arena *)arena);
+		clean_up((t_arena *)arena, false);
     }
 	return (0);
 }
