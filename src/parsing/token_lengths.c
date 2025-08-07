@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:45:11 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/06 14:03:59 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 11:12:18 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -92,6 +92,8 @@ ssize_t	empty_length(char *s)
 ssize_t dummy_length(char *s)
 {
 	if (*s == '>' && *(s + 1) == '>')
+		return (2);
+	if (*s == '<' && *(s + 1) == '<')
 		return (2);
 	return (1);
 }

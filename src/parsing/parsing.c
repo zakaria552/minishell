@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 11:30:40 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 11:10:39 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//debug function
 void	print_token(t_token *tok)
 {
 	const char *names[] = {"EMPTY", "PIPE", "INPUT_REDIR", "OUTPUT_REDIR",\
 		"OUTPUT_APPEND", "HERE_DOC", "QUOTE_SINGLE", "QUOTE_DOUBLE", \
 		"EXPANSION", "STRING"};
-	
-	ft_printf("Type:%s Length:%d Content:%s\n", names[tok->type],\
+
+	ft_printf("Type:%s Length:%d Content:%s\n", names[tok->type], \
 		tok->read_chars, tok->content);
 }
 
@@ -35,7 +34,7 @@ static t_token_length_func	get_length_function(t_token_type type)
 	if (type == EXPANSION)
 		return expansion_length;
 	if (type == EMPTY)
-		return empty_length;
+		return expansion_length;
 	else
 		return dummy_length;
 }
