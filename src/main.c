@@ -26,7 +26,7 @@ int main(void)
 		i = 0;
 		while (i < vec->size)
 		{
-			tok = *(t_token **)vec->get(vec, i);
+			tok = (t_token *)vec->get(vec, i);
 			print_token(tok);
 			++i;
 		}

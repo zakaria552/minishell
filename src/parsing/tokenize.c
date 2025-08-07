@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 14:19:43 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 14:55:56 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static t_token_type get_type(char *s)
 		type = QUOTE_DOUBLE;
 	if (*s == '$')
 		type = EXPANSION;
-	if (ft_isalpha(*s))
+	if (ft_isalnum(*s))
 		type = STRING;
 	return (type);
 }
@@ -121,7 +121,6 @@ t_vector	*tokenize_input(char *s, t_arena *arena)
 {
 	size_t		len;
 	t_token		*tok;
-	void		*test;
 	t_vector	*vec;
 
 	len = ft_strlen(s);
@@ -129,8 +128,7 @@ t_vector	*tokenize_input(char *s, t_arena *arena)
 	while (s && len > 0)
 	{
 		tok = get_next_token(s, arena);
-		vec->push(vec, &tok);
-		test = vec->get(vec, 0);
+		vec->push(vec, tok);
 		s += tok->read_chars;
 		len -= tok->read_chars;
 	}

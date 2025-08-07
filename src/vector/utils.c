@@ -4,7 +4,7 @@ void    *append(t_vector *vector, void *content)
 {
     void **tmp_data;
 
-    if (vector->size <= vector->capacity)
+    if (vector->size < vector->capacity)
     {
         *(vector->data + vector->size) = content;
         vector->size++;
@@ -18,7 +18,7 @@ void    *append(t_vector *vector, void *content)
         vector->data = vector->arena->alloc(vector->arena, sizeof(void *) * vector->capacity, NULL);
     if (!vector->data)
         return (NULL);
-    ft_memcpy(vector->data, tmp_data, vector->capacity / 2);
+    ft_memcpy(vector->data, tmp_data, (vector->capacity / 2) * sizeof(void *));
     *(vector->data + vector->size) = content;
     vector->size++;
     if (!vector->arena)

@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:45:11 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 11:12:18 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:20:01 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -43,7 +43,7 @@ static int is_string_delimiter(char c)
 {
 	if (ft_isspace(c))
 		return (1);
-	if (c == '|' || c == '>' | c == '<')
+	if (c == '|' || c == '>' || c == '<' || c == '$')
 		return (1);
 	return (0);
 }
