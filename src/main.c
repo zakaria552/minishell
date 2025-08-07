@@ -2,20 +2,32 @@
 
 int main(void)
 {
-    const t_arena *arena = get_allocator();
-    char *prompt;
+	t_arena		*arena;
+    char 		*prompt;
+ 	t_vector	*vec;
+	t_token		*tok;
+	int			i;
 
-    if (!arena)
-        exit(1);
     while (true)
     {
+		arena = init_arena(ARENA_SIZE);
+		if (!arena)
+        	exit(1);
         prompt = read_prompt();
-        if (!prompt)
+		if (!prompt)
             break;
+		vec = tokenize_input(prompt, arena);
+		i = 0;
+		while (i < vec->size)
+		{
+			tok = (t_token *)vec->get(vec, i);
+			print_token(tok);
+			++i;
+		}
         free(prompt);
+		clean_up((t_arena *)arena, false);
     }
-    clean_up((t_arena *)arena);
-    return (0);
+	return (0);
 }
 
 t_arena *get_allocator()
