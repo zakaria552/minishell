@@ -2,7 +2,7 @@
 
 int main(void)
 {
-    const t_arena *arena = init_arena(ARENA_SIZE);
+    const t_arena *arena = get_allocator();
     char *prompt;
 
     if (!arena)
@@ -16,4 +16,12 @@ int main(void)
     }
     clean_up((t_arena *)arena);
     return (0);
+}
+
+t_arena *get_allocator()
+{
+    static t_arena *arena;
+    if (!arena)
+        arena = init_arena(ARENA_SIZE);
+    return (arena);
 }
