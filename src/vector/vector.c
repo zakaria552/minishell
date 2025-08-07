@@ -1,29 +1,42 @@
 #include "vector.h"
 
-t_vector *init_vector(int capacity, size_t elem_size, void *content)
+static void    set_properties(t_vector *vector, int capacity, t_arena *arena);
+t_vector *init_vector(int capacity, void *content, t_arena *arena)
 {
     t_vector *vector;
 
-    vector = malloc(sizeof(t_vector));
+    if (!arena)
+        vector = malloc(sizeof(t_vector));
+    else
+        vector = arena->alloc(arena, sizeof(t_vector), NULL);
     if (!vector)
         return (NULL);
+    set_properties(vector, capacity, arena);
+    if (!arena)
+        vector->data = malloc(capacity * sizeof(void *));
+    else
+        vector->data = arena->alloc(arena, capacity * sizeof(void *), NULL);
+    if (!vector->data)
+    {
+        if (!arena)
+            free(vector);
+        return (NULL);
+    }
+    if (!content)
+        return (vector);
+    *vector->data = content;
+    vector->size++;
+    return (vector);
+}
+
+static void    set_properties(t_vector *vector, int capacity, t_arena *arena)
+{
     vector->size = 0;
-    vector->elem_size = elem_size;
     vector->capacity = capacity;
+    vector->arena = arena;
     vector->push = append;
     vector->pop = pop;
     vector->get = get_vector_elem;
     vector->free = free_vector;
     vector->clear = clear_vector;
-    vector->data = malloc(elem_size * capacity);
-    if (!vector->data)
-    {
-        free(vector);
-        return (NULL);
-    }
-    if (!content)
-        return (vector);
-    ft_memcpy(vector->data, content, vector->elem_size);
-    vector->size++;
-    return (vector);
 }
