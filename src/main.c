@@ -10,10 +10,7 @@ int main(void)
 {
     const t_arena *arena = get_allocator();
     char *prompt;
-  
-    t_arena 	*arena;
-    char 		*prompt;
-	t_vector	*vec;
+ 	t_vector	*vec;
 	t_token		*tok;
 	int			i;
 
