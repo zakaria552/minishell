@@ -8,7 +8,7 @@ int	ft_exit(void)
 
 int main(void)
 {
-    const t_arena *arena = get_allocator();
+    t_arena *arena = get_allocator();
     char *prompt;
  	t_vector	*vec;
 	t_token		*tok;
