@@ -32,9 +32,10 @@ void *arena_alloc(t_arena *arena, size_t size, void *content)
     new_off = allign_p(tail, size);
     if (new_off < tail->size)
     {
-        prev_off = arena->offset;
+        prev_off = tail->offset;
         tail->offset = new_off;
-        ft_memcpy(tail->buffer + prev_off, content, size);
+        if (content)
+            ft_memcpy((char *)tail->buffer + prev_off, content, size);
         return (tail->buffer + prev_off);
     }
     if (size > ARENA_SIZE)
@@ -46,6 +47,7 @@ void *arena_alloc(t_arena *arena, size_t size, void *content)
     tail = tail->next;
     prev_off = tail->offset;
     tail->offset += size;
-    ft_memcpy(tail->buffer, content, size);
+    if (content)
+        ft_memcpy(tail->buffer, content, size);
     return (tail->buffer);
 }
