@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <errno.h>
 #include "libft.h"
 #include "arena.h"

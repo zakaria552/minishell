@@ -1,5 +1,17 @@
 # include "minishell.h"
 
+t_vector *test_redirects(void)
+{
+	t_vector *v = init_vector(1, NULL, NULL);
+	t_token *tok = malloc(sizeof(t_token));
+
+	tok->type = INPUT_REDIR;
+	tok->content = ft_strdup("file1");
+	tok->read_chars = 0;
+	v->push(v, tok);
+	return v;
+}
+
 int main(void)
 {
 	t_arena		*arena;
@@ -17,6 +29,8 @@ int main(void)
 		if (!prompt)
             break;
 		vec = tokenize_input(prompt, arena);
+		ft_printf("--------->\n");
+		redirect_io(test_redirects());
 		i = 0;
 		while (i < vec->size)
 		{
