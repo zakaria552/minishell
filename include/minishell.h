@@ -11,6 +11,7 @@
 #include "utils.h"
 #include "vector.h"
 #include "parsing.h"
+#include "execution.h"
 
 t_arena *get_allocator();
 
