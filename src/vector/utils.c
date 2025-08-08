@@ -34,9 +34,18 @@ void    *pop(t_vector *vector)
     return (vector->get(vector, vector->size));
 }
 
+void	remove_element(t_vector *vector, int index)
+{
+	if (index >= vector->size)
+		return ;
+	ft_memcpy(vector->data + index, vector->data + index + 1, (vector->size\
+		 - index - 1) * sizeof(void *));
+	vector->size--;
+}
+
 void    *get_vector_elem(t_vector *vector, int index)
 {
-    if (index > vector->size)
+    if (index >= vector->size)
         return (NULL);
     return *(vector->data + index);
 }
