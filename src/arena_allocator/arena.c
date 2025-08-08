@@ -19,6 +19,7 @@ t_arena *init_arena(size_t size)
         free(arena);
         return (NULL);
     }
+	ft_memset(arena->buffer, 0, size);
     return (arena);
 }
 
