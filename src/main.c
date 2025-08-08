@@ -2,21 +2,23 @@
 
 int main(void)
 {
-	t_arena		*arena;
-    char 		*prompt;
- 	t_vector	*vec;
-	t_token		*tok;
-	int			i;
+	t_arena			*arena;
+    char 			*prompt;
+ 	t_vector		*vec;
+	t_token			*tok;
+	t_command_table	*head;
+	int				i;
 
     while (true)
     {
 		arena = init_arena(ARENA_SIZE);
 		if (!arena)
         	exit(1);
-        prompt = read_prompt();
+        prompt = read_prompt(arena);
 		if (!prompt)
             break;
-		vec = tokenize_input(prompt, arena);
+		vec = tokenize_input(prompt, arena, '\0');
+		head = parse_vector_to_commands(arena, vec);
 		i = 0;
 		while (i < vec->size)
 		{
@@ -24,7 +26,6 @@ int main(void)
 			print_token(tok);
 			++i;
 		}
-        free(prompt);
 		clean_up((t_arena *)arena, false);
     }
 	return (0);
