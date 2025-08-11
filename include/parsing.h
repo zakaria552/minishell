@@ -40,7 +40,20 @@ typedef struct s_token
 	t_token_type	type;
 	char			*content;
 	int				read_chars;
+	t_vector		*redirects;
+	char 			**args;
 }	t_token;
+
+typedef struct cmd
+{
+	char *cmd;
+	char **args;
+	t_vector *redirects;
+	int curr_pipe[2];
+	int next_pipe[2];
+	int pid;
+	bool is_last_cmd;
+} t_cmd;
 
 typedef struct s_command
 {
