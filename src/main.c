@@ -5,6 +5,19 @@ t_vector *test_redirects(void)
 	t_vector *v = init_vector(1, NULL, NULL);
 	t_token *tok = malloc(sizeof(t_token));
 
+	tok = malloc(sizeof(t_token));
+	tok->type = HERE_DOC;
+	tok->content = ft_strdup("eof");
+	tok->read_chars = 0;
+	v->push(v, tok);
+
+	tok = malloc(sizeof(t_token));
+	tok->type = HERE_DOC;
+	tok->content = ft_strdup("eof");
+	tok->read_chars = 0;
+	v->push(v, tok);
+
+	tok = malloc(sizeof(t_token));
 	tok->type = INPUT_REDIR;
 	tok->content = ft_strdup("Makefile");
 	tok->read_chars = 0;
@@ -24,6 +37,7 @@ t_vector *commands(void)
 	cmd->args[2] = NULL;
 	cmd->args[0] = cmd->cmd;
 	cmd->args[1] = ((t_token *)cmd->redirects->get(cmd->redirects, 0))->content;
+	cmd->args[1] = NULL;
 
 	cmd = malloc(sizeof(t_cmd));
 	cmd->cmd = ft_strdup("cat");
@@ -38,7 +52,7 @@ t_vector *commands(void)
 
 int main(int argc, char **args, char **envp)
 {
-	t_arena		*arena;
+	t_allocators *alloc = get_allocators();
     char 		*prompt;
  	t_vector	*vec;
 	t_token		*tok;
@@ -46,17 +60,19 @@ int main(int argc, char **args, char **envp)
 
     while (true)
     {
-		arena = init_arena(ARENA_SIZE);
-		if (!arena)
+		alloc->tmp = init_arena(ARENA_SIZE);
+		if (!alloc->tmp)
         	exit(1);
         //prompt = read_prompt();
 		//if (!prompt)
         //    break;
-		vec = tokenize_input(prompt, arena);
+		//vec = tokenize_input(prompt, arena);
 		ft_printf("--------->\n");
+		ft_printf("%d\n", getpid());
 		vec = commands();
-		ft_printf("args: %s", ((t_cmd *)vec->get(vec, 0))->args[1]);
-		execution(vec, arena, envp);
+		ft_printf("args: %s\n", ((t_cmd *)vec->get(vec, 0))->args[1]);
+		here_docs(vec);
+		execution(vec, alloc->tmp, envp);
 		exit(1);
 		i = 0;
 		while (i < vec->size)
@@ -66,7 +82,7 @@ int main(int argc, char **args, char **envp)
 			++i;
 		}
         free(prompt);
-		clean_up((t_arena *)arena, false);
+		clean_up(alloc->tmp, false);
     }
 	return (0);
 }
@@ -77,4 +93,13 @@ t_arena *get_allocator()
     if (!arena)
         arena = init_arena(ARENA_SIZE);
     return (arena);
+}
+
+t_allocators *get_allocators()
+{
+    static t_allocators arenas;
+
+	if (arenas.global)
+		arenas.global = init_arena(ARENA_SIZE);
+	return (&arenas);
 }
