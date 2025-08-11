@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 16:30:34 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/11 12:36:30 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct cmd
 	t_vector *redirects;
 	int curr_pipe[2];
 	int next_pipe[2];
+	int	fd_here_doc;
 	int pid;
 	bool is_last_cmd;
 } t_cmd;
