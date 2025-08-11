@@ -2,6 +2,7 @@
 
 static void   redirect_stdin(char *file);
 static void   redirect_stdout(t_token *redirect);
+static void     redirect_here_doc(t_cmd *cmd);
 
 void    redirect_io(t_cmd *cmd)
 {
@@ -30,6 +31,7 @@ void    redirect_io(t_cmd *cmd)
         else if (type == OUTPUT_REDIR)
             redirect_stdout(redir);
     }
+    redirect_here_doc(cmd);
     ft_putstr_fd("Done redirecting\n", 2);
 }
 
@@ -38,14 +40,11 @@ static void   redirect_stdin(char *file)
     const int fd = open(file, O_RDONLY);
 
     if (fd < 0)
-    {
         runtime_err(file);
-        exit(1);
-    }
     if (dup2(fd, STDIN_FILENO) < 0)
     {
+        close(fd);
         runtime_err(NULL);
-        exit(1);
     }
     close(fd);
 }
@@ -61,6 +60,38 @@ static void   redirect_stdout(t_token *redirect)
     else
         flags |= O_TRUNC;
     fd = open(redirect->content, flags);
-    dup2(fd, STDOUT_FILENO);
+    if (fd < 0)
+        runtime_err(NULL);
+    if (dup2(fd, STDOUT_FILENO) < 0)
+    {
+        close(fd);
+        runtime_err(NULL);
+    }
+    close(fd);
+}
+
+static void     redirect_here_doc(t_cmd *cmd)
+{
+    t_token *last_redirect;
+    const int fd = cmd->fd_here_doc;
+    
+    if (cmd->redirects->size == 0 || fd < 0) 
+        return ;
+    
+    last_redirect = (t_token *)cmd->redirects->get(cmd->redirects, cmd->redirects->size - 1);
+    if (last_redirect->type != HERE_DOC)
+    {
+        close(fd);
+        return ;
+    }
+    ft_putstr_fd("Here doc: ", 2);
+    ft_putnbr_fd(fd, 2);
+    ft_putstr_fd("\n", 2);
+    if (dup2(fd, STDIN_FILENO) < 0)
+    {
+        close(fd);
+        runtime_err(NULL);
+    }
+    ft_putstr_fd("###########\n", 2);
     close(fd);
 }
