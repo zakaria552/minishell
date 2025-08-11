@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>
 #include "libft.h"
 #include "arena.h"
 #include "utils.h"
