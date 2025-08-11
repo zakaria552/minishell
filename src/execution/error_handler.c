@@ -2,8 +2,13 @@
 
 void    runtime_err(char *msg)
 {
-    ft_printf("minishell: ");
+    ft_putstr_fd("minishell:", 2);
     if (msg)
-        ft_printf("%s:", msg);
-    ft_printf("%s\n", strerror(errno));
+    {
+        ft_putstr_fd(msg, 2);
+        ft_putstr_fd(":", 2);
+    }
+    ft_putstr_fd(strerror(errno), 2);
+    ft_putstr_fd("\n", 2);
+    exit(errno);
 }
