@@ -17,7 +17,7 @@ VPATH 		:= src:src/arena_allocator:src/utils:src/vector:src/parsing
 SRC_ARENA	:= arena.c arena_utils.c
 SRC_UTILS	:= clean_up.c prompt.c
 SRC_VECTOR	:= vector.c utils.c
-SRC_PARSING	:= tokenize.c token_lengths.c parsing.c
+SRC_PARSING	:= tokenize.c token_lengths.c parsing.c arena_strings.c command.c
 SRC 		:= \
 			main.c \
 			$(SRC_ARENA) \
