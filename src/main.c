@@ -5,8 +5,7 @@ t_vector *test_redirects(void)
 	t_arena			*arena;
     char 			*prompt;
  	t_vector		*vec;
-	t_token			*tok;
-	t_command_table	*head;
+	t_vector		*commands;
 	int				i;
 
     while (true)
@@ -18,14 +17,13 @@ t_vector *test_redirects(void)
 		if (!prompt)
             break;
 		vec = tokenize_input(prompt, arena, '\0');
-		head = parse_vector_to_commands(arena, vec);
-		i = 0;
-		while (i < vec->size)
-		{
-			tok = (t_token *)vec->get(vec, i);
-			print_token(tok);
-			++i;
-		}
+		i = -1;
+		while (++i < vec->size)
+			print_token((t_token *)vec->get(vec, i));
+		commands = parse_tokens_to_commands(arena, vec);
+		i = -1;
+		while (++i < commands->size)
+			print_command((t_cmd *)commands->get(commands, i));
 		clean_up((t_arena *)arena, false);
     }
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 16:19:30 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/08/12 16:23:19 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,9 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	char *cmd;
-	char **args;
-	t_vector *redirects;
-	int curr_pipe[2];
-	int next_pipe[2];
-	int pid;
-	bool is_last_cmd;
-} t_cmd;
+	const char	*pathname;
+	char		**argv;
+}	t_command;
 
 typedef struct s_redirect
 {
