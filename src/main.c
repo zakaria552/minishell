@@ -20,7 +20,6 @@ int main(void)
 		i = -1;
 		while (++i < vec->size)
 			print_token((t_token *)vec->get(vec, i));
-
 		commands = parse_tokens_to_commands(arena, vec);
 		i = -1;
 		while (++i < commands->size)

@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 12:12:40 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/11 17:36:16 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/12 17:09:45 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,9 @@ t_cmd	*init_command(t_arena *arena)
 	t_cmd	*command;
 
 	command = arena_alloc(arena, sizeof(t_cmd), NULL);
-	command->args = init_vector(1, NULL, arena);
-	command->redirects = init_vector(1, NULL, arena);
+	command->args = init_vector(INIT_VECTOR_SIZE, NULL, arena);
+	command->redirects = init_vector(INIT_VECTOR_SIZE, NULL, arena);
 	return (command);
-}
-
-static int	expansion_end(char *s)
-{
-	int i;
-
-	i = 1;
-	while (*(s + i))
-	{
-		if (*(s + i) == '$' || ft_isspace(*(s+i)))
-			return (i);
-		++i;
-	}
-	return (i);
 }
 
 static char	*contains_expansions(char *s)
@@ -41,18 +27,34 @@ static char	*contains_expansions(char *s)
 	return (ft_strchr(s, '$'));
 }
 
+char	*expand_variable(t_arena * arena, char *s, int len)
+{
+	char	*var_name;
+	char	*var;
+
+	var_name = arena_alloc(arena, len, s + 1);
+	var_name[len - 1] = '\0';
+	var = getenv(var_name);
+	if (!var)
+		return (arena_strdup(arena, ""));
+	return (var);
+}
+
+//handles the expansion of a variable
 static char	*handle_expansion(t_arena *arena, char *s, char *start)
 {
 	char	*string;
 	char	*temp;
 	int		len;
 	
+	if (!*s || (*s && !*(s + 1)))
+		return (arena_strdup(arena, s));
 	if (start != NULL)
 	{
-		string = arena_alloc(arena, s - start + 1, s);
+		string = arena_alloc(arena, s - start + 1, NULL);
 		ft_memcpy(string, s, s - start);
-		len = expansion_end(start);
-		temp = arena_strjoin(arena, string, arena_strdup(arena, "(TODO:EXPANSION)"));
+		len = expansion_length(start);
+		temp = arena_strjoin(arena, string, expand_variable(arena, start, len));
 		string = temp;
 		temp = arena_strjoin(arena, string, handle_expansion(arena, \
 			start + len, contains_expansions(start + len)));
@@ -65,23 +67,23 @@ static char	*handle_expansion(t_arena *arena, char *s, char *start)
 
 static char	*strip_expand(t_token *tok, t_arena *arena)
 {
-	char	*string;
+	char	*str;
 	char	*start;
 
 	if (tok->type == QUOTE_DOUBLE)
 	{
-		string = arena_alloc(arena, ft_strlen(tok->content) - 1, tok->content + 1);
-		string[ft_strlen(tok->content) - 2] = '\0';
-		start = contains_expansions(string);
+		str = arena_alloc(arena, ft_strlen(tok->content) - 1, tok->content + 1);
+		str[ft_strlen(tok->content) - 2] = '\0';
+		start = contains_expansions(str);
 		if (start != NULL)
-			string = handle_expansion(arena, string, start);
-		return (string);
+			str = handle_expansion(arena, str, start);
+		return (str);
 	}
 	if (tok->type == QUOTE_SINGLE)
 	{
-		string = arena_alloc(arena, ft_strlen(tok->content) - 1, tok->content + 1);
-		string[ft_strlen(tok->content) - 2] = '\0';
-		return (string);
+		str = arena_alloc(arena, ft_strlen(tok->content) - 1, tok->content + 1);
+		str[ft_strlen(tok->content) - 2] = '\0';
+		return (str);
 	}
 	if (tok->type == EXPANSION)
 		return (handle_expansion(arena, tok->content, tok->content));
@@ -104,7 +106,8 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 	{
 		*i += 1;
 		tok->content = concat_string_type_tokens(arena, vec, i);
-		append(command->redirects, tok);
+		if (check_redirect(tok))
+			append(command->redirects, tok);
 	}
 }
 

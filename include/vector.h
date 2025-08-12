@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "minishell.h"
 
+# define INIT_VECTOR_SIZE 10
+
 typedef struct s_vector t_vector;
 
 typedef struct s_vector
