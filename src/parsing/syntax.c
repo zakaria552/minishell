@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 11:29:01 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/15 14:07:20 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:34:24 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ bool check_command(t_arena *arena, t_cmd *command)
 	int		i;
 
 	if (command->unmatched_quote)
+	{
 		syntax_err(2, "syntax error, unmatched quote");
+		return (false);
+	}
 	i = -1;
 	while (++i < command->redirects->size)
 	{
@@ -37,6 +40,9 @@ bool check_command(t_arena *arena, t_cmd *command)
 			return (false);
 	}
 	if (!command->cmd && i == 0)
+	{
 		syntax_err(2, "syntax error, empty pipe");
+		return (false);
+	}
 	return (true);
 }

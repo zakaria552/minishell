@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 10:08:21 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/15 13:52:57 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:25:10 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,3 @@ char	*arena_strjoin(t_arena *arena, char *s1, char *s2)
 	joint[s1_len + s2_len] = '\0';
 	return (joint);
 }
-

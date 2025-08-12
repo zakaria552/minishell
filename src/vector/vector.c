@@ -39,4 +39,5 @@ static void    set_properties(t_vector *vector, int capacity, t_arena *arena)
     vector->get = get_vector_elem;
     vector->free = free_vector;
     vector->clear = clear_vector;
+    vector->remove = remove_element;
 }

@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:52:25 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/15 17:10:34 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:39:45 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"

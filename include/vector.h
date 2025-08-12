@@ -18,6 +18,7 @@ typedef struct s_vector
     void *(*pop)(t_vector *vector);
     void *(*push)(t_vector *vector, void *content);
     void *(*get)(t_vector *vector, int index);
+    void  (*remove)(t_vector *vector, int index);
     void  (*free)(t_vector *vector);
     void  (*clear)(t_vector *vector);
  } t_vector;
@@ -31,5 +32,6 @@ void    *get_vector_elem(t_vector *vector, int index);
 void    *pop(t_vector *vector);
 void    free_vector(t_vector *vector);
 void    clear_vector(t_vector *vector);
+void	remove_element(t_vector *vector, int index);
 
 #endif

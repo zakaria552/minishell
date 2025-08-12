@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 12:12:40 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/15 14:03:29 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:31:34 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static char	*strip_expand(t_token *tok, t_arena *arena)
 	}
 	if (tok->type == QUOTE_SINGLE)
 	{
-	if (!(tok->content))
+		if (!(tok->content))
 			return (NULL);
 		str = arena_alloc(arena, ft_strlen(tok->content) - 1, tok->content + 1);
 		str[ft_strlen(tok->content) - 2] = '\0';
@@ -131,6 +131,8 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 		}
 		else
 			command->unmatched_quote = tok->type;
+		tok->content = concat_string_type_tokens(arena, vec, i);
+		append(command->redirects, tok);
 	}
 }
 
@@ -191,5 +193,4 @@ void	print_command(t_cmd *command)
 	while (++i < command->redirects->size)
 		print_token((t_token *)command->redirects->get(command->redirects, i));
 	ft_printf("***\n");
-
 }

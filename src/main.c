@@ -1,6 +1,8 @@
 #include "minishell.h"
 volatile sig_atomic_t	g_signal;
 
+volatile sig_atomic_t	g_signal;
+
 int main(int argc, char **args, char **envp)
 {
     t_allocators *allocs = get_allocators();
@@ -10,6 +12,7 @@ int main(int argc, char **args, char **envp)
 
 	(void)argc;
 	(void)args;
+	init_local_vars(envp);
 	while (true)
 	{
 		allocs->prompt = init_arena(ARENA_SIZE);
@@ -24,16 +27,16 @@ int main(int argc, char **args, char **envp)
 		// todos: error handling, cleaning up the heap, refactor, global arena
 		handle_here_doc(commands);
 		execution(commands, allocs->prompt, envp);
-        clean_up(false, false);
-	 }
+		clean_up(false, false);
+   	 }
   return (0);
 }
 
 t_allocators *get_allocators()
 {
-    static t_allocators arenas;
+	static t_allocators arenas;
 
-    if (arenas.global)
+    if (!arenas.global)
         arenas.global = init_arena(ARENA_SIZE);
     return (&arenas);
 }
