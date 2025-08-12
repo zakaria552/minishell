@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 16:53:52 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/08 14:12:40 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,15 @@ static t_token	*get_next_token(char *s, t_arena *arena)
 }
 
 //tokenize the input string, return a vector of tokens
-t_vector	*tokenize_input(char *s, t_arena *arena)
+//delimiter is there so the function can be reused to tokenize quoted strings
+//for parsing. TODO: check how mix of single and doube quotes works with quote delimiter
+t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 {
 	t_token		*tok;
 	t_vector	*vec;
 
 	vec = init_vector(5, NULL, arena);
-	while (s && *s)
+	while (s && *s && *s != delimiter)
 	{
 		tok = get_next_token(s, arena);
 		vec->push(vec, tok);
