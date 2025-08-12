@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 16:25:24 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/08/13 13:23:59 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec)
 	t_vector	*table;
 	int			i;
 
-	table = init_vector(1, NULL, arena);
+	table = init_vector(INIT_VECTOR_SIZE, NULL, arena);
 	command = init_command(arena);
 	i = -1;
 	while (++i < vec->size)

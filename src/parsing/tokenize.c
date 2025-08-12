@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/08 14:12:40 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:32:28 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 	t_token		*tok;
 	t_vector	*vec;
 
-	vec = init_vector(5, NULL, arena);
+	vec = init_vector(INIT_VECTOR_SIZE, NULL, arena);
 	while (s && *s && *s != delimiter)
 	{
 		tok = get_next_token(s, arena);
