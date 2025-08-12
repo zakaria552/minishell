@@ -8,7 +8,6 @@ int main(int argc, char **args, char **envp)
 	t_vector		*commands;
 	int				i;
 
-
 	(void)argc;
 	(void)args;
   while (true)
