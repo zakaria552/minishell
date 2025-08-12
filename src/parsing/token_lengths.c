@@ -6,37 +6,33 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:45:11 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/07 16:34:51 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/12 17:00:31 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-ssize_t single_quote_length(char *s)
+static ssize_t	length_to_delim(char *s, char delim)
 {
 	ssize_t length;
 
 	length = 1;
-	while (s[length] && s[length] != '\'')
+	while (s[length] && s[length] != delim)
 		++length;
-	if (s[length] != '\'')
+	if (s[length] != delim)
 		return (-1);
 	else
 		++length;
 	return (length);
 }
 
+ssize_t single_quote_length(char *s)
+{
+	return (length_to_delim(s, '\''));
+}
+
 ssize_t double_quote_length(char *s)
 {
-	ssize_t length;
-
-	length = 1;
-	while (s[length] && s[length] != '"')
-		++length;
-	if (s[length] != '"')
-		return (-1);
-	else
-		++length;
-	return (length);
+	return (length_to_delim(s, '"'));
 }
 
 int is_string_delimiter(char c)
@@ -60,13 +56,7 @@ ssize_t string_length(char *s)
 
 static int	is_legal_expansion_char(char c)
 {
-	if (c >= 'A' && c <= 'Z')
-		return (1);
-	if (c >= '0' && c <= '9')
-		return (1);
-	if (c == '_')
-		return (1);
-	return (0);
+	return (ft_isalnum(c) || c == '_');
 }
 
 ssize_t expansion_length(char *s)
@@ -74,7 +64,7 @@ ssize_t expansion_length(char *s)
 	ssize_t length;
 
 	length = 1;
-	while (s[length] && is_legal_expansion_char(s[length]))
+	while (is_legal_expansion_char(s[length]))
 		++length;
 	return (length);
 }

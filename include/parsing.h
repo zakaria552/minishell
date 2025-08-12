@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 16:24:30 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/08/13 13:22:21 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,10 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i);
 //debug
 void	print_command(t_cmd *command);
 void	print_vector_commands(t_vector *vec);
+
+//syntax.c
+bool	check_redirect(t_token *token);
+bool 	check_command(t_cmd *command);
+
 
 #endif
