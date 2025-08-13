@@ -53,7 +53,8 @@ void	remove_empty_tokens(t_vector *vec)
 //loops through the vector of tokens. 
 //update command moves the index forward to the first non-string token 
 //after any redirect token and any leading empty tokens
-t_vector	*parse_vector_to_commands(t_arena *arena, t_vector *vec)
+
+t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec)
 {
 	t_cmd		*command;
 	t_token		*tok;

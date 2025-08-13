@@ -77,7 +77,7 @@ ssize_t 	dummy_length(char *s);
 int 		is_string_delimiter(char c);
 
 //parsing.c
-t_vector	*parse_vector_to_commands(t_arena *arena, t_vector *vec);
+t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec);
 char		*concat_string_type_tokens(t_arena *arena, t_vector *vec, int *i);
 bool		is_string_type(t_token_type type);
 bool		is_redirect_type(t_token_type type);
@@ -86,7 +86,6 @@ void		remove_empty_tokens(t_vector *vec);
 //arena_strings.c
 char	*arena_strdup(t_arena *arena, char *s);
 char	*arena_strjoin(t_arena *arena, char *s1, char *s2);
-char 	*expand_to_str(char *s);
 
 //command.c
 t_cmd	*init_command(t_arena *arena);

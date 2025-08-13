@@ -39,7 +39,3 @@ char	*arena_strjoin(t_arena *arena, char *s1, char *s2)
 	return (joint);
 }
 
-char 	*expand_to_str(char *s)
-{
-	return (s);
-}
