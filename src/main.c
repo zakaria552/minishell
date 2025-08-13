@@ -1,12 +1,12 @@
-# include "minishell.h"
+#include "minishell.h"
 
 int main(int argc, char **args, char **envp)
 {
-	t_arena			*arena;
-    char 			*prompt;
- 	t_vector		*vec;
-	t_vector		*commands;
-	int				i;
+  t_arena *arena;
+  char *prompt;
+  t_vector *vec;
+  t_vector *commands;
+  int i;
 
 	(void)argc;
 	(void)args;
@@ -31,22 +31,22 @@ int main(int argc, char **args, char **envp)
      execution(commands, arena, envp);
      clean_up((t_arena *)arena, false);
   }
-	return (0);
+  return (0);
 }
 
 t_arena *get_allocator()
 {
-    static t_arena *arena;
-    if (!arena)
-        arena = init_arena(ARENA_SIZE);
-    return (arena);
+  static t_arena *arena;
+  if (!arena)
+    arena = init_arena(ARENA_SIZE);
+  return (arena);
 }
 
 t_allocators *get_allocators()
 {
-    static t_allocators arenas;
+  static t_allocators arenas;
 
-	if (arenas.global)
-		arenas.global = init_arena(ARENA_SIZE);
-	return (&arenas);
+  if (arenas.global)
+    arenas.global = init_arena(ARENA_SIZE);
+  return (&arenas);
 }
