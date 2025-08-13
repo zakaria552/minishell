@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arena_strings.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 10:08:21 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 10:27:13 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:26:26 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,4 @@ char	*arena_strjoin(t_arena *arena, char *s1, char *s2)
 	joint[s1_len + s2_len] = '\0';
 	return (joint);
 }
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 10:26:03 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:24:30 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct s_token
 	t_token_type	type;
 	char			*content;
 	int				read_chars;
+	t_vector		*redirects;
+	char 			**args;
 }	t_token;
 
 typedef struct s_cmd
