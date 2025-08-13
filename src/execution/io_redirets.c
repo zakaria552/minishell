@@ -12,9 +12,6 @@ void    redirect_io(t_cmd *cmd)
     int i;
     
     i = -1;
-    ft_printf("io-redirects\n");
-    ft_printf("Is last cmd: %d\n", cmd->is_last_cmd);
-    ft_printf("Size: %d\n", redirects->size);
     if (dup2(cmd->curr_pipe[0], STDIN_FILENO) < 0 ||
         (!cmd->is_last_cmd && dup2(cmd->next_pipe[1], STDOUT_FILENO) < 0))
         runtime_err(NULL);
@@ -25,14 +22,12 @@ void    redirect_io(t_cmd *cmd)
         ft_putnbr_fd(i, 2);
         redir = (t_token *)redirects->get(redirects, i);
         type = redir->type;
-		//print_token(redir);
         if (type == INPUT_REDIR)
             redirect_stdin(redir->content);
         else if (type == OUTPUT_REDIR)
             redirect_stdout(redir);
     }
     redirect_here_doc(cmd);
-    ft_putstr_fd("Done redirecting\n", 2);
 }
 
 static void   redirect_stdin(char *file)
@@ -53,13 +48,18 @@ static void   redirect_stdout(t_token *redirect)
 {
     int fd;
     int flags;
+    int mode;
     
-    flags = O_CREAT | O_WRONLY;
+    flags = O_RDWR | O_CREAT;
+    mode = 0;
+    mode |= S_IRUSR | S_IWUSR;
+    mode |= S_IRGRP;
+    mode |= S_IROTH;
     if (redirect->type == OUTPUT_APPEND)
         flags |= O_APPEND;
     else
         flags |= O_TRUNC;
-    fd = open(redirect->content, flags);
+    fd = open(redirect->content, flags, mode);
     if (fd < 0)
         runtime_err(NULL);
     if (dup2(fd, STDOUT_FILENO) < 0)
@@ -84,14 +84,10 @@ static void     redirect_here_doc(t_cmd *cmd)
         close(fd);
         return ;
     }
-    ft_putstr_fd("Here doc: ", 2);
-    ft_putnbr_fd(fd, 2);
-    ft_putstr_fd("\n", 2);
     if (dup2(fd, STDIN_FILENO) < 0)
     {
         close(fd);
         runtime_err(NULL);
     }
-    ft_putstr_fd("###########\n", 2);
     close(fd);
 }
