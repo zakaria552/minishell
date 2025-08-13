@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 12:12:40 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/13 13:31:11 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/13 14:08:42 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static char	*contains_expansions(char *s)
 	return (ft_strchr(s, '$'));
 }
 
+//expands the variable name of length len starting at s, 
+//returns empty string if no variable of that name exists.
 char	*expand_variable(t_arena * arena, char *s, int len)
 {
 	char	*var_name;
@@ -39,7 +41,6 @@ char	*expand_variable(t_arena * arena, char *s, int len)
 		return (arena_strdup(arena, ""));
 	return (var);
 }
-
 
 //handles the expansion of a variable, for both EXPANSION type tokens
 //that have one $VARIABLE, and QUOTE_DOUBLE tokens that may have multiple
@@ -94,6 +95,8 @@ static char	*strip_expand(t_token *tok, t_arena *arena)
 	return (tok->content);
 }
 
+//updates a command with either a command, an argument, or a redirect
+//and moves the index forward by however many tokens were used to do so
 void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 {
 	t_token	*tok;
@@ -110,8 +113,7 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 	{
 		*i += 1;
 		tok->content = concat_string_type_tokens(arena, vec, i);
-		if (check_redirect(tok))
-			append(command->redirects, tok);
+		append(command->redirects, tok);
 	}
 }
 
@@ -150,7 +152,7 @@ void	print_vector_commands(t_vector *vec)
 	int i;
 
 	i = -1;
-	while (i < vec->size)
+	while (++i < vec->size)
 		print_command((t_cmd *)vec->get(vec, i));
 }
 
