@@ -17,7 +17,10 @@ VPATH 		:= src:src/arena_allocator:src/utils:src/vector:src/parsing:src/executio
 SRC_ARENA	:= arena.c arena_utils.c
 SRC_UTILS	:= clean_up.c prompt.c
 SRC_VECTOR	:= vector.c utils.c
+<<<<<<< HEAD
 SRC_EXEC	:= io_redirets.c execute.c error_handler.c format_path.c here_doc_handler.c
+=======
+>>>>>>> ca2bda27d041932a01fbfcb5978dcd0203f601a9
 SRC_PARSING	:= tokenize.c token_lengths.c parsing.c arena_strings.c command.c\
 				syntax.c
 SRC 		:= \

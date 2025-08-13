@@ -6,7 +6,11 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/08/13 13:25:56 by nraatika         ###   ########.fr       */
+=======
+/*   Updated: 2025/08/12 16:47:57 by nraatika         ###   ########.fr       */
+>>>>>>> ca2bda27d041932a01fbfcb5978dcd0203f601a9
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +102,5 @@ void	print_vector_commands(t_vector *vec);
 //syntax.c
 bool	check_redirect(t_arena *arena, t_token *token);
 bool 	check_command(t_arena *arena, t_cmd *command);
-
 
 #endif

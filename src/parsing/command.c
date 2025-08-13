@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 12:12:40 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/13 12:03:55 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/13 13:31:11 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	*expand_variable(t_arena * arena, char *s, int len)
 		return (arena_strdup(arena, ""));
 	return (var);
 }
+
 
 //handles the expansion of a variable, for both EXPANSION type tokens
 //that have one $VARIABLE, and QUOTE_DOUBLE tokens that may have multiple
@@ -109,7 +110,8 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 	{
 		*i += 1;
 		tok->content = concat_string_type_tokens(arena, vec, i);
-		append(command->redirects, tok);
+		if (check_redirect(tok))
+			append(command->redirects, tok);
 	}
 }
 
