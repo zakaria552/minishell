@@ -20,7 +20,7 @@ t_vector *test_redirects(void)
 		i = -1;
 		while (++i < vec->size)
 			print_token((t_token *)vec->get(vec, i));
-		commands = parse_tokens_to_commands(arena, vec);
+		commands = parse_vector_to_commands(arena, vec);
 		i = -1;
 		while (++i < commands->size)
 			print_command((t_cmd *)commands->get(commands, i));

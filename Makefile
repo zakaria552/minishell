@@ -8,7 +8,7 @@ NAME		:= minishell
 
 ## Compiler config
 CC			:= gcc
-CFLAGS		:= -Wall -g
+CFLAGS		:= -Wall -Wextra -Werror -g
 HEADERS		:= -I ./include -I ./libft
 
 ## Sources
@@ -18,7 +18,7 @@ SRC_ARENA	:= arena.c arena_utils.c
 SRC_UTILS	:= clean_up.c prompt.c
 SRC_VECTOR	:= vector.c utils.c
 SRC_PARSING	:= tokenize.c token_lengths.c parsing.c arena_strings.c command.c
-SRC_EXEC	:= io_redirets.c execute.c error_handler.c format_path.c here_doc.c
+SRC_EXEC	:= io_redirets.c execute.c error_handler.c format_path.c here_doc_handler.c
 SRC 		:= \
 			main.c \
 			$(SRC_ARENA) \

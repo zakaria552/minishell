@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 09:47:03 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:25:24 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	remove_empty_tokens(t_vector *vec)
 //loops through the vector of tokens. 
 //update command moves the index forward to the first non-string token 
 //after any redirect token and any leading empty tokens
-t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec)
+t_vector	*parse_vector_to_commands(t_arena *arena, t_vector *vec)
 {
 	t_cmd		*command;
 	t_token		*tok;

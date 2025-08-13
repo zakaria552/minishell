@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 16:23:19 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/08/12 16:24:30 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,15 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	const char	*pathname;
-	char		**argv;
-}	t_command;
+	char		*cmd;
+	t_vector	*args;
+	t_vector 	*redirects;
+	int			fd_here_doc;
+    int 		curr_pipe[2];
+    int 		next_pipe[2];
+    int 		pid;
+    bool 		is_last_cmd;
+}	t_cmd;
 
 typedef struct s_redirect
 {
@@ -71,7 +77,7 @@ ssize_t 	dummy_length(char *s);
 int 		is_string_delimiter(char c);
 
 //parsing.c
-t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec);
+t_vector	*parse_vector_to_commands(t_arena *arena, t_vector *vec);
 char		*concat_string_type_tokens(t_arena *arena, t_vector *vec, int *i);
 bool		is_string_type(t_token_type type);
 bool		is_redirect_type(t_token_type type);
@@ -80,6 +86,7 @@ void		remove_empty_tokens(t_vector *vec);
 //arena_strings.c
 char	*arena_strdup(t_arena *arena, char *s);
 char	*arena_strjoin(t_arena *arena, char *s1, char *s2);
+char 	*expand_to_str(char *s);
 
 //command.c
 t_cmd	*init_command(t_arena *arena);
