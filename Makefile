@@ -1,5 +1,5 @@
 #╔════════════════════════════════════════════╗
-#║         ⚡ MINISHELL OS // v1337 ⚡         ║
+#║         ⚡ MINISHELL OS // v1337 ⚡        ║
 #║       Booting Build Protocol :: INIT       ║
 #╚════════════════════════════════════════════╝
 
@@ -7,7 +7,7 @@
 NAME		:= minishell
 
 ## Compiler config
-CC			:= gcc
+CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror -g
 HEADERS		:= -I ./include -I ./libft
 

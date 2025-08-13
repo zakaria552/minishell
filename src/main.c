@@ -10,6 +10,7 @@ int main(int argc, char **args, char **envp)
 
 	(void)argc;
 	(void)args;
+	(void)i;
   while (true)
   {
      arena = init_arena(ARENA_SIZE);
@@ -20,13 +21,12 @@ int main(int argc, char **args, char **envp)
      if (!prompt)
        break;
      vec = tokenize_input(prompt, arena, '\0');
-     i = -1;
-     while (++i < vec->size)
-       print_token((t_token *)vec->get(vec, i));
      commands = parse_tokens_to_commands(arena, vec);
-     i = -1;
-     while (++i < commands->size)
-       print_command((t_cmd *)commands->get(commands, i));
+	if (!commands)
+	{
+		clean_up((t_arena *)arena, false);
+		continue ;
+	}
      handle_here_doc(commands);
      execution(commands, arena, envp);
      clean_up((t_arena *)arena, false);
