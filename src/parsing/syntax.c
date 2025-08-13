@@ -6,30 +6,43 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 11:29:01 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 16:49:32 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/13 11:39:39 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool check_redirect(t_token *token)
+bool check_redirect(t_arena *arena, t_token *token)
 {
+	char *error;
+
 	if (ft_strlen(token->content) >= 1)
 		return (true);
 	else
 	{
-		ft_printf("syntax error:empty redirect\n");
+		error = arena_strjoin(arena, "syntax error, empty redirect: ",\
+		 (char *)get_token_type(token->type));
+		ft_error(error);
 		return (false);
 	}
 }
 
-bool check_command(t_cmd *command)
+bool check_command(t_arena *arena, t_cmd *command)
 {
+	char	*error;
+	int		i;
+
 	if (!command->cmd)
 	{
-		ft_printf("syntax_error: no command in pipe\n");
+		error = arena_strdup(arena, "syntax error, pipe with no command");
+		ft_error(error);
 		return (false);
 	}
-	else
-		return (true);
+	i = 0;
+	while (i++ < command->redirects->size)
+	{
+		if (!check_redirect(arena, get_vector_elem(command->redirects, i)))
+			return (false);
+	}
+	return (true);
 }

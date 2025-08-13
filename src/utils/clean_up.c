@@ -7,6 +7,11 @@ void    clean_up(t_arena *arena, bool clean_history)
         clear_history();
 }
 
+void	ft_error(char *msg)
+{
+	ft_printf("Minishell: %s", msg);
+}
+
 void    clean_exit(t_arena *arena, int err_code, char *msg)
 {
     if (arena)

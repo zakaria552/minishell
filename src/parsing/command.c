@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 12:12:40 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 17:09:45 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:03:55 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ char	*expand_variable(t_arena * arena, char *s, int len)
 	return (var);
 }
 
-//handles the expansion of a variable
+//handles the expansion of a variable, for both EXPANSION type tokens
+//that have one $VARIABLE, and QUOTE_DOUBLE tokens that may have multiple
 static char	*handle_expansion(t_arena *arena, char *s, char *start)
 {
 	char	*string;
@@ -65,6 +66,8 @@ static char	*handle_expansion(t_arena *arena, char *s, char *start)
 	return (string);
 }
 
+//strips the first and last character from QUOTE tokens, and expands possible
+//variables in double quoted tokens, expands EXPANSION tokens
 static char	*strip_expand(t_token *tok, t_arena *arena)
 {
 	char	*str;
@@ -106,8 +109,7 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 	{
 		*i += 1;
 		tok->content = concat_string_type_tokens(arena, vec, i);
-		if (check_redirect(tok))
-			append(command->redirects, tok);
+		append(command->redirects, tok);
 	}
 }
 
@@ -159,11 +161,10 @@ void	print_command(t_cmd *command)
 	while (++i < command->args->size)
 		ft_printf("arg%d: %s\n", i, (char *)command->args->get(command->args, i));
 	i = -1;
-	while (++i < command->redirects->size)
-	{
+	if (command->redirects->size > 0)
 		ft_printf("redirects:\n");
+	while (++i < command->redirects->size)
 		print_token((t_token *)command->redirects->get(command->redirects, i));
-	}
 	ft_printf("***\n");
 
 }
