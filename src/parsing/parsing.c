@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/13 15:38:17 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/13 16:11:24 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ static t_cmd *parse_single_command(t_arena *arena, t_vector *vec, int *i)
 		if (tok->type == EMPTY)
 			continue;
 		if (tok->type == PIPE)
-		{
-			--(*i);
 			return (command);
-		}
 		if (is_string_type(tok->type) || is_redirect_type(tok->type))
 			update_command(arena, command, vec, i);
 	}
@@ -93,6 +90,11 @@ t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec)
 			append(table, command);
 		else
 			return (NULL);
+	}
+	if (((t_token *)vec->get(vec, vec->size - 1))->type == PIPE)
+	{
+		check_command(arena, init_command(arena));
+		return (NULL);
 	}
 	return (table);
 }
