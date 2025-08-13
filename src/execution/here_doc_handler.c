@@ -40,7 +40,6 @@ void set_cmd_here_doc(t_cmd *cmd, char *limiter)
         ft_printf("> ");
         // use the readline, allocate on the arena
         line = get_next_line(STDIN_FILENO);
-        ft_printf("%s", line);
         if (!line)
             clean_exit(NULL, ENOMEDIUM, strerror(ENOMEDIUM));
         if (write(hdoc_pipe[1], line, ft_strlen(line)) < 0)
