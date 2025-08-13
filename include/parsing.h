@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/13 13:22:21 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/13 13:25:56 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_redirect
 
 //tokenize.c
 t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter);
+const char	*get_token_type(t_token_type type);
 //debug, remove before final submission
 void		print_token(t_token *tok);
 
@@ -95,8 +96,8 @@ void	print_command(t_cmd *command);
 void	print_vector_commands(t_vector *vec);
 
 //syntax.c
-bool	check_redirect(t_token *token);
-bool 	check_command(t_cmd *command);
+bool	check_redirect(t_arena *arena, t_token *token);
+bool 	check_command(t_arena *arena, t_cmd *command);
 
 
 #endif

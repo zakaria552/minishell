@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 16:32:28 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/13 11:32:31 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@ void	print_token(t_token *tok)
 	
 	ft_printf("Type:%s Length:%d Content:%s\n", names[tok->type],\
 		tok->read_chars, tok->content);
+}
+
+const char	*get_token_type(t_token_type type)
+{
+	const char *names[] = {"EMPTY", "PIPE", "INPUT_REDIR", "OUTPUT_REDIR",\
+		"OUTPUT_APPEND", "HERE_DOC", "QUOTE_SINGLE", "QUOTE_DOUBLE", \
+		"EXPANSION", "STRING"};
+
+	return (names[type]);
 }
 
 //Different functions for different token types
