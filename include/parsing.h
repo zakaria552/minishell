@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/15 13:58:59 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:03:59 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_cmd
 	char		*cmd;
 	t_vector	*args;
 	t_vector 	*redirects;
+	int			unmatched_quote;
 	int			fd_here_doc;
     int 		curr_pipe[2];
     int 		next_pipe[2];

@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 12:12:40 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/15 13:58:59 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:03:29 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ static char	*strip_expand(t_token *tok, t_arena *arena)
 
 	if (tok->type == QUOTE_DOUBLE)
 	{
+		if (!(tok->content))
+			return (NULL);
 		str = arena_alloc(arena, ft_strlen(tok->content) - 1, tok->content + 1);
 		str[ft_strlen(tok->content) - 2] = '\0';
 		start = contains_expansions(str);
@@ -86,6 +88,8 @@ static char	*strip_expand(t_token *tok, t_arena *arena)
 	}
 	if (tok->type == QUOTE_SINGLE)
 	{
+	if (!(tok->content))
+			return (NULL);
 		str = arena_alloc(arena, ft_strlen(tok->content) - 1, tok->content + 1);
 		str[ft_strlen(tok->content) - 2] = '\0';
 		return (str);
@@ -100,26 +104,41 @@ static char	*strip_expand(t_token *tok, t_arena *arena)
 void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 {
 	t_token	*tok;
+	char	*temp;
 
 	tok = vec->get(vec, *i);
 	if(is_string_type(tok->type))
 	{
-		if (command->cmd == NULL)
-			command->cmd = concat_string_type_tokens(arena, vec, i);
+		temp = concat_string_type_tokens(arena, vec, i);
+		if (temp)
+		{
+			if (command->cmd == NULL)
+				command->cmd = temp;
+			else
+				append(command->args, temp);
+		}
 		else
-			append(command->args, concat_string_type_tokens(arena, vec, i));
+			command->unmatched_quote = tok->type;
 	}
 	if(is_redirect_type(tok->type))
 	{
 		*i += 1;
-		tok->content = concat_string_type_tokens(arena, vec, i);
-		append(command->redirects, tok);
+		temp = concat_string_type_tokens(arena, vec, i);
+		if (temp)
+		{
+			tok->content = temp;
+			append(command->redirects, tok);
+		}
+		else
+			command->unmatched_quote = tok->type;
 	}
 }
 
 //concatenates any unbroken sequence of string-type tokens to the return,
 //starting at the index pointed to by i, updates the index as it goes along
 //skips any leading empty tokens
+//returns NULL if it encounters string-type tokens with NULL content,
+//which happens only with unmatched quotes.
 char	*concat_string_type_tokens(t_arena *arena, t_vector *vec, int *i)
 {
 	char		*string;
@@ -134,6 +153,8 @@ char	*concat_string_type_tokens(t_arena *arena, t_vector *vec, int *i)
 	 	tok = vec->get(vec, *i);
 		if (is_string_type(tok->type))
 		{
+			if (!tok->content)
+				return (NULL);
 			temp = arena_strjoin(arena, string, strip_expand(tok, arena));
 			string = temp;
 		}
