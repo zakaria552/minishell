@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/14 13:02:18 by nraatika         ###   ########.fr       */
-/*   Updated: 2025/08/12 16:32:28 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/15 11:02:32 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +109,6 @@ static t_token	*get_next_token(char *s, t_arena *arena)
 	if (tok->read_chars != -1)
 	{
 		content = arena_alloc(arena, tok->read_chars + 1, NULL);
-		if (content == NULL)
-			clean_exit(arena, 1, "arena_alloc returned NULL");
 		ft_memcpy(content, s, tok->read_chars);
 		tok->content = content;
 	}
@@ -136,7 +133,7 @@ t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 		if (tok->read_chars > 0)
 			s += tok->read_chars;
 		else 
-			return (vec);
+			clean_exit(arena, 3, "token length < 1");
 	}
 	return (vec);
 }
