@@ -6,7 +6,7 @@ static void     redirect_here_doc(t_cmd *cmd);
 
 void    redirect_io(t_cmd *cmd)
 {
-    const t_vector *redirects = cmd->redirects;
+	t_vector *redirects = cmd->redirects;
     t_token *redir;
     t_token_type type;
     int i;

@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 16:25:24 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/08/14 14:48:57 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,27 @@ void	remove_empty_tokens(t_vector *vec)
 }
 */
 
+
+static t_cmd *parse_single_command(t_arena *arena, t_vector *vec, int *i)
+{
+	t_cmd		*command;
+	t_token		*tok;
+
+	command = init_command(arena);
+	*i -= 1;
+	while (++(*i) < vec->size && !(command->unmatched_quote))
+	{
+		tok = vec->get(vec, *i);
+		if (tok->type == EMPTY)
+			continue;
+		if (tok->type == PIPE)
+			return (command);
+		if (is_string_type(tok->type) || is_redirect_type(tok->type))
+			update_command(arena, command, vec, i);
+	}
+	return (command);
+}
+
 //loops through the vector of tokens. 
 //update command moves the index forward to the first non-string token 
 //after any redirect token and any leading empty tokens
@@ -57,26 +78,23 @@ void	remove_empty_tokens(t_vector *vec)
 t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec)
 {
 	t_cmd		*command;
-	t_token		*tok;
 	t_vector	*table;
 	int			i;
 
-	table = init_vector(1, NULL, arena);
-	command = init_command(arena);
+	table = init_vector(INIT_VECTOR_SIZE, NULL, arena);
 	i = -1;
 	while (++i < vec->size)
 	{
-		tok = vec->get(vec, i);
-		if (tok->type == EMPTY)
-			continue;
-		if (tok->type == PIPE)
-		{
+		command = parse_single_command(arena, vec, &i);
+		if (check_command(arena, command))
 			append(table, command);
-			command = init_command(arena);
-		}
-		if (is_string_type(tok->type) || is_redirect_type(tok->type))
-			update_command(arena, command, vec, &i);
+		else
+			return (NULL);
 	}
-	append(table, command);
+	if (((t_token *)vec->get(vec, vec->size - 1))->type == PIPE)
+	{
+		check_command(arena, init_command(arena));
+		return (NULL);
+	}
 	return (table);
 }

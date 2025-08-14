@@ -6,7 +6,8 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/08 14:12:40 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/14 13:02:18 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:32:28 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +16,17 @@
 //debug function
 void	print_token(t_token *tok)
 {
+	ft_printf("Type:%s Length:%d Content:%s\n", get_token_type(tok->type),\
+		tok->read_chars, tok->content);
+}
+
+const char	*get_token_type(t_token_type type)
+{
 	const char *names[] = {"EMPTY", "PIPE", "INPUT_REDIR", "OUTPUT_REDIR",\
 		"OUTPUT_APPEND", "HERE_DOC", "QUOTE_SINGLE", "QUOTE_DOUBLE", \
 		"EXPANSION", "STRING"};
-	
-	ft_printf("Type:%s Length:%d Content:%s\n", names[tok->type],\
-		tok->read_chars, tok->content);
+
+	return (names[type]);
 }
 
 //Different functions for different token types
@@ -116,13 +122,13 @@ static t_token	*get_next_token(char *s, t_arena *arena)
 
 //tokenize the input string, return a vector of tokens
 //delimiter is there so the function can be reused to tokenize quoted strings
-//for parsing. TODO: check how mix of single and doube quotes works with quote delimiter
+//for parsing. 
 t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 {
 	t_token		*tok;
 	t_vector	*vec;
 
-	vec = init_vector(5, NULL, arena);
+	vec = init_vector(INIT_VECTOR_SIZE, NULL, arena);
 	while (s && *s && *s != delimiter)
 	{
 		tok = get_next_token(s, arena);
@@ -130,7 +136,7 @@ t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 		if (tok->read_chars > 0)
 			s += tok->read_chars;
 		else 
-			clean_exit(arena, 3, "token length < 1");
+			return (vec);
 	}
 	return (vec);
 }

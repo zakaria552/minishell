@@ -1,5 +1,5 @@
 #╔════════════════════════════════════════════╗
-#║         ⚡ MINISHELL OS // v1337 ⚡         ║
+#║         ⚡ MINISHELL OS // v1337 ⚡        ║
 #║       Booting Build Protocol :: INIT       ║
 #╚════════════════════════════════════════════╝
 
@@ -7,7 +7,7 @@
 NAME		:= minishell
 
 ## Compiler config
-CC			:= gcc
+CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror -g
 HEADERS		:= -I ./include -I ./libft
 
@@ -17,8 +17,9 @@ VPATH 		:= src:src/arena_allocator:src/utils:src/vector:src/parsing:src/executio
 SRC_ARENA	:= arena.c arena_utils.c
 SRC_UTILS	:= clean_up.c prompt.c
 SRC_VECTOR	:= vector.c utils.c
-SRC_PARSING	:= tokenize.c token_lengths.c parsing.c arena_strings.c command.c
 SRC_EXEC	:= io_redirets.c execute.c error_handler.c format_path.c here_doc_handler.c
+SRC_PARSING	:= tokenize.c token_lengths.c parsing.c arena_strings.c command.c\
+				syntax.c
 SRC 		:= \
 			main.c \
 			$(SRC_ARENA) \

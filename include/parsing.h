@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/12 16:24:30 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/08/14 14:46:02 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_cmd
 	char		*cmd;
 	t_vector	*args;
 	t_vector 	*redirects;
+	int			unmatched_quote;
 	int			fd_here_doc;
     int 		curr_pipe[2];
     int 		next_pipe[2];
@@ -64,6 +65,7 @@ typedef struct s_redirect
 
 //tokenize.c
 t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter);
+const char	*get_token_type(t_token_type type);
 //debug, remove before final submission
 void		print_token(t_token *tok);
 
@@ -93,5 +95,9 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i);
 //debug
 void	print_command(t_cmd *command);
 void	print_vector_commands(t_vector *vec);
+
+//syntax.c
+bool	check_redirect(t_arena *arena, t_token *token);
+bool 	check_command(t_arena *arena, t_cmd *command);
 
 #endif
