@@ -6,9 +6,10 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:52:25 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/14 13:32:06 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:04:53 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "minishell.h"
 
 volatile sig_atomic_t	g_signal;
 
@@ -41,7 +42,7 @@ void	set_here_doc_handler(void)
 //to also empty undo list, which I don't think we're using, so 0 would work 
 //the same), then tells readline that it should treat it as having a completed 
 //line, and to redisplay the prompt
-void	handler(int signum, s_sigaction *act, void *next)
+void	handler(int signum, siginfo_t *act, void *next)
 {
 	(void)next;
 	(void)act;
@@ -55,10 +56,10 @@ void	handler(int signum, s_sigaction *act, void *next)
 	}
 }
 
-void	here_doc_handler(int signum, s_sigaction *act, void *next)
+void	here_doc_handler(int signum, siginfo_t *act, void *next)
 {
 	(void)next;
 	(void)act;
-	g_received_signal = signum;
+	g_signal = signum;
 	
 }

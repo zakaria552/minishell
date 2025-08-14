@@ -13,7 +13,7 @@ int main(int argc, char **args, char **envp)
   while (true)
   {
      arena = init_arena(ARENA_SIZE);
-	set_handler();
+	set_readline_handler();
      if (!arena)
        exit(1);
      prompt = read_prompt(arena);
