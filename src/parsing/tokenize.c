@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/13 13:34:32 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/13 16:52:18 by nraatika         ###   ########.fr       */
 /*   Updated: 2025/08/12 16:32:28 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -16,11 +16,7 @@
 //debug function
 void	print_token(t_token *tok)
 {
-	const char *names[] = {"EMPTY", "PIPE", "INPUT_REDIR", "OUTPUT_REDIR",\
-		"OUTPUT_APPEND", "HERE_DOC", "QUOTE_SINGLE", "QUOTE_DOUBLE", \
-		"EXPANSION", "STRING"};
-	
-	ft_printf("Type:%s Length:%d Content:%s\n", names[tok->type],\
+	ft_printf("Type:%s Length:%d Content:%s\n", get_token_type(tok->type),\
 		tok->read_chars, tok->content);
 }
 
@@ -126,7 +122,7 @@ static t_token	*get_next_token(char *s, t_arena *arena)
 
 //tokenize the input string, return a vector of tokens
 //delimiter is there so the function can be reused to tokenize quoted strings
-//for parsing. TODO: check how mix of single and doube quotes works with quote delimiter
+//for parsing. 
 t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 {
 	t_token		*tok;
