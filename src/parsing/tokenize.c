@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/15 14:01:44 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:02:34 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 		if (tok->read_chars > 0)
 			s += tok->read_chars;
 		else 
-			clean_exit(arena, 3, "token length < 1");
+			return (vec);
 	}
 	return (vec);
 }
