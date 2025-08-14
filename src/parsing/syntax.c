@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 11:29:01 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/13 13:59:11 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/14 11:40:10 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@ bool check_command(t_arena *arena, t_cmd *command)
 	char	*error;
 	int		i;
 
-	if (!command->cmd)
-	{
-		error = arena_strdup(arena, "syntax error, pipe with no command");
-		ft_error(error);
-		return (false);
-	}
 	i = -1;
 	while (++i < command->redirects->size)
 	{
 		if (!check_redirect(arena, get_vector_elem(command->redirects, i)))
 			return (false);
+	}
+	if (!command->cmd && i == 0)
+	{
+		error = arena_strdup(arena, "syntax error, empty pipe");
+		ft_error(error);
+		return (false);
 	}
 	return (true);
 }
