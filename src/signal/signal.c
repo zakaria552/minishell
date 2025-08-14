@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:52:25 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/14 14:04:53 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:09:51 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -61,5 +61,4 @@ void	here_doc_handler(int signum, siginfo_t *act, void *next)
 	(void)next;
 	(void)act;
 	g_signal = signum;
-	
 }

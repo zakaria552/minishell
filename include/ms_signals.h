@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:54:50 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/14 14:05:23 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:07:57 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MS_SIGNALS_H

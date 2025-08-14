@@ -21,6 +21,8 @@ SRC_SIGNAL	:= signal.c
 SRC_PARSING	:= tokenize.c token_lengths.c parsing.c arena_strings.c command.c\
 				syntax.c
 SRC_EXEC	:= io_redirets.c execute.c binary_path.c here_doc_handler.c
+SRC_SIGNAL	:= signal.c
+
 SRC 		:= \
 			main.c \
 			$(SRC_ARENA) \
