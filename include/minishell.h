@@ -17,6 +17,7 @@
 #include "vector.h"
 #include "parsing.h"
 #include "execution.h"
+#include "ms_signals.h"
 
 typedef struct s_allocators
 {

@@ -13,19 +13,21 @@ HEADERS		:= -I ./include -I ./libft
 
 ## Sources
 OBJ_DIR 	:= obj
-VPATH 		:= src:src/arena_allocator:src/utils:src/vector:src/parsing:src/execution
+VPATH 		:= src:src/arena_allocator:src/utils:src/vector:src/parsing:src/execution:src/signal
 SRC_ARENA	:= arena.c arena_utils.c
 SRC_UTILS	:= clean_up.c prompt.c
 SRC_VECTOR	:= vector.c utils.c
 SRC_PARSING	:= tokenize.c token_lengths.c parsing.c arena_strings.c command.c
 SRC_EXEC	:= io_redirets.c execute.c error_handler.c format_path.c here_doc_handler.c
+SRC_SIGNAL	:= signal.c
 SRC 		:= \
 			main.c \
 			$(SRC_ARENA) \
 			$(SRC_UTILS) \
 			$(SRC_VECTOR) \
 			$(SRC_PARSING) \
-			$(SRC_EXEC)
+			$(SRC_EXEC) \
+			$(SRC_SIGNAL)
 
 OBJS 		:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 

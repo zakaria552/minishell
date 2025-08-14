@@ -13,6 +13,7 @@ int main(int argc, char **args, char **envp)
   while (true)
   {
      arena = init_arena(ARENA_SIZE);
+	set_handler();
      if (!arena)
        exit(1);
      prompt = read_prompt(arena);
@@ -26,7 +27,6 @@ int main(int argc, char **args, char **envp)
      i = -1;
      while (++i < commands->size)
        print_command((t_cmd *)commands->get(commands, i));
-     // todos: error handling, cleaning up the heap, refactor, global arena
      handle_here_doc(commands);
      execution(commands, arena, envp);
      clean_up((t_arena *)arena, false);
