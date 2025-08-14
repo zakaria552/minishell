@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/13 16:11:24 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:48:57 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static t_cmd *parse_single_command(t_arena *arena, t_vector *vec, int *i)
 
 	command = init_command(arena);
 	*i -= 1;
-	while (++(*i) < vec->size)
+	while (++(*i) < vec->size && !(command->unmatched_quote))
 	{
 		tok = vec->get(vec, *i);
 		if (tok->type == EMPTY)

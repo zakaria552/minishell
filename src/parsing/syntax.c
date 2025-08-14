@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 11:29:01 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/14 11:40:10 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:50:04 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ bool check_command(t_arena *arena, t_cmd *command)
 	char	*error;
 	int		i;
 
+	if (command->unmatched_quote)
+	{
+		ft_error("syntax error, unmatched quote");
+		return (false);
+	}
 	i = -1;
 	while (++i < command->redirects->size)
 	{
