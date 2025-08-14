@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   format_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarah <zfarah@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:49:04 by zfarah            #+#    #+#             */
-/*   Updated: 2025/06/15 14:32:44 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/08/14 18:04:19 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char *get_exc_path(char *paths, char *cmd, t_arena *arena);
 static char *get_env_variable(char **envp, char *variable);
-static char *command_exist(char *path);
+bool is_executable(char *path);
 
 void *set_errno(int err_code)
 {
@@ -22,27 +22,23 @@ void *set_errno(int err_code)
 	return (NULL);
 }
 
-char *format_path(char *command, char **envp, t_arena *arena)
+char *get_binary_path(char *command, char **envp, t_arena *arena)
 {
 	char *path;
 	char *exc_path;
 
 	if (command != NULL && ft_strchr(command, '/'))
 	{
-		exc_path = command_exist(command);
-		if (!exc_path)
-			return NULL;
-		return (exc_path);
+		if (!is_executable(command))
+			cmd_not_found_err(errno, command, false);
+		return command;
 	}
 	path = get_env_variable(envp, "PATH=");
 	if (!path)
-	{
-		ft_printf("Pipex: command not found: %s\n", command);
-		return NULL;
-	}
+		cmd_not_found_err(127, command, false);
 	exc_path = get_exc_path(path, command, arena);
 	if (!exc_path)
-		ft_printf("Pipex: command not found: %s\n", command);
+		cmd_not_found_err(errno, command, true);
 	return (exc_path);
 }
 
@@ -57,14 +53,12 @@ char *get_exc_path(char *path, char *cmd, t_arena *arena)
 		i = 0;
 		while (path[i] && path[i] != ':')
 			i++;
-		exc_path = arena->alloc(arena, i + len + 2, NULL);
-		if (!exc_path)
-			return (set_errno(ENOMEM));
+		exc_path = arena_alloc(arena, i + len + 2, NULL);
 		exc_path[i + len + 1] = '\0';
 		exc_path[i] = '/';
 		ft_memcpy(exc_path, path, i);
 		ft_memcpy(exc_path + i + 1, cmd, len);
-		if (access(exc_path, X_OK) == 0)
+		if (is_executable(exc_path))
 			return (exc_path);
 		if (!path[i])
 			break;
@@ -89,17 +83,7 @@ char *get_env_variable(char **envp, char *variable)
 	return (NULL);
 }
 
-char *command_exist(char *path)
+bool is_executable(char *path)
 {
-	char *dup_path;
-
-	if (access(path, X_OK) < 0)
-	{
-		ft_printf("Pipex: %s: %s\n", strerror(errno), path);
-		return (set_errno(errno));
-	}
-	dup_path = ft_strdup(path);
-	if (!dup_path)
-		return (set_errno(5));
-	return (dup_path);
+	return (access(path, X_OK) == 0);
 }
