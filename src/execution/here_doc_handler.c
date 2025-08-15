@@ -15,6 +15,8 @@ void    handle_here_doc(t_vector *cmds)
         cmd = (t_cmd *)(cmds->get(cmds, i));
         j = -1;
         cmd->fd_here_doc = -1;
+        cmd->is_first_cmd = i == 0;
+        cmd->is_last_cmd = i == cmds->size - 1;
         while (++j < cmd->redirects->size)
         {
             token = (t_token *)cmd->redirects->get(cmd->redirects, j);
@@ -33,17 +35,17 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
     char *line;
 
     if (pipe(hdoc_pipe) < 0)
-        runtime_err(errno, NULL);
+        runtime_err(NULL);
     while (true)
     {
         line = read_prompt("> ", false);
         if (!line)
-            runtime_err(ENOMEDIUM, NULL);
+            runtime_err(NULL);
         if (ft_strncmp(line, limiter, len_limiter) == 0 && !line[len_limiter
 				+ 1])
 			break ;
         if (write(hdoc_pipe[1], line, ft_strlen(line)) < 0)
-            runtime_err(errno, NULL); 
+            runtime_err(NULL); 
     }
     if (cmd->fd_here_doc > 0)
         close(cmd->fd_here_doc);

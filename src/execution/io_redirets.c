@@ -7,7 +7,7 @@ static void     pipe_redirect(t_cmd *cmd);
 
 void    redirect_io(t_cmd *cmd)
 {
-    const t_vector *redirects = cmd->redirects;
+    const t_vector *redirects;
     t_token *redir;
     t_token_type type;
     int i;
@@ -33,11 +33,11 @@ static void   redirect_stdin(char *file)
     const int fd = open(file, O_RDONLY);
 
     if (fd < 0)
-        runtime_err(errno, file);
+        runtime_err(file);
     if (dup2(fd, STDIN_FILENO) < 0)
     {
         close(fd);
-        runtime_err(errno, NULL);
+        runtime_err(NULL);
     }
     close(fd);
 }
@@ -59,11 +59,11 @@ static void   redirect_stdout(t_token *redirect)
         flags |= O_TRUNC;
     fd = open(redirect->content, flags, mode);
     if (fd < 0)
-        runtime_err(errno, NULL);
+        runtime_err(errno);
     if (dup2(fd, STDOUT_FILENO) < 0)
     {
         close(fd);
-        runtime_err(errno, NULL);
+        runtime_err(errno);
     }
     close(fd);
 }
@@ -87,7 +87,21 @@ static void     redirect_here_doc(t_cmd *cmd)
         close_pipe(cmd->curr_pipe);
         close_pipe(cmd->next_pipe);
         close(fd);
-        runtime_err(errno, NULL);
+        runtime_err(errno);
     }
     close(fd);
+}
+
+static void     pipe_redirect(t_cmd *cmd)
+{
+    if (dup2(cmd->curr_pipe[0], STDIN_FILENO) < 0 ||
+        (!cmd->is_last_cmd && dup2(cmd->next_pipe[1], STDOUT_FILENO) < 0))
+    {
+        close_pipe(cmd->curr_pipe);
+        close_pipe(cmd->next_pipe);
+        runtime_err(errno);
+
+    }
+    close_pipe(cmd->curr_pipe);
+    close_pipe(cmd->next_pipe);
 }
