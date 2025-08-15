@@ -26,6 +26,7 @@ void    handle_here_doc(t_vector *cmds)
             set_cmd_here_doc(cmd, token->content);
         }
     }
+   set_readline_handler();
 }
 
 static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
@@ -36,6 +37,7 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
 
     if (pipe(hdoc_pipe) < 0)
         runtime_err(errno, NULL);
+	set_readline_handler();
     while (true)
     {
         line = read_prompt("> ", false);

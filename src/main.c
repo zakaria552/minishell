@@ -12,7 +12,7 @@ int main(int argc, char **args, char **envp)
 	(void)i;
   while (true)
   {
-     arena = init_arena(ARENA_SIZE);
+    arena = init_arena(ARENA_SIZE);
 	set_readline_handler();
      if (!arena)
        exit(1);
