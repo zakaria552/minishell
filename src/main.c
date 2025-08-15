@@ -6,7 +6,6 @@ int main(int argc, char **args, char **envp)
     char *prompt;
     t_vector *vec;
     t_vector *commands;
-    int i;
 
 	(void)argc;
 	(void)args;
