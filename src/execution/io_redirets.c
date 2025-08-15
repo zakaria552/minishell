@@ -94,7 +94,7 @@ static void     redirect_here_doc(t_cmd *cmd)
 
 static void     pipe_redirect(t_cmd *cmd)
 {
-    if (dup2(cmd->curr_pipe[0], STDIN_FILENO) < 0 ||
+    if ((!cmd->is_first_cmd && dup2(cmd->curr_pipe[0], STDIN_FILENO) < 0) ||
         (!cmd->is_last_cmd && dup2(cmd->next_pipe[1], STDOUT_FILENO) < 0))
     {
         close_pipe(cmd->curr_pipe);
