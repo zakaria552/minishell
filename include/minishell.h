@@ -21,10 +21,9 @@
 typedef struct s_allocators
 {
     t_arena *global;
-    t_arena *tmp;
+    t_arena *prompt;
 } t_allocators;
 
-t_arena *get_allocator();
 t_allocators *get_allocators();
 
 #endif
