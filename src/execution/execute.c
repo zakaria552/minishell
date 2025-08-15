@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void execute_cmd(t_cmd *cmd, char **envp, t_arena *arena);
+static void execute_cmd(t_vector *cmds, int index, char **envp, t_arena *arena);
 static char **execve_args(t_arena *arena, t_cmd *cmd, char *binary);
 static void wait_child_processes(t_vector *cmds, int *status);
 void    print_args(char **args);
@@ -15,42 +15,43 @@ void    execution(t_vector *cmds, t_arena *arena, char **envp)
 
     i = -1;
     if (pipe(curr_pipe) < 0)
-        clean_exit(arena, errno, NULL);
+        runtime_err(errno, NULL);
     while (++i < cmds->size)
     {
         cmd = ((t_cmd *) cmds->get(cmds, i));
         if (pipe(next_pipe) < 0)
-            clean_exit(arena, errno, NULL);
+            runtime_err(errno, NULL);
         ft_memcpy(cmd->curr_pipe, curr_pipe, sizeof(curr_pipe));
         ft_memcpy(cmd->next_pipe, next_pipe, sizeof(next_pipe));
         cmd->pid = fork();
         cmd->is_last_cmd = i == cmds->size - 1;
         if (cmd->pid < 0)
-            clean_exit(arena, errno, NULL);
+            runtime_err(errno, NULL);
         if (cmd->pid == 0)
-            execute_cmd((t_cmd *)(cmds->get(cmds, i)), envp, arena);
+            execute_cmd(cmds, i, envp, arena);
         close_pipe(curr_pipe);
         ft_memcpy(curr_pipe, next_pipe, sizeof(curr_pipe));
     }
+    close_pipe(curr_pipe);
+    close_open_here_docs(cmds, -1);
     wait_child_processes(cmds, &status);
-    ft_printf("Last status: %d\n", WEXITSTATUS(status));
+    //ft_printf("Last status: %d\n", WEXITSTATUS(status));
 }
 
-static void execute_cmd(t_cmd *cmd, char **envp, t_arena *arena)
+static void execute_cmd(t_vector *cmds, int index, char **envp, t_arena *arena)
 {
-    char *binary_path;
+    const t_cmd *cmd = cmds->get(cmds, index);
+    char *path;
     char **args;
 
-    ft_printf("curr-pipe: [%d][%d], next-pipe: [%d][%d]\n", cmd->curr_pipe[0], cmd->curr_pipe[1],
-        cmd->next_pipe[0], cmd->next_pipe[1]);
-    binary_path = format_path(cmd->cmd, envp, arena); // refactor the format path
-    if (!binary_path)
-        clean_exit(arena, errno, cmd->cmd);
-    args = execve_args(arena, cmd, binary_path);
-    print_args(args);
-    redirect_io(cmd);
-    execve(binary_path, args, envp);
-    ft_putstr_fd("execve errored\n", 2);
+    close_open_here_docs((t_vector *)cmds, index);
+    redirect_io((t_cmd *)cmd);
+    //ft_printf("curr-pipe: [%d][%d], next-pipe: [%d][%d]\n", cmd->curr_pipe[0], cmd->curr_pipe[1],
+    //    cmd->next_pipe[0], cmd->next_pipe[1]);
+    path = get_binary_path(cmd->cmd, envp, arena); // refactor the format path
+    args = execve_args(arena, (t_cmd *)cmd, path);
+    execve(path, args, envp);
+    runtime_err(errno, NULL);
     exit(errno);
 }
 
