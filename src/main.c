@@ -2,11 +2,11 @@
 
 int main(int argc, char **args, char **envp)
 {
-  t_arena *arena;
-  char *prompt;
-  t_vector *vec;
-  t_vector *commands;
-  int i;
+    t_allocators *allocs = get_allocators();
+    char *prompt;
+    t_vector *vec;
+    t_vector *commands;
+    int i;
 
 	(void)argc;
 	(void)args;
@@ -44,9 +44,9 @@ t_arena *get_allocator()
 
 t_allocators *get_allocators()
 {
-  static t_allocators arenas;
+    static t_allocators arenas;
 
-  if (arenas.global)
-    arenas.global = init_arena(ARENA_SIZE);
-  return (&arenas);
+    if (arenas.global)
+        arenas.global = init_arena(ARENA_SIZE);
+    return (&arenas);
 }
