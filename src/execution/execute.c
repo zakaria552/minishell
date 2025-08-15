@@ -44,12 +44,12 @@ static void execute_cmd(t_vector *cmds, int index, char **envp, t_arena *arena)
     char *path;
     char **args;
 
-    close_open_here_docs(cmds, index);
-    redirect_io(cmd);
+    close_open_here_docs((t_vector *)cmds, index);
+    redirect_io((t_cmd *)cmd);
     //ft_printf("curr-pipe: [%d][%d], next-pipe: [%d][%d]\n", cmd->curr_pipe[0], cmd->curr_pipe[1],
     //    cmd->next_pipe[0], cmd->next_pipe[1]);
     path = get_binary_path(cmd->cmd, envp, arena); // refactor the format path
-    args = execve_args(arena, cmd, path);
+    args = execve_args(arena, (t_cmd *)cmd, path);
     execve(path, args, envp);
     runtime_err(errno, NULL);
     exit(errno);
