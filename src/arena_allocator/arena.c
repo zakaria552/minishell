@@ -7,7 +7,7 @@ t_arena *init_arena(size_t size)
 
     arena = malloc(sizeof(t_arena));
     if (!arena)
-        return (NULL);
+        runtime_err(ENOMEM, NULL);
     arena->size = size;
     arena->offset = 0;
     arena->next = NULL;
@@ -17,7 +17,7 @@ t_arena *init_arena(size_t size)
     if (!arena->buffer)
     {
         free(arena);
-        return (NULL);
+        runtime_err(ENOMEM, NULL);
     }
 	ft_memset(arena->buffer, 0, size);
     return (arena);
