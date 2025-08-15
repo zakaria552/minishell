@@ -18,7 +18,6 @@ void    redirect_io(t_cmd *cmd)
     pipe_redirect(cmd);
     while (++i < redirects->size)
     {
-        ft_putnbr_fd(i, 2);
         redir = (t_token *)redirects->get(redirects, i);
         type = redir->type;
         if (type == INPUT_REDIR)
@@ -33,11 +32,11 @@ static void   redirect_stdin(char *file)
     const int fd = open(file, O_RDONLY);
 
     if (fd < 0)
-        runtime_err(file);
+        runtime_err(errno, file);
     if (dup2(fd, STDIN_FILENO) < 0)
     {
         close(fd);
-        runtime_err(NULL);
+        runtime_err(errno, NULL);
     }
     close(fd);
 }
@@ -59,11 +58,11 @@ static void   redirect_stdout(t_token *redirect)
         flags |= O_TRUNC;
     fd = open(redirect->content, flags, mode);
     if (fd < 0)
-        runtime_err(errno);
+        runtime_err(errno, NULL);
     if (dup2(fd, STDOUT_FILENO) < 0)
     {
         close(fd);
-        runtime_err(errno);
+        runtime_err(errno, NULL);
     }
     close(fd);
 }
@@ -87,7 +86,7 @@ static void     redirect_here_doc(t_cmd *cmd)
         close_pipe(cmd->curr_pipe);
         close_pipe(cmd->next_pipe);
         close(fd);
-        runtime_err(errno);
+        runtime_err(errno, NULL);
     }
     close(fd);
 }
@@ -99,7 +98,7 @@ static void     pipe_redirect(t_cmd *cmd)
     {
         close_pipe(cmd->curr_pipe);
         close_pipe(cmd->next_pipe);
-        runtime_err(errno);
+        runtime_err(errno, NULL);
 
     }
     close_pipe(cmd->curr_pipe);
