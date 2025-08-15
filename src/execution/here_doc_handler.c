@@ -35,17 +35,17 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
     char *line;
 
     if (pipe(hdoc_pipe) < 0)
-        runtime_err(NULL);
+        runtime_err(errno, NULL);
     while (true)
     {
         line = read_prompt("> ", false);
         if (!line)
-            runtime_err(NULL);
+            runtime_err(errno, NULL);
         if (ft_strncmp(line, limiter, len_limiter) == 0 && !line[len_limiter
 				+ 1])
 			break ;
         if (write(hdoc_pipe[1], line, ft_strlen(line)) < 0)
-            runtime_err(NULL); 
+            runtime_err(errno, NULL); 
     }
     if (cmd->fd_here_doc > 0)
         close(cmd->fd_here_doc);
