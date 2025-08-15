@@ -15,6 +15,8 @@ void    handle_here_doc(t_vector *cmds)
         cmd = (t_cmd *)(cmds->get(cmds, i));
         j = -1;
         cmd->fd_here_doc = -1;
+        cmd->is_first_cmd = i == 0;
+        cmd->is_last_cmd = i == cmds->size - 1;
         while (++j < cmd->redirects->size)
         {
             token = (t_token *)cmd->redirects->get(cmd->redirects, j);
