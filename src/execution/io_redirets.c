@@ -7,7 +7,7 @@ static void     pipe_redirect(t_cmd *cmd);
 
 void    redirect_io(t_cmd *cmd)
 {
-    const t_vector *redirects;
+    t_vector *redirects;
     t_token *redir;
     t_token_type type;
     int i;
