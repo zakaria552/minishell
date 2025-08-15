@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 11:29:01 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/14 14:50:04 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/15 11:22:19 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,18 @@ bool check_redirect(t_arena *arena, t_token *token)
 
 	if (ft_strlen(token->content) >= 1)
 		return (true);
-	else
-	{
-		error = arena_strjoin(arena, "syntax error, empty redirect: ",\
-		 (char *)get_token_type(token->type));
-		ft_error(error);
-		return (false);
-	}
+	error = arena_strjoin(arena, "syntax error, empty redirect: ",\
+	 (char *)get_token_type(token->type));
+	syntax_err(2, error);
+	return (false);
 }
 
 bool check_command(t_arena *arena, t_cmd *command)
 {
-	char	*error;
 	int		i;
 
 	if (command->unmatched_quote)
-	{
-		ft_error("syntax error, unmatched quote");
-		return (false);
-	}
+		syntax_err(2, "syntax error, unmatched quote");
 	i = -1;
 	while (++i < command->redirects->size)
 	{
@@ -44,10 +37,6 @@ bool check_command(t_arena *arena, t_cmd *command)
 			return (false);
 	}
 	if (!command->cmd && i == 0)
-	{
-		error = arena_strdup(arena, "syntax error, empty pipe");
-		ft_error(error);
-		return (false);
-	}
+		syntax_err(2, "syntax error, empty pipe");
 	return (true);
 }
