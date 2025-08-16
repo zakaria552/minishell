@@ -6,7 +6,7 @@ int main(int argc, char **args, char **envp)
     char *prompt;
     t_vector *vec;
     t_vector *commands;
-
+    init_local_vars(envp);
     (void)argc;
     (void)args;
     while (true)
@@ -35,7 +35,7 @@ t_allocators *get_allocators()
 {
     static t_allocators arenas;
 
-    if (arenas.global)
+    if (!arenas.global)
         arenas.global = init_arena(ARENA_SIZE);
     return (&arenas);
 }
