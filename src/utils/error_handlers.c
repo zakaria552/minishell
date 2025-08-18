@@ -48,4 +48,5 @@ void    cmd_not_found_err(int err_code, char *cmd, bool path_exist)
     else
         ft_putstr_fd("No such file or directory\n", 2);
     clean_up(true, true);
+    exit(err_code);
 }
