@@ -5,7 +5,7 @@ static void   redirect_stdout(t_token *redirect);
 static void     redirect_here_doc(t_cmd *cmd);
 static void     pipe_redirect(t_cmd *cmd);
 
-void    redirect_io(t_cmd *cmd)
+void    redirect_io(t_cmd *cmd, bool redir_pipeline)
 {
     t_vector *redirects;
     t_token *redir;
@@ -15,7 +15,8 @@ void    redirect_io(t_cmd *cmd)
     redirects = cmd->redirects;
     i = -1;
     redirect_here_doc(cmd);
-    pipe_redirect(cmd);
+    if (redir_pipeline)
+        pipe_redirect(cmd);
     while (++i < redirects->size)
     {
         redir = (t_token *)redirects->get(redirects, i);
