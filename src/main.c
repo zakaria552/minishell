@@ -1,4 +1,5 @@
 #include "minishell.h"
+volatile sig_atomic_t	g_signal;
 
 int main(int argc, char **args, char **envp)
 {
@@ -9,36 +10,23 @@ int main(int argc, char **args, char **envp)
 
 	(void)argc;
 	(void)args;
-	(void)i;
-  while (true)
-  {
-    arena = init_arena(ARENA_SIZE);
-	set_readline_handler();
-     if (!arena)
-       exit(1);
-     prompt = read_prompt(arena);
-     if (!prompt)
-       break;
-     vec = tokenize_input(prompt, arena, '\0');
-     commands = parse_tokens_to_commands(arena, vec);
-	if (!commands)
+	while (true)
 	{
-		clean_up((t_arena *)arena, false);
-		continue ;
-	}
-     handle_here_doc(commands);
-     execution(commands, arena, envp);
-     clean_up((t_arena *)arena, false);
-  }
+		allocs->prompt = init_arena(ARENA_SIZE);
+		set_readline_handler();
+		prompt = read_prompt("minishell> ", true);
+		if (!prompt)
+		   break;
+		vec = tokenize_input(prompt, allocs->prompt, '\0');
+		if (!vec)
+		   continue ;
+		commands = parse_tokens_to_commands(allocs->prompt, vec);
+		// todos: error handling, cleaning up the heap, refactor, global arena
+		handle_here_doc(commands);
+		execution(commands, allocs->prompt, envp);
+        clean_up(false, false);
+	 }
   return (0);
-}
-
-t_arena *get_allocator()
-{
-  static t_arena *arena;
-  if (!arena)
-    arena = init_arena(ARENA_SIZE);
-  return (arena);
 }
 
 t_allocators *get_allocators()
