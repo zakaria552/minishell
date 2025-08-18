@@ -14,6 +14,8 @@ typedef struct s_local_vars
 {
     t_vector *envp;
     int status;
+    int stdin_cpy;
+    int stdout_cpy;
     t_env_var *(*get)(char *variable);
     void (*set)(char *var);
     void (*unset)(char *variable);
@@ -26,5 +28,15 @@ t_env_var    *init_var(char *envp_var, t_arena *arena);
 void    remove_var(char *variable);
 t_env_var    *get_var(char *variable);
 void    set_var(char *env_var);
+
+// buitins
+void    export(t_cmd *cmd);
+void    unset(t_cmd *cmd);
+void    env(void);
+void    builtin_exit(t_cmd *cmd, bool *should_exit);
+
+// utils
+bool    is_builtin(char *cmd);
+bool strmatch(char *s1, char *s2);
 
 #endif
