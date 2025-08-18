@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:52:25 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/18 15:39:45 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:41:19 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -22,7 +22,7 @@ int here_doc_readline_flagger(void)
 	return (0);
 }
 
-//default behaviour: Ctrl-C handled by handler, ctrl-\ ignored
+//Ctrl-C handled by handler, ctrl-\ ignored
 //reset rl globals
 void	set_readline_handler(void)
 {
@@ -38,14 +38,44 @@ void	set_readline_handler(void)
 	if (sigaction(SIGINT, &s_signal, NULL) == -1)
 		exit(1);
 	s_ignore.sa_handler = SIG_IGN;
+	sigemptyset(&s_ignore.sa_mask);
 	if (sigaction(SIGQUIT, &s_ignore, NULL) == -1)
 		exit(1);
 }
 
-//default behaviour:
+void	set_handler_to_default(void)
+{
+	struct sigaction	s_signal;
+	
+	g_signal = 0;
+	rl_event_hook = NULL;
+	s_signal.sa_handler = SIG_DFL;
+	sigemptyset(&s_signal.sa_mask);
+	if (sigaction(SIGINT, &s_signal, NULL) == -1)
+		exit(1);
+	if (sigaction(SIGQUIT, &s_signal, NULL) == -1)
+		exit(1);
+}
+
+void	set_handler_to_ignore(void)
+{
+	struct sigaction	s_signal;
+	
+	g_signal = 0;
+	rl_event_hook = NULL;
+	s_signal.sa_handler = SIG_IGN;
+	sigemptyset(&s_signal.sa_mask);
+	if (sigaction(SIGINT, &s_signal, NULL) == -1)
+		exit(1);
+	if (sigaction(SIGQUIT, &s_signal, NULL) == -1)
+		exit(1);
+}
+
+//Here_doc behaviour: Ctrl-C interrupts, Ctrl-\ is ignored
 void	set_here_doc_handler(void)
 {
 	struct sigaction	s_heredoc;
+	struct sigaction	s_ignore;
 
 	g_signal = 0;
 	rl_done = 0;
@@ -54,6 +84,10 @@ void	set_here_doc_handler(void)
 	sigemptyset(&s_heredoc.sa_mask);
 	s_heredoc.sa_flags = SA_SIGINFO | SA_RESTART;
 	if (sigaction(SIGINT, &s_heredoc, NULL) == -1)
+		exit(1);
+	s_ignore.sa_handler = SIG_IGN;
+	sigemptyset(&s_ignore.sa_mask);
+	if (sigaction(SIGQUIT, &s_ignore, NULL) == -1)
 		exit(1);
 }
 

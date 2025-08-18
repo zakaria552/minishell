@@ -58,11 +58,11 @@ static void   redirect_stdout(t_token *redirect)
         flags |= O_TRUNC;
     fd = open(redirect->content, flags, mode);
     if (fd < 0)
-        runtime_err(errno);
+        runtime_err(errno, NULL);
     if (dup2(fd, STDOUT_FILENO) < 0)
     {
         close(fd);
-        runtime_err(errno);
+        runtime_err(errno, NULL);
     }
     close(fd);
 }
@@ -86,7 +86,7 @@ static void     redirect_here_doc(t_cmd *cmd)
         close_pipe(cmd->curr_pipe);
         close_pipe(cmd->next_pipe);
         close(fd);
-        runtime_err(errno);
+        runtime_err(errno, NULL);
     }
     close(fd);
 }

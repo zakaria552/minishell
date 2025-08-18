@@ -14,9 +14,9 @@ void    execution(t_vector *cmds, t_arena *arena, char **envp)
     int i;
 
     i = -1;
-    if (pipe(curr_pipe) < 0)
-        runtime_err(errno, NULL);
-    while (++i < cmds->size)
+	if (pipe(curr_pipe) < 0)
+		runtime_err(errno, NULL);
+	while (++i < cmds->size)
     {
         cmd = ((t_cmd *) cmds->get(cmds, i));
         if (pipe(next_pipe) < 0)
@@ -24,7 +24,7 @@ void    execution(t_vector *cmds, t_arena *arena, char **envp)
         ft_memcpy(cmd->curr_pipe, curr_pipe, sizeof(curr_pipe));
         ft_memcpy(cmd->next_pipe, next_pipe, sizeof(next_pipe));
         cmd->pid = fork();
-        cmd->is_last_cmd = i == cmds->size - 1;
+        cmd->is_last_cmd = (i == (cmds->size - 1));
         if (cmd->pid < 0)
             runtime_err(errno, NULL);
         if (cmd->pid == 0)
@@ -44,6 +44,7 @@ static void execute_cmd(t_vector *cmds, int index, char **envp, t_arena *arena)
     char *path;
     char **args;
 
+	set_handler_to_default();
     close_open_here_docs((t_vector *)cmds, index);
     redirect_io((t_cmd *)cmd);
     //ft_printf("curr-pipe: [%d][%d], next-pipe: [%d][%d]\n", cmd->curr_pipe[0], cmd->curr_pipe[1],
@@ -51,6 +52,7 @@ static void execute_cmd(t_vector *cmds, int index, char **envp, t_arena *arena)
     path = get_binary_path(cmd->cmd, envp, arena); // refactor the format path
     args = execve_args(arena, (t_cmd *)cmd, path);
     execve(path, args, envp);
+	set_handler_to_ignore();
     runtime_err(errno, NULL);
     exit(errno);
 }

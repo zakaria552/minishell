@@ -6,7 +6,7 @@
 /*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 12:12:40 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/18 15:31:34 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:41:19 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,9 +130,10 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 			append(command->redirects, tok);
 		}
 		else
+		{
 			command->unmatched_quote = tok->type;
-		tok->content = concat_string_type_tokens(arena, vec, i);
-		append(command->redirects, tok);
+			return ;
+		}
 	}
 }
 

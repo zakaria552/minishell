@@ -23,13 +23,14 @@ int main(int argc, char **args, char **envp)
 		vec = tokenize_input(prompt, allocs->prompt, '\0');
 		if (!vec)
 		   continue ;
-		commands = parse_tokens_to_commands(allocs->prompt, vec);
-		// todos: error handling, cleaning up the heap, refactor, global arena
-		handle_here_doc(commands);
-		execution(commands, allocs->prompt, envp);
-		clean_up(false, false);
-   	 }
-  return (0);
+        commands = parse_tokens_to_commands(allocs->prompt, vec);
+		if (!commands)
+		   continue ;
+        handle_here_doc(commands);
+        execution(commands, allocs->prompt, envp);
+        clean_up(false, false);
+    }
+    return (0);
 }
 
 t_allocators *get_allocators()

@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/18 15:31:34 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:41:19 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,14 @@ static t_cmd *parse_single_command(t_arena *arena, t_vector *vec, int *i)
 //loops through the vector of tokens. 
 //update command moves the index forward to the first non-string token 
 //after any redirect token and any leading empty tokens
-
 t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec)
 {
 	t_cmd		*command;
 	t_vector	*table;
 	int			i;
 
+	if (vec->size == 0)
+		return (NULL);
 	table = init_vector(INIT_VECTOR_SIZE, NULL, arena);
 	command = init_command(arena);
 	i = -1;

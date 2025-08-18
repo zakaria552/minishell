@@ -47,7 +47,7 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
 				+ 1])
 			break ;
         if (write(hdoc_pipe[1], line, ft_strlen(line)) < 0)
-            runtime_err(NULL); 
+            runtime_err(errno, NULL);
     }
 	//TODO: some check to see why we came out of loop: 
 	//received SIGINT --> reject here-doc
