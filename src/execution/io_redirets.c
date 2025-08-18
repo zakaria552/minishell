@@ -32,11 +32,11 @@ static void   redirect_stdin(char *file)
     const int fd = open(file, O_RDONLY);
 
     if (fd < 0)
-        runtime_err(file);
+        runtime_err(errno, file);
     if (dup2(fd, STDIN_FILENO) < 0)
     {
         close(fd);
-        runtime_err(NULL);
+        runtime_err(errno, NULL);
     }
     close(fd);
 }
