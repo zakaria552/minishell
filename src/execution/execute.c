@@ -1,16 +1,31 @@
 #include "minishell.h"
 
-static void execute_cmd(t_vector *cmds, int index, char **envp, t_arena *arena);
+static void execute_cmd(t_vector *cmds, int index, t_arena *arena);
 static char **execve_args(t_arena *arena, t_cmd *cmd, char *binary);
-static void wait_child_processes(t_vector *cmds, int *status);
-void    print_args(char **args);
+static void wait_child_processes(t_vector *cmds);
+void    pipeline(t_vector *cmds, t_arena *arena);
 
-void    execution(t_vector *cmds, t_arena *arena, char **envp)
+void    execution(t_vector *cmds, t_arena *arena)
+{
+    bool is_single_builtin;
+    
+    is_single_builtin = cmds->size == 1 && is_builtin(((t_cmd *) cmds->get(cmds, 0))->cmd);
+    if (is_single_builtin)
+    {
+        ft_printf("Built in cmd\n");
+        execute_builtin(cmds, 0, false, false);
+    }
+    if (!is_single_builtin)
+        pipeline(cmds, arena);
+    close_open_here_docs(cmds, -1);
+    wait_child_processes(cmds);
+}
+
+void    pipeline(t_vector *cmds, t_arena *arena)
 {
     t_cmd *cmd;
     int curr_pipe[2];
     int next_pipe[2];
-    int status;
     int i;
 
     i = -1;
@@ -24,48 +39,48 @@ void    execution(t_vector *cmds, t_arena *arena, char **envp)
         ft_memcpy(cmd->curr_pipe, curr_pipe, sizeof(curr_pipe));
         ft_memcpy(cmd->next_pipe, next_pipe, sizeof(next_pipe));
         cmd->pid = fork();
-        cmd->is_last_cmd = i == cmds->size - 1;
         if (cmd->pid < 0)
             runtime_err(errno, NULL);
         if (cmd->pid == 0)
-            execute_cmd(cmds, i, envp, arena);
+            execute_cmd(cmds, i, arena);
         close_pipe(curr_pipe);
         ft_memcpy(curr_pipe, next_pipe, sizeof(curr_pipe));
     }
     close_pipe(curr_pipe);
-    close_open_here_docs(cmds, -1);
-    wait_child_processes(cmds, &status);
-    //ft_printf("Last status: %d\n", WEXITSTATUS(status));
 }
 
-static void execute_cmd(t_vector *cmds, int index, char **envp, t_arena *arena)
+static void execute_cmd(t_vector *cmds, int index, t_arena *arena)
 {
     const t_cmd *cmd = cmds->get(cmds, index);
+    char **envp = envp_vars();
     char *path;
     char **args;
 
     close_open_here_docs((t_vector *)cmds, index);
-    redirect_io((t_cmd *)cmd);
-    //ft_printf("curr-pipe: [%d][%d], next-pipe: [%d][%d]\n", cmd->curr_pipe[0], cmd->curr_pipe[1],
-    //    cmd->next_pipe[0], cmd->next_pipe[1]);
+    redirect_io((t_cmd *)cmd, true);
+    execute_builtin(cmds, index, true, true);
     path = get_binary_path(cmd->cmd, envp, arena); // refactor the format path
     args = execve_args(arena, (t_cmd *)cmd, path);
     execve(path, args, envp);
     runtime_err(errno, NULL);
-    exit(errno);
 }
 
-static void wait_child_processes(t_vector *cmds, int *status)
+static void wait_child_processes(t_vector *cmds)
 {
-    int i;
+    t_local_vars *vars;
     t_cmd *cmd;
+    int status;
+    int i;
 
     i = -1;
+    vars = get_local_vars();
     while (++i < cmds->size)
     {
         cmd = ((t_cmd *) cmds->get(cmds, i));
-        waitpid(cmd->pid, status, 0);
+        waitpid(cmd->pid, &status, 0);
     }
+    ft_printf("s: %d\n", status);
+    vars->status = status;
 }
 
 static char **execve_args(t_arena *arena, t_cmd *cmd, char *binary)
@@ -88,13 +103,4 @@ void    close_pipe(int pipe[2])
 {
     close(pipe[0]);
     close(pipe[1]);
-}
-// to be removed
-void    print_args(char **args)
-{
-    int i = 0;
-    ft_putstr_fd("Arguments:-->", 2);
-    while (args[i])
-        ft_printf("[%s]-", args[i++]);
-    ft_putstr_fd("\n", 2);
 }
