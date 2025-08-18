@@ -11,6 +11,7 @@ int main(int argc, char **args, char **envp)
     (void)args;
     while (true)
     {
+        ft_printf("Status: %d\n", get_local_vars()->status);
         allocs->prompt = init_arena(ARENA_SIZE);
         prompt = read_prompt("minishell> ", true);
         if (!prompt)
@@ -25,7 +26,7 @@ int main(int argc, char **args, char **envp)
         //     print_command((t_cmd *)commands->get(commands, i));
         // todos: error handling, cleaning up the heap, refactor, global arena
         handle_here_doc(commands);
-        execution(commands, allocs->prompt, envp);
+        execution(commands, allocs->prompt);
         clean_up(false, false);
     }
     return (0);
