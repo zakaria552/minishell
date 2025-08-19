@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/04 14:18:41 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/15 11:04:27 by zfarah           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -100,5 +88,4 @@ void	print_vector_commands(t_vector *vec);
 //syntax.c
 bool	check_redirect(t_arena *arena, t_token *token);
 bool 	check_command(t_arena *arena, t_cmd *command);
-
 #endif

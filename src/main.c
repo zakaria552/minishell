@@ -1,4 +1,5 @@
 #include "minishell.h"
+volatile sig_atomic_t	g_signal;
 
 int main(int argc, char **args, char **envp)
 {
@@ -6,24 +7,23 @@ int main(int argc, char **args, char **envp)
     char *prompt;
     t_vector *vec;
     t_vector *commands;
-    init_local_vars(envp);
-    (void)argc;
-    (void)args;
-    while (true)
-    {
-        allocs->prompt = init_arena(ARENA_SIZE);
-        prompt = read_prompt("minishell> ", true);
-        if (!prompt)
-            break;
-        vec = tokenize_input(prompt, allocs->prompt, '\0');
-        // i = -1;
-        // while (++i < vec->size)
-        //     print_token((t_token *)vec->get(vec, i));
+
+	(void)argc;
+	(void)args;
+	init_local_vars(envp);
+	while (true)
+	{
+		allocs->prompt = init_arena(ARENA_SIZE);
+		set_readline_handler();
+		prompt = read_prompt("minishell> ", true);
+		if (!prompt)
+		   break;
+		vec = tokenize_input(prompt, allocs->prompt, '\0');
+		if (!vec)
+		   continue ;
         commands = parse_tokens_to_commands(allocs->prompt, vec);
-        // i = -1;
-        // while (++i < commands->size)
-        //     print_command((t_cmd *)commands->get(commands, i));
-        // todos: error handling, cleaning up the heap, refactor, global arena
+		if (!commands)
+		   continue ;
         handle_here_doc(commands);
         execution(commands, allocs->prompt, envp);
         clean_up(false, false);
@@ -33,7 +33,7 @@ int main(int argc, char **args, char **envp)
 
 t_allocators *get_allocators()
 {
-    static t_allocators arenas;
+	static t_allocators arenas;
 
     if (!arenas.global)
         arenas.global = init_arena(ARENA_SIZE);
