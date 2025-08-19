@@ -27,7 +27,7 @@ void    builtin_exit(t_cmd *cmd, bool *should_exit)
     else
     {
         non_numeric_err_msg(cmd);
-        vars->status = 255;
+        vars->status = 2;
     }
 }
 
@@ -57,11 +57,12 @@ static int	long_atoi(const char *nptr, bool *error)
 	}
 	while (nptr[i] && nptr[i] <= '9' && nptr[i] >= '0')
 	{
+        if (((num * 10) + (nptr[i] - '0')) < num)
+            break;
 		num = num * 10 + nptr[i] - '0';
 		i++;
 	}
-    num = num * sign;
-    if (nptr[i] || num > LONG_MAX || num < LONG_MIN)
+    if (nptr[i])
         *error = true;
-	return (num);
+    return (num * sign);
 }
