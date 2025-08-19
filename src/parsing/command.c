@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nraatika <nraatika@student.hive.fi>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 12:12:40 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/14 14:48:57 by nraatika         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 t_cmd	*init_command(t_arena *arena)
@@ -130,7 +118,10 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 			append(command->redirects, tok);
 		}
 		else
+		{
 			command->unmatched_quote = tok->type;
+			return ;
+		}
 	}
 }
 
@@ -191,5 +182,4 @@ void	print_command(t_cmd *command)
 	while (++i < command->redirects->size)
 		print_token((t_token *)command->redirects->get(command->redirects, i));
 	ft_printf("***\n");
-
 }

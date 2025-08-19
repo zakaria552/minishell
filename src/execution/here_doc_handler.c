@@ -26,6 +26,7 @@ void    handle_here_doc(t_vector *cmds)
             set_cmd_here_doc(cmd, token->content);
         }
     }
+   set_readline_handler();
 }
 
 static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
@@ -34,9 +35,10 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
     int hdoc_pipe[2];
     char *line;
 
-    if (pipe(hdoc_pipe) < 0)
-        runtime_err(errno, NULL);
-    while (true)
+	if (pipe(hdoc_pipe) < 0)
+		runtime_err(errno, NULL);
+	set_here_doc_handler();
+    while (g_signal == 0)
     {
         line = read_prompt("> ", false);
         if (!line)
@@ -47,6 +49,10 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
         if (write(hdoc_pipe[1], line, ft_strlen(line)) < 0)
             runtime_err(errno, NULL); 
     }
+	//TODO: some check to see why we came out of loop: 
+	//received SIGINT --> reject here-doc
+	//received EOF --> print warning but accept here_doc
+	//received expected delimiter --> accept here_doc
     if (cmd->fd_here_doc > 0)
         close(cmd->fd_here_doc);
     cmd->fd_here_doc = hdoc_pipe[0];

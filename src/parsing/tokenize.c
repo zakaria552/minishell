@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/04 13:27:39 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/15 11:11:34 by zfarah           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 //debug function
@@ -132,8 +120,11 @@ t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 		vec->push(vec, tok);
 		if (tok->read_chars > 0)
 			s += tok->read_chars;
-		else 
-			syntax_err(3, "token length < 1");
+		else
+		{ 
+			syntax_err(3, "unmatched quote");
+			return (NULL);
+		}
 	}
 	return (vec);
 }

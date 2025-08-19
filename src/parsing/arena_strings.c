@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   arena_strings.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 10:08:21 by nraatika          #+#    #+#             */
-/*   Updated: 2025/08/13 13:30:34 by nraatika         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 char	*arena_strdup(t_arena *arena, char *s)
@@ -38,4 +26,3 @@ char	*arena_strjoin(t_arena *arena, char *s1, char *s2)
 	joint[s1_len + s2_len] = '\0';
 	return (joint);
 }
-

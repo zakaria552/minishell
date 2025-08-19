@@ -18,7 +18,8 @@ void    syntax_err(int err_code, char *msg)
     ft_putstr_fd("Minishell: ", STDERR_FILENO);
     ft_putstr_fd(msg, STDERR_FILENO);
     ft_putstr_fd("\n", STDERR_FILENO);
-    clean_up(false, true);
+    clean_up(false, false);
+
 }
 
 void    runtime_err(int err_code, char *msg)
