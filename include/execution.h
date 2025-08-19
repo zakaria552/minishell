@@ -4,7 +4,7 @@
 #include "minishell.h"
 
 // execution
-void    execution(t_vector *cmds, t_arena *arena);
+void    execute_commands(t_vector *cmds, t_arena *arena);
 void    redirect_io(t_cmd *cmd, bool redir_pipeline);
 void    close_pipe(int pipe[2]);
 char    *get_binary_path(char *command, char **envp, t_arena *arena);
