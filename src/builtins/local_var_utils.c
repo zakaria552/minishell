@@ -11,10 +11,7 @@ t_env_var    *get_var(char *variable)
     {
         var = vars->envp->get(vars->envp, i);
         if (strmatch(var->variable, variable))
-        {
-            ft_printf("%s\n", var->joint);
             return var;
-        }
     }
     return NULL;
 }
