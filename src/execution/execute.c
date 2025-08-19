@@ -3,25 +3,23 @@
 static void execute_cmd(t_vector *cmds, int index, t_arena *arena);
 static char **execve_args(t_arena *arena, t_cmd *cmd, char *binary);
 static void wait_child_processes(t_vector *cmds);
-void    pipeline(t_vector *cmds, t_arena *arena);
+static void    pipeline(t_vector *cmds, t_arena *arena);
 
-void    execution(t_vector *cmds, t_arena *arena)
+void    execute_commands(t_vector *cmds, t_arena *arena)
 {
     bool is_single_builtin;
     
     is_single_builtin = cmds->size == 1 && is_builtin(((t_cmd *) cmds->get(cmds, 0))->cmd);
     if (is_single_builtin)
-    {
-        ft_printf("Built in cmd\n");
         execute_builtin(cmds, 0, false, false);
-    }
     if (!is_single_builtin)
         pipeline(cmds, arena);
     close_open_here_docs(cmds, -1);
-    wait_child_processes(cmds);
+    if (!is_single_builtin)
+        wait_child_processes(cmds);
 }
 
-void    pipeline(t_vector *cmds, t_arena *arena)
+static void    pipeline(t_vector *cmds, t_arena *arena)
 {
     t_cmd *cmd;
     int curr_pipe[2];
@@ -34,6 +32,8 @@ void    pipeline(t_vector *cmds, t_arena *arena)
     while (++i < cmds->size)
     {
         cmd = ((t_cmd *) cmds->get(cmds, i));
+        if (cmd->cmd && !*cmd->cmd)
+            continue;
         if (pipe(next_pipe) < 0)
             runtime_err(errno, NULL);
         ft_memcpy(cmd->curr_pipe, curr_pipe, sizeof(curr_pipe));
@@ -61,7 +61,7 @@ static void execute_cmd(t_vector *cmds, int index, t_arena *arena)
     close_open_here_docs((t_vector *)cmds, index);
     redirect_io((t_cmd *)cmd, true);
     execute_builtin(cmds, index, true, true);
-    path = get_binary_path(cmd->cmd, envp, arena); // refactor the format path
+    path = get_binary_path(cmd->cmd, envp, arena);
     args = execve_args(arena, (t_cmd *)cmd, path);
     execve(path, args, envp);
 	set_handler_to_ignore();
@@ -82,8 +82,7 @@ static void wait_child_processes(t_vector *cmds)
         cmd = ((t_cmd *) cmds->get(cmds, i));
         waitpid(cmd->pid, &status, 0);
     }
-    ft_printf("s: %d\n", status);
-    vars->status = status;
+    vars->status = WEXITSTATUS(status);
 }
 
 static char **execve_args(t_arena *arena, t_cmd *cmd, char *binary)
