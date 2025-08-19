@@ -19,15 +19,17 @@ static char	*contains_expansions(char *s)
 //returns empty string if no variable of that name exists.
 char	*expand_variable(t_arena * arena, char *s, int len)
 {
+	t_local_vars *vars;
+	t_env_var *var;
 	char	*var_name;
-	char	*var;
-
+	
+	vars = get_local_vars();
 	var_name = arena_alloc(arena, len, s + 1);
 	var_name[len - 1] = '\0';
-	var = getenv(var_name);
+	var = get_var(var_name);
 	if (!var)
 		return (arena_strdup(arena, ""));
-	return (var);
+	return (var->value);
 }
 
 //handles the expansion of a variable, for both EXPANSION type tokens
