@@ -22,7 +22,6 @@ void    handle_here_doc(t_vector *cmds)
             token = (t_token *)cmd->redirects->get(cmd->redirects, j);
             if (token->type != HERE_DOC)
                 continue;
-            //ft_printf("cmd-here_doc: %d\n",j);
             set_cmd_here_doc(cmd, token->content);
         }
     }
@@ -31,9 +30,10 @@ void    handle_here_doc(t_vector *cmds)
 
 static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
 {
-    const int len_limiter = ft_strlen(limiter);
+    const t_arena *arena = get_allocators()->prompt;
     int hdoc_pipe[2];
     char *line;
+    char *expanded;
 
 	if (pipe(hdoc_pipe) < 0)
 		runtime_err(errno, NULL);
@@ -43,10 +43,10 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
         line = read_prompt("> ", false);
         if (!line)
             runtime_err(errno, NULL);
-        if (ft_strncmp(line, limiter, len_limiter) == 0 && !line[len_limiter
-				+ 1])
+        expanded = expand_str(line, (t_arena *)arena);
+        if (strmatch(line, limiter))
 			break ;
-        if (write(hdoc_pipe[1], line, ft_strlen(line)) < 0)
+        if (write(hdoc_pipe[1], expanded, ft_strlen(expanded)) < 0)
             runtime_err(errno, NULL); 
     }
 	//TODO: some check to see why we came out of loop: 
