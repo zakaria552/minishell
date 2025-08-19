@@ -25,6 +25,8 @@ void    init_local_vars(char **envp)
     vars->unset = remove_var;
     vars->get = get_var;
     vars->set = set_var;
+    vars->stdin_cpy = -1;
+    vars->stdout_cpy = -1;
 }
 t_env_var    *init_var(char *envp_var, t_arena *arena)
 {
