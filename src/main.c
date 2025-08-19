@@ -25,7 +25,7 @@ int main(int argc, char **args, char **envp)
 		if (!commands)
 		   continue ;
         handle_here_doc(commands);
-        execution(commands, allocs->prompt);
+        execute_commands(commands, allocs->prompt);
         clean_up(false, false);
     }
     return (0);
