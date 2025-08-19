@@ -35,8 +35,8 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
     int hdoc_pipe[2];
     char *line;
 
-    if (pipe(hdoc_pipe) < 0)
-        runtime_err(errno, NULL);
+	if (pipe(hdoc_pipe) < 0)
+		runtime_err(errno, NULL);
 	set_here_doc_handler();
     while (g_signal == 0)
     {
