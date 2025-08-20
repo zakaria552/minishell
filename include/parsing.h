@@ -66,6 +66,7 @@ ssize_t 	expansion_length(char *s);
 ssize_t		empty_length(char *s);
 ssize_t 	dummy_length(char *s);
 int 		is_string_delimiter(char c);
+int	is_legal_expansion_char(char c);
 
 //parsing.c
 t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec);
