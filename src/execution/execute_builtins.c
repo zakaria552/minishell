@@ -40,6 +40,8 @@ static void    exc_builtin(t_cmd *cmd, t_local_vars *vars, bool *should_exit)
         env();
     else if (strmatch(cmd->cmd, "exit"))
         builtin_exit((t_cmd*) cmd, should_exit);
+    else if (strmatch(cmd->cmd, "echo"))
+        echo(cmd);
     if (dup2(vars->stdin_cpy, STDIN_FILENO) < 0 || dup2(vars->stdout_cpy, STDOUT_FILENO) < 0)
     {
         close(vars->stdin_cpy);
