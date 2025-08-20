@@ -34,6 +34,7 @@ void    export(t_cmd *cmd);
 void    unset(t_cmd *cmd);
 void    env(void);
 void    builtin_exit(t_cmd *cmd, bool *should_exit);
+void    echo(t_cmd *cmd);
 
 // utils
 bool    is_builtin(char *cmd);
