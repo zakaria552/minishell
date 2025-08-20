@@ -44,7 +44,6 @@ static char *append_till_next_char(char *dest, char **srcp, char c, t_arena *are
         i++;
     len += i;
     tmp = arena->alloc(arena, len + 1, NULL);
-    tmp[len] = '\0';
     ft_memcpy(tmp, dest, len - i);
     ft_memcpy(tmp + (len - i), src, i);
     *srcp += i;
@@ -70,7 +69,6 @@ static t_env_var *expand_var(char *str, char c, t_arena *arena)
         i++;
     }
     var_name = arena->alloc(arena, len + 1, NULL);
-    var_name[len] = '\0';
     while (--len >= 0)
         var_name[len] = str[--i];
     var = vars->get(var_name);
