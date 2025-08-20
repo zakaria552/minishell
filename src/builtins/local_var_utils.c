@@ -10,11 +10,8 @@ t_env_var    *get_var(char *variable)
     while (++i < vars->envp->size)
     {
         var = vars->envp->get(vars->envp, i);
-        if (ft_strncmp(var->variable, variable, ft_strlen(var->variable)) == 0)
-        {
-            ft_printf("%s\n", var->joint);
+        if (strmatch(var->variable, variable))
             return var;
-        }
     }
     return NULL;
 }
@@ -29,7 +26,7 @@ void    remove_var(char *variable)
     while (++i < vars->envp->size)
     {
         var = vars->envp->get(vars->envp, i);
-        if (ft_strncmp(var->variable, variable, ft_strlen(var->variable)) == 0)
+        if (strmatch(var->variable, variable))
         {
             vars->envp->remove(vars->envp, i);
             return;
@@ -48,12 +45,13 @@ void    set_var(char *env_var)
     while (++i < vars->envp->size)
     {
         var = vars->envp->get(vars->envp, i);
-        if (ft_strncmp(var->joint, env_var, ft_strlen(var->variable) + 1) == 0)
+        if (strmatch(var->joint, env_var))
         {
             vars->unset(var->variable);
             break;
         }
     }
     var = init_var(env_var, allocs->global);
-    vars->envp->push(vars->envp, var);
+    if (var)
+        vars->envp->push(vars->envp, var);
 }

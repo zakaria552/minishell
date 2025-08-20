@@ -4,10 +4,13 @@
 #include "minishell.h"
 
 // execution
-void    execution(t_vector *cmds, t_arena *arena, char **envp);
-void    redirect_io(t_cmd *cmd);
+void    execute_commands(t_vector *cmds, t_arena *arena);
+void    redirect_io(t_cmd *cmd, bool redir_pipeline);
 void    close_pipe(int pipe[2]);
 char    *get_binary_path(char *command, char **envp, t_arena *arena);
+void    execute_builtin(t_vector *cmds, int index, bool should_exit, bool pipeline);
+
+char **envp_vars(void);
 
 // here_doc handler
 void    handle_here_doc(t_vector *cmds);

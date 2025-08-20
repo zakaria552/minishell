@@ -25,6 +25,8 @@ void    init_local_vars(char **envp)
     vars->unset = remove_var;
     vars->get = get_var;
     vars->set = set_var;
+    vars->stdin_cpy = -1;
+    vars->stdout_cpy = -1;
 }
 t_env_var    *init_var(char *envp_var, t_arena *arena)
 {
@@ -37,7 +39,6 @@ t_env_var    *init_var(char *envp_var, t_arena *arena)
     while (envp_var[len] && envp_var[len] != '=')
         len++;
     var->variable = arena->alloc(arena, len + 1, NULL);
-    var->variable[len] = '\0';
     while (--len >= 0)
         var->variable[len] = envp_var[len];
     tmp = ft_strrchr(envp_var, '=');

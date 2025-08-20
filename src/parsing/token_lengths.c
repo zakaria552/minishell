@@ -43,7 +43,7 @@ ssize_t string_length(char *s)
 	return (length);
 }
 
-static int	is_legal_expansion_char(char c)
+int	is_legal_expansion_char(char c)
 {
 	return (ft_isalnum(c) || c == '_');
 }

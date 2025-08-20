@@ -15,13 +15,13 @@ HEADERS		:= -I ./include -I ./libft
 OBJ_DIR 	:= obj
 VPATH 		:= src:src/arena_allocator:src/utils:src/vector:src/parsing:src/execution:src/builtins:src/signal
 SRC_ARENA	:= arena.c arena_utils.c
-SRC_UTILS	:= error_handlers.c prompt.c
+SRC_UTILS	:= error_handlers.c prompt.c expand_str.c
 SRC_VECTOR	:= vector.c utils.c
 SRC_SIGNAL	:= signal.c
 SRC_PARSING	:= tokenize.c token_lengths.c parsing.c arena_strings.c command.c\
 				syntax.c
-SRC_EXEC	:= io_redirets.c execute.c binary_path.c here_doc_handler.c
-SRC_BUILTINS:= local_vars.c local_var_utils.c
+SRC_EXEC	:= io_redirets.c execute.c execute_builtins.c binary_path.c here_doc_handler.c
+SRC_BUILTINS:= local_vars.c local_var_utils.c b_utils.c env.c unset.c exit.c export.c echo.c
 SRC 		:= \
 			main.c \
 			$(SRC_ARENA) \
