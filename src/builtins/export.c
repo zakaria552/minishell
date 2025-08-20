@@ -38,7 +38,7 @@ static bool is_valid_export(char *joint)
         return invalid_err_msg(joint);
     while (joint[++i] != '=') 
     {
-        if (ft_isspace(joint[i]))
+        if (!is_legal_expansion_char(joint[i]))
             return invalid_err_msg(joint);
     }
     return true; 
