@@ -94,7 +94,6 @@ void	signal_handler(int signum, siginfo_t *act, void *next)
 		ft_printf("\n");
 		rl_replace_line("", 1);
 		rl_on_new_line();
-		rl_redisplay();
 	}
 }
 
@@ -103,5 +102,4 @@ void	here_doc_signal_handler(int signum, siginfo_t *act, void *next)
 	(void)next;
 	(void)act;
 	g_signal = signum;
-	//set_exit_value (128 + signum)?
 }

@@ -18,26 +18,6 @@ bool	is_redirect_type(t_token_type type)
 	return (false);
 }
 
-/*
-void	remove_empty_tokens(t_vector *vec)
-{
-	int		i;
-	t_token	*temp;
-
-	i = 0;
-	while (i < vec->size)
-	{
-		temp = vec->get(vec, i);
-		if (temp->type == EMPTY)
-		{
-			remove_element(vec, i);
-			continue ;
-		}
-		++i;
-	}
-}
-*/
-
 static t_cmd *parse_single_command(t_arena *arena, t_vector *vec, int *i)
 {
 	t_cmd		*command;
