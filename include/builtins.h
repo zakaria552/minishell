@@ -19,6 +19,7 @@ typedef struct s_local_vars
     t_env_var *(*get)(char *variable);
     void (*set)(char *var);
     void (*unset)(char *variable);
+	char	*pwd;
 } t_local_vars;
 
 // local vars
@@ -35,9 +36,12 @@ void    unset(t_cmd *cmd);
 void    env(void);
 void    builtin_exit(t_cmd *cmd, bool *should_exit);
 void    echo(t_cmd *cmd);
+void	cd(t_cmd *cmd);
+void	pwd(void);
 
 // utils
 bool    is_builtin(char *cmd);
 bool strmatch(char *s1, char *s2);
+char	*pwd_to_string(t_arena *arena);
 
 #endif
