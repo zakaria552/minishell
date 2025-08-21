@@ -48,7 +48,7 @@ static ssize_t	token_length(char *s, t_token_type type)
 }
 
 /*
-	Return the type of token, which is determined by the first 1 o 2 characters
+	Return the type of token, which is determined by the first 1 or 2 characters
 */
 static t_token_type get_type(char *s)
 {

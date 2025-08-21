@@ -26,7 +26,7 @@ static void	change_directory(char *path)
 	if (temp == -1)
 		invalid_directory_msg(path, "Couldn't access directory");
 	else
-		vars->pwd = arena_strdup(allocs->global, path);
+		vars->pwd = pwd_to_string(allocs->global);
 }
 
 void	cd(t_cmd *cmd)

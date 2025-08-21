@@ -24,6 +24,8 @@ char	*expand_variable(t_arena * arena, char *s, int len)
 	char	*var_name;
 	
 	vars = get_local_vars();
+	if (ft_strlen(s) >= 2 && *s == '$' && *(s + 1) == '?')
+		return (arena_int_to_string(arena, vars->status));
 	var_name = arena_alloc(arena, len, s + 1);
 	var_name[len - 1] = '\0';
 	var = get_var(var_name);
@@ -44,8 +46,8 @@ static char	*handle_expansion(t_arena *arena, char *s, char *start)
 		return (arena_strdup(arena, s));
 	if (start != NULL)
 	{
-		string = arena_alloc(arena, s - start + 1, NULL);
-		ft_memcpy(string, s, s - start);
+		string = arena_alloc(arena, (start - s) + 1, s);
+		string[(start - s)] = '\0';
 		len = expansion_length(start);
 		temp = arena_strjoin(arena, string, expand_variable(arena, start, len));
 		string = temp;
@@ -60,7 +62,7 @@ static char	*handle_expansion(t_arena *arena, char *s, char *start)
 
 //strips the first and last character from QUOTE tokens, and expands possible
 //variables in double quoted tokens, expands EXPANSION tokens
-static char	*strip_expand(t_token *tok, t_arena *arena)
+static char	*strip_expand(t_token *tok, t_arena *arena, bool expand)
 {
 	char	*str;
 	char	*start;
@@ -72,7 +74,7 @@ static char	*strip_expand(t_token *tok, t_arena *arena)
 		str = arena_alloc(arena, ft_strlen(tok->content) - 1, tok->content + 1);
 		str[ft_strlen(tok->content) - 2] = '\0';
 		start = contains_expansions(str);
-		if (start != NULL)
+		if (start != NULL && expand)
 			str = handle_expansion(arena, str, start);
 		return (str);
 	}
@@ -84,7 +86,7 @@ static char	*strip_expand(t_token *tok, t_arena *arena)
 		str[ft_strlen(tok->content) - 2] = '\0';
 		return (str);
 	}
-	if (tok->type == EXPANSION)
+	if (tok->type == EXPANSION && expand)
 		return (handle_expansion(arena, tok->content, tok->content));
 	return (tok->content);
 }
@@ -99,7 +101,7 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 	tok = vec->get(vec, *i);
 	if(is_string_type(tok->type))
 	{
-		temp = concat_string_type_tokens(arena, vec, i);
+		temp = concat_string_types(arena, vec, i, true);
 		if (temp)
 		{
 			if (command->cmd == NULL)
@@ -113,7 +115,7 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 	if(is_redirect_type(tok->type))
 	{
 		*i += 1;
-		temp = concat_string_type_tokens(arena, vec, i);
+		temp = concat_string_types(arena, vec, i, (tok->type != HERE_DOC));
 		if (temp)
 		{
 			tok->content = temp;
@@ -132,7 +134,7 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 //skips any leading empty tokens
 //returns NULL if it encounters string-type tokens with NULL content,
 //which happens only with unmatched quotes.
-char	*concat_string_type_tokens(t_arena *arena, t_vector *vec, int *i)
+char	*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool x)
 {
 	char		*string;
 	char		*temp;
@@ -148,7 +150,7 @@ char	*concat_string_type_tokens(t_arena *arena, t_vector *vec, int *i)
 		{
 			if (!tok->content)
 				return (NULL);
-			temp = arena_strjoin(arena, string, strip_expand(tok, arena));
+			temp = arena_strjoin(arena, string, strip_expand(tok, arena, x));
 			string = temp;
 		}
 		else

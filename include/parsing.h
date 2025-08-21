@@ -70,7 +70,7 @@ int	is_legal_expansion_char(char c);
 
 //parsing.c
 t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec);
-char		*concat_string_type_tokens(t_arena *arena, t_vector *vec, int *i);
+char		*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool expand);
 bool		is_string_type(t_token_type type);
 bool		is_redirect_type(t_token_type type);
 void		remove_empty_tokens(t_vector *vec);
