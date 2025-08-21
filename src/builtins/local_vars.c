@@ -29,6 +29,7 @@ void    init_local_vars(char **envp)
     vars->stdout_cpy = -1;
 	vars->pwd = pwd_to_string(allocs->global);
 }
+
 t_env_var    *init_var(char *envp_var, t_arena *arena)
 {
     t_env_var *var;
