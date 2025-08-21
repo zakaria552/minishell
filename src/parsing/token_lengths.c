@@ -53,6 +53,8 @@ ssize_t expansion_length(char *s)
 	ssize_t length;
 
 	length = 1;
+	if (s[length] == '?')
+		return (2);
 	while (is_legal_expansion_char(s[length]))
 		++length;
 	return (length);
