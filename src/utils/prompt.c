@@ -8,7 +8,7 @@ char *read_prompt(char *prompt_msg, bool update_history)
     
     prompt = readline(prompt_msg);
 	if (!prompt)
-		runtime_err(ENOMEM, NULL);
+		return (NULL);
 	arena_prompt = arena_alloc(allocs->prompt, ft_strlen(prompt) + 1, prompt);
 	free(prompt);
 	if (update_history)

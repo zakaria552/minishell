@@ -24,11 +24,11 @@ void	set_readline_handler(void)
 	sigemptyset(&s_signal.sa_mask);
 	s_signal.sa_flags = SA_SIGINFO | SA_RESTART;
 	if (sigaction(SIGINT, &s_signal, NULL) == -1)
-		exit(1);
+		runtime_err(errno, "registering signal handler");
 	s_ignore.sa_handler = SIG_IGN;
 	sigemptyset(&s_ignore.sa_mask);
 	if (sigaction(SIGQUIT, &s_ignore, NULL) == -1)
-		exit(1);
+		runtime_err(errno, "registering signal handler");
 }
 
 void	set_handler_to_default(void)
@@ -40,9 +40,9 @@ void	set_handler_to_default(void)
 	s_signal.sa_handler = SIG_DFL;
 	sigemptyset(&s_signal.sa_mask);
 	if (sigaction(SIGINT, &s_signal, NULL) == -1)
-		exit(1);
+		runtime_err(errno, "registering signal handler");
 	if (sigaction(SIGQUIT, &s_signal, NULL) == -1)
-		exit(1);
+		runtime_err(errno, "registering signal handler");
 }
 
 void	set_handler_to_ignore(void)
@@ -54,9 +54,9 @@ void	set_handler_to_ignore(void)
 	s_signal.sa_handler = SIG_IGN;
 	sigemptyset(&s_signal.sa_mask);
 	if (sigaction(SIGINT, &s_signal, NULL) == -1)
-		exit(1);
+		runtime_err(errno, "registering signal handler");
 	if (sigaction(SIGQUIT, &s_signal, NULL) == -1)
-		exit(1);
+		runtime_err(errno, "registering signal handler");
 }
 
 //Here_doc behaviour: Ctrl-C interrupts, Ctrl-\ is ignored
@@ -72,11 +72,11 @@ void	set_here_doc_handler(void)
 	sigemptyset(&s_heredoc.sa_mask);
 	s_heredoc.sa_flags = SA_SIGINFO | SA_RESTART;
 	if (sigaction(SIGINT, &s_heredoc, NULL) == -1)
-		exit(1);
+		runtime_err(errno, "registering signal handler");
 	s_ignore.sa_handler = SIG_IGN;
 	sigemptyset(&s_ignore.sa_mask);
 	if (sigaction(SIGQUIT, &s_ignore, NULL) == -1)
-		exit(1);
+		runtime_err(errno, "registering signal handler");
 }
 
 //handler for when in readline mode:
