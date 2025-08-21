@@ -30,6 +30,8 @@ typedef struct s_allocators
     t_arena *prompt;
 } t_allocators;
 
+// shell
+void launch_shell(bool interactive);
 t_allocators *get_allocators();
 extern volatile sig_atomic_t	g_signal;
 
