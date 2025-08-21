@@ -34,6 +34,8 @@ void    update_shell_level(t_local_vars *vars)
     t_env_var *var;
     bool err = false;
     int level;
+    char *var_joint;
+
     var = vars->get("SHLVL");
     if (!var)
     {
@@ -45,8 +47,8 @@ void    update_shell_level(t_local_vars *vars)
         level = 1;
     else
         level++;
-    char *j = arena_strjoin(allocs->global, "SHLVL=", ft_itoa(level));
-    vars->set(j);
+    var_joint = arena_strjoin(allocs->global, "SHLVL=", arena_int_to_string(allocs->global, level));
+    vars->set(var_joint);
 }
 
 int	long_atoi(const char *nptr, bool *error)
