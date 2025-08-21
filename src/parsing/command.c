@@ -26,6 +26,8 @@ char	*expand_variable(t_arena * arena, char *s, int len)
 	vars = get_local_vars();
 	var_name = arena_alloc(arena, len, s + 1);
 	var_name[len - 1] = '\0';
+	if (strmatch(s, "$?"))
+		return (arena_int_to_string(arena, vars->status));
 	var = get_var(var_name);
 	if (!var)
 		return (arena_strdup(arena, ""));

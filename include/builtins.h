@@ -43,5 +43,6 @@ void	pwd(void);
 bool    is_builtin(char *cmd);
 bool strmatch(char *s1, char *s2);
 char	*pwd_to_string(t_arena *arena);
+char	*arena_int_to_string(t_arena *arena, int num);
 
 #endif
