@@ -22,6 +22,8 @@
 #include "builtins.h"
 #include "ms_signals.h"
 
+#define MAX_SHELL_LEVEL 10
+
 typedef struct s_allocators
 {
     t_arena *global;
