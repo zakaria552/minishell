@@ -24,6 +24,7 @@ SRC_EXEC	:= io_redirets.c execute.c execute_builtins.c binary_path.c here_doc_ha
 SRC_BUILTINS:= local_vars.c local_var_utils.c b_utils.c env.c unset.c exit.c export.c echo.c cd.c pwd.c
 SRC 		:= \
 			main.c \
+			shell.c \
 			$(SRC_ARENA) \
 			$(SRC_UTILS) \
 			$(SRC_VECTOR) \
