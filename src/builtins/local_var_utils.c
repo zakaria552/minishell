@@ -83,19 +83,20 @@ void    set_var(char *env_var)
     const t_allocators *allocs = get_allocators();
     const t_local_vars *vars = get_local_vars();
     t_env_var *var;
+    t_env_var *new_var;
     int i;
 
-    i = -1; 
+    i = -1;
+    new_var = init_var(env_var, allocs->global);
     while (++i < vars->envp->size)
     {
         var = vars->envp->get(vars->envp, i);
-        if (strmatch(var->joint, env_var))
+        if (strmatch(var->variable, new_var->variable))
         {
             vars->unset(var->variable);
             break;
         }
     }
-    var = init_var(env_var, allocs->global);
-    if (var)
-        vars->envp->push(vars->envp, var);
+    new_var = init_var(env_var, allocs->global);
+    vars->envp->push(vars->envp, new_var);
 }
