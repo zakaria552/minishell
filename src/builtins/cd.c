@@ -1,28 +1,55 @@
 #include "minishell.h"
 
-int	cd(t_cmd *cmd)
+static void    invalid_directory_msg(char *arg, char *msg)
 {
-	struct stat		directory;
 	t_local_vars	*vars;
-	int				test;
-	
+
 	vars = get_local_vars();
-	if (cmd->args->size == 0)
-		return (0);
-	if (cmd->args->size > 1)
+	vars->status = 1;
+    ft_putstr_fd("minishell: cd: ", 2);
+	if(arg)
 	{
-		vars->status = 1;
-		return (1);
+	    ft_putstr_fd(arg, 2);
+		ft_putstr_fd(" :", 2);
 	}
-	test = stat(cmd->args->get(cmd->args, 0), &directory);
-	if (test)
-		runtime_err(errno, "cd :");
+    ft_putstr_fd(msg, 2);
+}
+
+static void	change_directory(char *path)
+{
+	t_local_vars		*vars;
+	const t_allocators	*allocs = get_allocators();
+	int					temp;
+
+	vars = get_local_vars();
+	temp = chdir(path);
+	if (temp == -1)
+		invalid_directory_msg(path, "Couldn't access directory");
+	else
+		vars->pwd = arena_strdup(allocs->global, path);
+}
+
+void	cd(t_cmd *cmd)
+{
+	struct stat	directory;
+	char		*arg;
+	int			test;
+	
+	if (cmd->args->size == 0 || cmd->args->size > 1)
+	{
+		if (cmd->args->size > 1)
+			invalid_directory_msg(NULL, "too many arguments");
+		return ;
+	}
+	arg = (char *)cmd->args->get(cmd->args, 0);
+	test = stat(arg, &directory);
+	if (test == -1)
+		invalid_directory_msg(arg, "no such file or directory");
 	else
 	{
-		if (S_ISDIR(directory.st_mode)
-			change_directory(path);
+		if (S_ISDIR(directory.st_mode))
+			change_directory(arg);
 		else
-			runtime_err(errno, "cd :");
+			invalid_directory_msg(arg, "not a directory");
 	}
-	return (0);
 }
