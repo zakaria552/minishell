@@ -46,8 +46,8 @@ static char	*handle_expansion(t_arena *arena, char *s, char *start)
 		return (arena_strdup(arena, s));
 	if (start != NULL)
 	{
-		string = arena_alloc(arena, s - start + 1, NULL);
-		ft_memcpy(string, s, s - start);
+		string = arena_alloc(arena, (start - s) + 1, s);
+		string[(start - s)] = '\0';
 		len = expansion_length(start);
 		temp = arena_strjoin(arena, string, expand_variable(arena, start, len));
 		string = temp;

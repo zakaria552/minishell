@@ -50,8 +50,7 @@ t_env_var    *get_var(char *variable)
     t_env_var *var;
     int i;
     
-    i = -1;
-	
+    i = -1;	
     while (++i < vars->envp->size)
     {
         var = vars->envp->get(vars->envp, i);
