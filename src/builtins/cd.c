@@ -13,6 +13,7 @@ static void    invalid_directory_msg(char *arg, char *msg)
 		ft_putstr_fd(" :", 2);
 	}
     ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\n", 2);
 }
 
 static void	change_directory(char *path)
