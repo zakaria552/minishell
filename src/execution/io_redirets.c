@@ -14,9 +14,9 @@ void    redirect_io(t_cmd *cmd, bool redir_pipeline)
     
     redirects = cmd->redirects;
     i = -1;
-    redirect_here_doc(cmd);
     if (redir_pipeline)
         pipe_redirect(cmd);
+    redirect_here_doc(cmd);
     while (++i < redirects->size)
     {
         redir = (t_token *)redirects->get(redirects, i);
@@ -84,8 +84,6 @@ static void     redirect_here_doc(t_cmd *cmd)
     }
     if (dup2(fd, STDIN_FILENO) < 0)
     {
-        close_pipe(cmd->curr_pipe);
-        close_pipe(cmd->next_pipe);
         close(fd);
         runtime_err(errno, NULL);
     }
@@ -99,8 +97,9 @@ static void     pipe_redirect(t_cmd *cmd)
     {
         close_pipe(cmd->curr_pipe);
         close_pipe(cmd->next_pipe);
+        if (cmd->fd_here_doc > 0)
+            close(cmd->fd_here_doc);
         runtime_err(errno, NULL);
-
     }
     close_pipe(cmd->curr_pipe);
     close_pipe(cmd->next_pipe);
