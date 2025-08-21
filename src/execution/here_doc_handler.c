@@ -31,7 +31,7 @@ static void exit_after_signal(int *hdoc_pipe)
 {
 	t_local_vars *vars = get_local_vars();
 
-	vars->status = 120 + g_signal;
+	vars->status = 128 + g_signal;
 	close_pipe(hdoc_pipe);
 }
 
