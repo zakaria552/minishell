@@ -11,6 +11,7 @@ void    cmd_not_found_err(int err_code, char *cmd, bool path_exist);
 
 //  prompt utils
 char *read_prompt(char *prompt_msg, bool update_history);
+char *int_tty_prompt(char *prompt_msg, bool update_history, bool interactive);
 
 // expand string
 char *expand_str(char *str, t_arena *arena);
