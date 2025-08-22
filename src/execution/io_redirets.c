@@ -23,7 +23,7 @@ void    redirect_io(t_cmd *cmd, bool redir_pipeline)
         type = redir->type;
         if (type == INPUT_REDIR)
             redirect_stdin(redir->content);
-        else if (type == OUTPUT_REDIR)
+        else if (type == OUTPUT_REDIR || type == OUTPUT_APPEND)
             redirect_stdout(redir);
     }
 }
@@ -33,7 +33,7 @@ static void   redirect_stdin(char *file)
     const int fd = open(file, O_RDONLY);
 
     if (fd < 0)
-        runtime_err(errno, file);
+        runtime_err(1, file);
     if (dup2(fd, STDIN_FILENO) < 0)
     {
         close(fd);
@@ -59,7 +59,7 @@ static void   redirect_stdout(t_token *redirect)
         flags |= O_TRUNC;
     fd = open(redirect->content, flags, mode);
     if (fd < 0)
-        runtime_err(errno, NULL);
+        runtime_err(1, NULL);
     if (dup2(fd, STDOUT_FILENO) < 0)
     {
         close(fd);
