@@ -60,9 +60,22 @@ static char	*handle_expansion(t_arena *arena, char *s, char *start)
 	return (string);
 }
 
+static char	*strip_quotes(t_arena *arena, char *str, bool should_strip)
+{
+	char	*stripped;
+
+	if (should_strip)
+	{
+		stripped =  arena_alloc(arena, ft_strlen(str) - 1, str + 1);
+		stripped[ft_strlen(str) - 2] = '\0';
+		return (stripped);
+	}
+	else 
+		return (str);
+}
 //strips the first and last character from QUOTE tokens, and expands possible
 //variables in double quoted tokens, expands EXPANSION tokens
-static char	*strip_expand(t_token *tok, t_arena *arena, bool expand)
+static char	*strip_expand(t_token *tok, t_arena *arena, bool here_doc)
 {
 	char	*str;
 	char	*start;
@@ -71,22 +84,20 @@ static char	*strip_expand(t_token *tok, t_arena *arena, bool expand)
 	{
 		if (!(tok->content))
 			return (NULL);
-		str = arena_alloc(arena, ft_strlen(tok->content) - 1, tok->content + 1);
-		str[ft_strlen(tok->content) - 2] = '\0';
+		str = strip_quotes(arena, tok->content, here_doc);
 		start = contains_expansions(str);
-		if (start != NULL && expand)
+		if (start != NULL && here_doc)
 			str = handle_expansion(arena, str, start);
 		return (str);
 	}
 	if (tok->type == QUOTE_SINGLE)
 	{
-	if (!(tok->content))
+		if (!(tok->content))
 			return (NULL);
-		str = arena_alloc(arena, ft_strlen(tok->content) - 1, tok->content + 1);
-		str[ft_strlen(tok->content) - 2] = '\0';
-		return (str);
+		str = strip_quotes(arena, tok->content, here_doc);
+ 		return (str);
 	}
-	if (tok->type == EXPANSION && expand)
+	if (tok->type == EXPANSION && here_doc)
 		return (handle_expansion(arena, tok->content, tok->content));
 	return (tok->content);
 }
