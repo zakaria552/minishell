@@ -24,7 +24,6 @@ void    syntax_err(int err_code, char *msg)
 
 void    runtime_err(int err_code, char *msg)
 {
-    errno = err_code;
     ft_putstr_fd("minishell: ", 2);
     if (msg)
     {
@@ -34,7 +33,7 @@ void    runtime_err(int err_code, char *msg)
     ft_putstr_fd(strerror(errno), 2);
     ft_putstr_fd("\n", 2);
     clean_up(true, true);
-    exit(errno);
+    exit(err_code);
 }
 
 void    cmd_not_found_err(int err_code, char *cmd, bool path_exist)
