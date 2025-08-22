@@ -28,6 +28,7 @@ void    init_local_vars(char **envp)
     vars->stdin_cpy = -1;
     vars->stdout_cpy = -1;
 	vars->pwd = pwd_to_string(allocs->global);
+    update_shell_level(vars);
 }
 
 t_env_var    *init_var(char *envp_var, t_arena *arena)
@@ -44,8 +45,10 @@ t_env_var    *init_var(char *envp_var, t_arena *arena)
     while (--len >= 0)
         var->variable[len] = envp_var[len];
     tmp = ft_strrchr(envp_var, '=');
-    tmp++;
-    var->value = arena->alloc(arena, ft_strlen(tmp) + 1, tmp);
+    if (tmp && *tmp)
+        var->value = arena->alloc(arena, ft_strlen(tmp + 1) + 1, tmp + 1);
+    else
+        var->value = NULL;
     var->joint = arena->alloc(arena, ft_strlen(envp_var) + 1, envp_var);
     return var;
 }

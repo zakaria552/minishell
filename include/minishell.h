@@ -22,12 +22,16 @@
 #include "builtins.h"
 #include "ms_signals.h"
 
+#define MAX_SHELL_LEVEL 10
+
 typedef struct s_allocators
 {
     t_arena *global;
     t_arena *prompt;
 } t_allocators;
 
+// shell
+void launch_shell(bool interactive);
 t_allocators *get_allocators();
 extern volatile sig_atomic_t	g_signal;
 

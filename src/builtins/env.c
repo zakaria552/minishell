@@ -11,7 +11,8 @@ void    env(void)
     while (++i < vars->envp->size)
     {
         var = vars->envp->get(vars->envp, i);
-        ft_printf("%s\n", var->joint);
+        if (var->value)
+            ft_printf("%s\n", var->joint);
     }
     vars->status = 0;
 }

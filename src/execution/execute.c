@@ -32,7 +32,7 @@ static void    pipeline(t_vector *cmds, t_arena *arena)
     while (++i < cmds->size)
     {
         cmd = ((t_cmd *) cmds->get(cmds, i));
-        if (cmd->cmd && !*cmd->cmd)
+        if (!cmd->cmd)
             continue;
         if (pipe(next_pipe) < 0)
             runtime_err(errno, NULL);

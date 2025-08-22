@@ -2,6 +2,7 @@
 
 static bool    invalid_err_msg(char *var);
 static bool is_valid_export(char *joint);
+static void print_exported_vars(t_local_vars *vars);
 
 void    export(t_cmd *cmd)
 {   
@@ -15,18 +16,15 @@ void    export(t_cmd *cmd)
     {
         arg = cmd->args->get(cmd->args, i);
         if (!is_valid_export(arg))
-            vars->status = 1;
-        else
         {
-            vars->set(arg);
-            vars->status = 0;
+            vars->status = 1;
+            continue;
         }
-    }
-    i = -1;
-    while (++i < vars->envp->size && cmd->args->size == 0)
-        ft_printf("declare -x %s\n", ((t_env_var *)vars->envp->get(vars->envp, i))->joint);
-    if (cmd->args->size == 0)
+        vars->set(arg);
         vars->status = 0;
+    }
+    if (cmd->args->size == 0)
+        print_exported_vars(vars);
 }
 
 static bool is_valid_export(char *joint)
@@ -34,9 +32,9 @@ static bool is_valid_export(char *joint)
     int i;
 
     i = -1;
-    if (!joint || *joint == '=' || ft_isdigit(*joint) || !ft_strchr(joint, '='))
+    if (!joint || *joint == '=' || ft_isdigit(*joint))
         return invalid_err_msg(joint);
-    while (joint[++i] != '=') 
+    while (joint[++i] && joint[i] != '=') 
     {
         if (!is_legal_expansion_char(joint[i]))
             return invalid_err_msg(joint);
@@ -50,4 +48,25 @@ static bool    invalid_err_msg(char *var)
     ft_putstr_fd(var, 2);
     ft_putstr_fd("`: not a valid identifier\n", 2);
     return false;
+}
+
+static void print_exported_vars(t_local_vars *vars)
+{
+    t_env_var *var;
+    char *tmp;
+    int i;
+
+    i = -1;
+    while (++i < vars->envp->size)
+    {
+        var = vars->envp->get(vars->envp, i);
+        tmp = ft_strrchr(var->joint, '=');
+        if (var->value && tmp && *(tmp + 1))
+            ft_printf("declare -x %s\n", var->joint);
+        else if (tmp && !*(tmp + 1))
+            ft_printf("declare -x %s=\"\"\n", var->variable);
+        else
+            ft_printf("declare -x %s\n", var->variable);
+    }
+    vars->status = 0;
 }

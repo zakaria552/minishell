@@ -44,5 +44,7 @@ bool    is_builtin(char *cmd);
 bool strmatch(char *s1, char *s2);
 char	*pwd_to_string(t_arena *arena);
 char	*arena_int_to_string(t_arena *arena, int num);
+void    update_shell_level(t_local_vars *vars);
+int	long_atoi(const char *nptr, bool *error);
 
 #endif

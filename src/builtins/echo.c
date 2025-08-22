@@ -1,13 +1,12 @@
 #include "minishell.h"
 
 static bool    should_remove_line(char *flag);
+static void echo_args(t_cmd *cmd, bool remove_line);
 
 void    echo(t_cmd *cmd)
 {
-    const t_local_vars *vars = get_local_vars();
     bool    remove_line;
     char *arg;
-    int i;
 
     if (cmd->args->size == 0)
     {
@@ -16,19 +15,7 @@ void    echo(t_cmd *cmd)
     }
     arg = cmd->args->get(cmd->args, 0);
     remove_line = should_remove_line(arg);
-    i = -1;
-    if (remove_line)
-        i++;
-    while (++i < cmd->args->size)
-    {
-        arg = cmd->args->get(cmd->args, i);
-        if (strmatch("$?", arg))
-            ft_printf("%d ", vars->status);
-        else
-            ft_printf("%s ", arg);
-    }
-    if (!remove_line)
-        ft_printf("\n");
+    echo_args(cmd, remove_line);
 }
 
 static bool    should_remove_line(char *flag)
@@ -50,4 +37,27 @@ static bool    should_remove_line(char *flag)
         i++;
     }
     return (remove);
+}
+
+static void echo_args(t_cmd *cmd, bool remove_line)
+{
+    const t_local_vars *vars = get_local_vars();
+    char *arg;
+    int i;
+
+    i = -1;
+    if (remove_line)
+        i++;
+    while (++i < cmd->args->size)
+    {
+        arg = cmd->args->get(cmd->args, i);
+        if (strmatch(arg, "$?"))
+            ft_printf("%d", vars->status);
+        else
+            ft_printf("%s", arg);
+        if (i != cmd->args->size - 1)
+            ft_printf(" ");
+    }
+    if (!remove_line)
+        ft_printf("\n");
 }
