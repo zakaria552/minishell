@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   format_path.c                                      :+:      :+:    :+:   */
+/*   binary_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:49:04 by zfarah            #+#    #+#             */
-/*   Updated: 2025/08/14 18:04:19 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/08/22 14:21:06 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ char *get_binary_path(char *command, char **envp, t_arena *arena)
 	char *path;
 	char *exc_path;
 
+	if (!*command)
+		cmd_not_found_err(127, command, false);
 	if (command != NULL && ft_strchr(command, '/'))
 	{
 		if (!is_executable(command))
