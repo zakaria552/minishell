@@ -20,13 +20,13 @@ void	set_readline_handler(void)
 	g_signal = 0;
 	rl_done = 0;
 	rl_event_hook = NULL;
+	ft_memset(&s_signal, 0, sizeof(s_signal));
+	ft_memset(&s_ignore, 0, sizeof(s_ignore));
 	s_signal.sa_sigaction = signal_handler;
-	sigemptyset(&s_signal.sa_mask);
 	s_signal.sa_flags = SA_SIGINFO | SA_RESTART;
 	if (sigaction(SIGINT, &s_signal, NULL) == -1)
 		runtime_err(errno, "registering signal handler");
 	s_ignore.sa_handler = SIG_IGN;
-	sigemptyset(&s_ignore.sa_mask);
 	if (sigaction(SIGQUIT, &s_ignore, NULL) == -1)
 		runtime_err(errno, "registering signal handler");
 }
@@ -37,8 +37,8 @@ void	set_handler_to_default(void)
 	
 	g_signal = 0;
 	rl_event_hook = NULL;
+	ft_memset(&s_signal, 0, sizeof(s_signal));
 	s_signal.sa_handler = SIG_DFL;
-	sigemptyset(&s_signal.sa_mask);
 	if (sigaction(SIGINT, &s_signal, NULL) == -1)
 		runtime_err(errno, "registering signal handler");
 	if (sigaction(SIGQUIT, &s_signal, NULL) == -1)
@@ -47,15 +47,15 @@ void	set_handler_to_default(void)
 
 void	set_handler_to_ignore(void)
 {
-	struct sigaction	s_signal;
+	struct sigaction	s_ignore;
 	
 	g_signal = 0;
 	rl_event_hook = NULL;
-	s_signal.sa_handler = SIG_IGN;
-	sigemptyset(&s_signal.sa_mask);
-	if (sigaction(SIGINT, &s_signal, NULL) == -1)
+	ft_memset(&s_ignore, 0, sizeof(s_ignore));
+	s_ignore.sa_handler = SIG_IGN;
+	if (sigaction(SIGINT, &s_ignore, NULL) == -1)
 		runtime_err(errno, "registering signal handler");
-	if (sigaction(SIGQUIT, &s_signal, NULL) == -1)
+	if (sigaction(SIGQUIT, &s_ignore, NULL) == -1)
 		runtime_err(errno, "registering signal handler");
 }
 
@@ -68,13 +68,13 @@ void	set_here_doc_handler(void)
 	g_signal = 0;
 	rl_done = 0;
 	rl_event_hook = here_doc_readline_flagger;
+	ft_memset(&s_heredoc, 0, sizeof(s_heredoc));
+	ft_memset(&s_ignore, 0, sizeof(s_ignore));
 	s_heredoc.sa_sigaction = here_doc_signal_handler;
-	sigemptyset(&s_heredoc.sa_mask);
 	s_heredoc.sa_flags = SA_SIGINFO | SA_RESTART;
 	if (sigaction(SIGINT, &s_heredoc, NULL) == -1)
 		runtime_err(errno, "registering signal handler");
 	s_ignore.sa_handler = SIG_IGN;
-	sigemptyset(&s_ignore.sa_mask);
 	if (sigaction(SIGQUIT, &s_ignore, NULL) == -1)
 		runtime_err(errno, "registering signal handler");
 }
