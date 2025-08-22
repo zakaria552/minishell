@@ -52,3 +52,11 @@ t_env_var    *init_var(char *envp_var, t_arena *arena)
     var->joint = arena->alloc(arena, ft_strlen(envp_var) + 1, envp_var);
     return var;
 }
+
+void    set_status(int status)
+{
+    t_local_vars *vars;
+    
+    vars = get_local_vars();
+    vars->status = status;
+}

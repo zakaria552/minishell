@@ -16,6 +16,7 @@ void    echo(t_cmd *cmd)
     arg = cmd->args->get(cmd->args, 0);
     remove_line = should_remove_line(arg);
     echo_args(cmd, remove_line);
+    set_status(0);
 }
 
 static bool    should_remove_line(char *flag)
@@ -24,6 +25,8 @@ static bool    should_remove_line(char *flag)
     int i;
 
     if (flag[0] != '-')
+        return false;
+    if (!flag[1])
         return false;
     remove = true;
     i = 1;
@@ -41,7 +44,6 @@ static bool    should_remove_line(char *flag)
 
 static void echo_args(t_cmd *cmd, bool remove_line)
 {
-    const t_local_vars *vars = get_local_vars();
     char *arg;
     int i;
 
@@ -51,10 +53,9 @@ static void echo_args(t_cmd *cmd, bool remove_line)
     while (++i < cmd->args->size)
     {
         arg = cmd->args->get(cmd->args, i);
-        if (strmatch(arg, "$?"))
-            ft_printf("%d", vars->status);
-        else
-            ft_printf("%s", arg);
+        if (should_remove_line(arg))
+            continue;
+        ft_printf("%s", arg);
         if (i != cmd->args->size - 1)
             ft_printf(" ");
     }

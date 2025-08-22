@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void launch_shell(bool interactive)
+void launch_shell(void)
 {
     t_allocators *allocs;
     t_vector *commands;
@@ -12,7 +12,7 @@ void launch_shell(bool interactive)
 	{
 		allocs->prompt = init_arena(ARENA_SIZE);
 		set_readline_handler();
-		prompt = int_tty_prompt("", true, interactive);
+		prompt = int_tty_prompt("minishell> ", true, isatty(STDIN_FILENO));
 		if (!prompt)
 		   break;
 		vec = tokenize_input(prompt, allocs->prompt, '\0');

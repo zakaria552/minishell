@@ -1,6 +1,7 @@
 #include "minishell.h"
 
 static void set_cmd_here_doc(t_cmd *cmd, char *limiter);
+// static bool    should_expand(char *line);
 
 void    handle_here_doc(t_vector *cmds)
 {
@@ -38,22 +39,24 @@ static void exit_after_signal(int *hdoc_pipe)
 static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
 {
     const t_arena *arena = get_allocators()->prompt;
+    const bool expand = true;
     int hdoc_pipe[2];
     char *line;
     char *expanded;
-
 	if (pipe(hdoc_pipe) < 0)
 		runtime_err(errno, NULL);
 	set_here_doc_handler();
     while (g_signal == 0)
     {
-        line = read_prompt("> ", false);
+        line = int_tty_prompt(">", false, isatty(STDIN_FILENO));
+        expanded = line;
 		if (!line)
 			break ;
-        expanded = expand_str(line, (t_arena *)arena);
+        if (expand)
+            expanded = expand_str(line, (t_arena *)arena);
         if (strmatch(line, limiter))
 			break ;
-        if (write(hdoc_pipe[1], expanded, ft_strlen(expanded)) < 0)
+        if (write(hdoc_pipe[1], expanded, ft_strlen(expanded)) < 0 || write(hdoc_pipe[1], "\n", 1) < 0)
             runtime_err(errno, NULL); 
     }
 	if (g_signal)
@@ -65,8 +68,7 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
 			rl_replace_line("", 1);
 			rl_on_new_line();
 		}
-		if (cmd->fd_here_doc > 0)
-			close(cmd->fd_here_doc);
+		close(cmd->fd_here_doc);
 		cmd->fd_here_doc = hdoc_pipe[0];
 		close(hdoc_pipe[1]);
 	}
@@ -88,3 +90,13 @@ void    close_open_here_docs(t_vector *cmds, int index)
         }
     }
 }
+
+// static bool    should_expand(char *delimiter)
+// {
+//     const int len = ft_strlen(delimiter);
+
+//     if ((delimiter[0] == '\'' && delimiter[len - 1] == '\'') ||
+//         (delimiter[0] == '\"' && delimiter[len - 1] == '\"'))
+//         return false;
+//     return true;
+// }

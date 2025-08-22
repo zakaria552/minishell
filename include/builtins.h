@@ -29,6 +29,7 @@ t_env_var    *init_var(char *envp_var, t_arena *arena);
 void    remove_var(char *variable);
 t_env_var    *get_var(char *variable);
 void    set_var(char *env_var);
+void    set_status(int status);
 
 // buitins
 void    export(t_cmd *cmd);
