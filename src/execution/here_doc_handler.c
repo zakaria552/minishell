@@ -1,7 +1,8 @@
 #include "minishell.h"
 
 static void set_cmd_here_doc(t_cmd *cmd, char *limiter);
-// static bool    should_expand(char *line);
+static bool    should_expand(char *line);
+static char* strip_quotes3(char *str);
 
 void    handle_here_doc(t_vector *cmds)
 {
@@ -39,24 +40,24 @@ static void exit_after_signal(int *hdoc_pipe)
 static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
 {
     const t_arena *arena = get_allocators()->prompt;
-    const bool expand = true;
+    const bool expand = should_expand(limiter);
     int hdoc_pipe[2];
     char *line;
-    char *expanded;
+
+    limiter = strip_quotes3(limiter);
 	if (pipe(hdoc_pipe) < 0)
 		runtime_err(errno, NULL);
 	set_here_doc_handler();
     while (g_signal == 0)
     {
         line = int_tty_prompt(">", false, isatty(STDIN_FILENO));
-        expanded = line;
 		if (!line)
 			break ;
         if (expand)
-            expanded = expand_str(line, (t_arena *)arena);
+            line = expand_str(line, (t_arena *)arena);
         if (strmatch(line, limiter))
 			break ;
-        if (write(hdoc_pipe[1], expanded, ft_strlen(expanded)) < 0 || write(hdoc_pipe[1], "\n", 1) < 0)
+        if (write(hdoc_pipe[1], line, ft_strlen(line)) < 0 || write(hdoc_pipe[1], "\n", 1) < 0)
             runtime_err(errno, NULL); 
     }
 	if (g_signal)
@@ -91,12 +92,53 @@ void    close_open_here_docs(t_vector *cmds, int index)
     }
 }
 
-// static bool    should_expand(char *delimiter)
-// {
-//     const int len = ft_strlen(delimiter);
+static bool    should_expand(char *delimiter)
+{
+    if (ft_strchr(delimiter, '\'') || ft_strchr(delimiter, '\"'))
+        return false;
+    return true;
+}
 
-//     if ((delimiter[0] == '\'' && delimiter[len - 1] == '\'') ||
-//         (delimiter[0] == '\"' && delimiter[len - 1] == '\"'))
-//         return false;
-//     return true;
-// }
+static char * strip_quotes3(char *str)
+{
+    char *read;
+    char *write;
+    bool  quoted = {0};
+    char type = '\0';
+    const int len = ft_strlen(str);
+
+    read = str;
+    write = str;
+    if ((str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '\"' && str[len - 1] == '\"'))
+    {
+        str[len - 1] = '\0';
+        str++;
+        return str;
+    }
+    while (read && *read)
+    {
+        if (!quoted && (*read == '\'' || *read == '\"'))
+        {
+            quoted = true;
+            type = *read;
+        }
+        while (quoted)
+        {
+            if (*read == type)
+            {
+                quoted = false;
+                read++;
+            }
+            read++;
+        }
+        if (!quoted)
+        {
+            *write = *read;
+            write++;
+        }
+        if (*read)
+          read++;
+    }
+    *write = *read;
+    return str;
+}
