@@ -15,6 +15,7 @@ void	pwd(void)
 		vars = get_local_vars();
 		ft_printf("%s\n", vars->pwd);
 	}
+	set_status(0);
 }
 
 //creates a string of current working directory
