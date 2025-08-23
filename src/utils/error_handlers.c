@@ -19,7 +19,7 @@ void    syntax_err(int err_code, char *msg)
     ft_putstr_fd(msg, STDERR_FILENO);
     ft_putstr_fd("\n", STDERR_FILENO);
     clean_up(false, false);
-
+    set_status(2);
 }
 
 void    runtime_err(int err_code, char *msg)
@@ -38,12 +38,14 @@ void    runtime_err(int err_code, char *msg)
 
 void    cmd_not_found_err(int err_code, char *cmd, bool path_exist)
 {
-    if (err_code != 127)
+    if (err_code != 127 && err_code != 126)
         runtime_err(errno, cmd);
     ft_putstr_fd("minishell: ", 2);
     ft_putstr_fd(cmd, 2);
     ft_putstr_fd(":", 2);
-    if (path_exist)
+    if (err_code == 126)
+        ft_putstr_fd("Is a directory\n", 2);
+    else if (path_exist)
         ft_putstr_fd("command not found\n", 2);
     else
         ft_putstr_fd("No such file or directory\n", 2);
