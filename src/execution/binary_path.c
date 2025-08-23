@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:49:04 by zfarah            #+#    #+#             */
-/*   Updated: 2025/08/22 14:21:06 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/08/23 22:36:17 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char *get_exc_path(char *paths, char *cmd, t_arena *arena);
 static char *get_env_variable(char **envp, char *variable);
-bool is_executable(char *path);
+static bool is_executable(char *path);
 
 void *set_errno(int err_code)
 {
@@ -40,7 +40,7 @@ char *get_binary_path(char *command, char **envp, t_arena *arena)
 		cmd_not_found_err(127, command, false);
 	exc_path = get_exc_path(path, command, arena);
 	if (!exc_path)
-		cmd_not_found_err(errno, command, true);
+		cmd_not_found_err(127, command, true);
 	return (exc_path);
 }
 
@@ -85,7 +85,23 @@ char *get_env_variable(char **envp, char *variable)
 	return (NULL);
 }
 
-bool is_executable(char *path)
+static bool is_executable(char *path)
 {
-	return (access(path, X_OK) == 0);
+	struct stat p_stat;
+	const bool exec_access = access(path, X_OK) == 0;
+
+	
+	if (exec_access && stat(path, &p_stat) < 0)
+		runtime_err(errno, NULL);
+	if (exec_access && !S_ISREG(p_stat.st_mode))
+	{
+		errno = 126;
+		return false;
+	}
+	if (!exec_access)
+	{
+		errno = 127;
+		return false;
+	}
+	return (true);
 }
