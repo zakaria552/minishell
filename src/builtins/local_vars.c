@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+static void    bubble_sort_vars(t_vector *sorted, t_env_var *var, t_env_var *var_n, t_env_var *tmp);
+
 t_local_vars *get_local_vars()
 {
     static  t_local_vars vars;
@@ -44,7 +46,7 @@ t_env_var    *init_var(char *envp_var, t_arena *arena)
     var->variable = arena->alloc(arena, len + 1, NULL);
     while (--len >= 0)
         var->variable[len] = envp_var[len];
-    tmp = ft_strrchr(envp_var, '=');
+    tmp = ft_strchr(envp_var, '=');
     if (tmp && *tmp)
         var->value = arena->alloc(arena, ft_strlen(tmp + 1) + 1, tmp + 1);
     else
@@ -53,10 +55,48 @@ t_env_var    *init_var(char *envp_var, t_arena *arena)
     return var;
 }
 
-void    set_status(int status)
+t_vector *sorted_envp_vars(t_local_vars *vars)
 {
-    t_local_vars *vars;
-    
-    vars = get_local_vars();
-    vars->status = status;
+    const t_arena *arena = get_allocators()->prompt;
+    t_vector *sorted;
+    t_env_var *var = {0};
+    t_env_var *var_n = {0};
+    t_env_var tmp = {0};
+    int i;
+
+    i = -1;
+    sorted = init_vector(vars->envp->size, NULL, (t_arena  *)arena);
+    while (++i < vars->envp->size)
+        sorted->push(sorted, vars->envp->get(vars->envp, i)); 
+    bubble_sort_vars(sorted, var, var_n, &tmp);
+    return sorted;
+}
+
+static void    bubble_sort_vars(t_vector *sorted, t_env_var *var, t_env_var *var_n, t_env_var *tmp)
+{
+    int i;
+    int j;
+
+    i = -1;
+    while (++i < sorted->size)
+    {
+        j = -1;
+        while (++j < (sorted->size - i))
+        {
+            var = sorted->get(sorted, j);
+            var_n = sorted->get(sorted, j + 1);
+            if (!var || !var_n || ft_strncmp(var->variable, var_n->variable,
+                 ft_strlen(var_n->variable)) < 0)
+                continue;
+            tmp->joint = var->joint;
+            tmp->value = var->value;
+            tmp->variable = var->variable;
+            var->joint = var_n->joint;
+            var->value = var_n->value;
+            var->variable = var_n->variable;
+            var_n->joint = tmp->joint;
+            var_n->value = tmp->value;
+            var_n->variable = tmp->variable;
+        }
+    }
 }
