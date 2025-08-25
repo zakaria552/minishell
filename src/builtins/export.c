@@ -52,17 +52,20 @@ static bool    invalid_err_msg(char *var)
 
 static void print_exported_vars(t_local_vars *vars)
 {
+    const t_vector *sorted = sorted_envp_vars(vars);
     t_env_var *var;
     char *tmp;
     int i;
 
     i = -1;
-    while (++i < vars->envp->size)
+    while (++i < sorted->size)
     {
-        var = vars->envp->get(vars->envp, i);
+        var = sorted->get((t_vector *)sorted, i);
+        if (*var->variable == '_')
+            continue;
         tmp = ft_strrchr(var->joint, '=');
         if (var->value && tmp && *(tmp + 1))
-            ft_printf("declare -x %s\n", var->joint);
+            ft_printf("declare -x %s=\"%s\"\n", var->variable, var->value);
         else if (tmp && !*(tmp + 1))
             ft_printf("declare -x %s=\"\"\n", var->variable);
         else

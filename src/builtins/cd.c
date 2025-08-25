@@ -14,6 +14,7 @@ static void    invalid_directory_msg(char *arg, char *msg)
 	}
     ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
+	set_status(1);
 }
 
 static void	change_directory(char *path)
@@ -27,7 +28,10 @@ static void	change_directory(char *path)
 	if (temp == -1)
 		invalid_directory_msg(path, "Couldn't access directory");
 	else
+	{
 		vars->pwd = pwd_to_string(allocs->global);
+		set_status(0);
+	}
 }
 
 void	cd(t_cmd *cmd)

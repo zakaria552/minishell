@@ -53,7 +53,7 @@ static void echo_args(t_cmd *cmd, bool remove_line)
     while (++i < cmd->args->size)
     {
         arg = cmd->args->get(cmd->args, i);
-        if (should_remove_line(arg))
+        if (i != (cmd->args->size - 1) && should_remove_line(arg))
             continue;
         ft_printf("%s", arg);
         if (i != cmd->args->size - 1)

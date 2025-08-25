@@ -30,6 +30,7 @@ void    remove_var(char *variable);
 t_env_var    *get_var(char *variable);
 void    set_var(char *env_var);
 void    set_status(int status);
+t_vector *sorted_envp_vars(t_local_vars *vars);
 
 // buitins
 void    export(t_cmd *cmd);

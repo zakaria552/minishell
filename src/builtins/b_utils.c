@@ -79,3 +79,11 @@ int	long_atoi(const char *nptr, bool *error)
         *error = true;
     return (num * sign);
 }
+
+void    set_status(int status)
+{
+    t_local_vars *vars;
+    
+    vars = get_local_vars();
+    vars->status = status;
+}

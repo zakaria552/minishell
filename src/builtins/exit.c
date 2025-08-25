@@ -11,9 +11,10 @@ void    builtin_exit(t_cmd *cmd, bool *should_exit)
     *should_exit = true;
     if (cmd->args->size == 0)
     {
-        ft_printf("exit\n");
+        // ft_printf("exit\n");
         return;
     }
+    if (cmd->args)
     vars->status = get_exit_status(cmd, should_exit);
 }
 
@@ -28,12 +29,13 @@ static  int get_exit_status(t_cmd *cmd, bool *should_exit)
 {
     long num;
     bool error;
+    const char *arg1 = cmd->args->get(cmd->args, 0);
 
-    error = false;    
-    num = long_atoi(cmd->args->get(cmd->args, 0), &error);
-    if (error)
+    error = false;
+    num = long_atoi((char *)arg1, &error);
+    if (error || !*arg1)
     {
-        ft_printf("exit\n");
+        // ft_printf("exit\n");
         non_numeric_err_msg(cmd);
         return 2;
     }
@@ -43,6 +45,6 @@ static  int get_exit_status(t_cmd *cmd, bool *should_exit)
         ft_putstr_fd("minishell: exit: too many arguments\n", 2);
         return 1;
     }
-    ft_printf("exit\n");
+    // ft_printf("exit\n");
     return num % 256;
 }
