@@ -12,7 +12,7 @@ void launch_shell(void)
 	{
 		allocs->prompt = init_arena(ARENA_SIZE);
 		set_readline_handler();
-		prompt = int_tty_prompt("minishell> ", true, isatty(STDIN_FILENO));
+		prompt = int_tty_prompt(PROMPT_MSG, true, isatty(STDIN_FILENO));
 		if (!prompt)
 		   break;
 		vec = tokenize_input(prompt, allocs->prompt, '\0');

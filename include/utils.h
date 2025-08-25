@@ -10,7 +10,6 @@ void    clean_up(bool clean_global, bool clean_history);
 void    cmd_not_found_err(int err_code, char *cmd, bool path_exist);
 
 //  prompt utils
-char *read_prompt(char *prompt_msg, bool update_history);
 char *int_tty_prompt(char *prompt_msg, bool update_history, bool interactive);
 
 // expand string

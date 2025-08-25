@@ -23,6 +23,8 @@
 #include "ms_signals.h"
 
 #define MAX_SHELL_LEVEL 10
+#define PROMPT_MSG "\x1B[38;5;21m> \e[0m"
+#define PROMPT_HEREDOC_MSG "\x1B[38;5;62mheredoc> \e[0m"
 
 typedef struct s_allocators
 {

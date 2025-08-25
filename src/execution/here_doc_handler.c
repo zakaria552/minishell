@@ -50,7 +50,7 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
 	set_here_doc_handler();
     while (g_signal == 0)
     {
-        line = int_tty_prompt(">", false, isatty(STDIN_FILENO));
+        line = int_tty_prompt(PROMPT_HEREDOC_MSG, false, isatty(STDIN_FILENO));
 		if (!line)
 			break ;
         if (expand)
