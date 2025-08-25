@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-//does a system call to find current directory, or uses local variable
+// does a system call to find current directory, or uses local variable
 void	pwd(void)
 {
-	char	pwd[1024];
+	char			pwd[1024];
 	t_local_vars	*vars;
 
 	ft_memset(pwd, 0, 1024);
@@ -18,7 +18,7 @@ void	pwd(void)
 	set_status(0);
 }
 
-//creates a string of current working directory
+// creates a string of current working directory
 char	*pwd_to_string(t_arena *arena)
 {
 	size_t	length;

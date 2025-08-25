@@ -1,18 +1,18 @@
 #include "minishell.h"
 
-static void    invalid_directory_msg(char *arg, char *msg)
+static void	invalid_directory_msg(char *arg, char *msg)
 {
 	t_local_vars	*vars;
 
 	vars = get_local_vars();
 	vars->status = 1;
-    ft_putstr_fd("minishell: cd: ", 2);
-	if(arg)
+	ft_putstr_fd("minishell: cd: ", 2);
+	if (arg)
 	{
-	    ft_putstr_fd(arg, 2);
+		ft_putstr_fd(arg, 2);
 		ft_putstr_fd(" :", 2);
 	}
-    ft_putstr_fd(msg, 2);
+	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
 	set_status(1);
 }
@@ -39,7 +39,7 @@ void	cd(t_cmd *cmd)
 	struct stat	directory;
 	char		*arg;
 	int			test;
-	
+
 	if (cmd->args->size == 0 || cmd->args->size > 1)
 	{
 		if (cmd->args->size > 1)
