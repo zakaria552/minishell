@@ -88,15 +88,9 @@ static void    bubble_sort_vars(t_vector *sorted, t_env_var *var, t_env_var *var
             if (!var || !var_n || ft_strncmp(var->variable, var_n->variable,
                  ft_strlen(var_n->variable)) < 0)
                 continue;
-            tmp->joint = var->joint;
-            tmp->value = var->value;
-            tmp->variable = var->variable;
-            var->joint = var_n->joint;
-            var->value = var_n->value;
-            var->variable = var_n->variable;
-            var_n->joint = tmp->joint;
-            var_n->value = tmp->value;
-            var_n->variable = tmp->variable;
+            ft_memcpy(tmp, var, sizeof(t_env_var));
+            ft_memcpy(var, var_n, sizeof(t_env_var));
+            ft_memcpy(var_n, tmp, sizeof(t_env_var));
         }
     }
 }
