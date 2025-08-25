@@ -9,6 +9,7 @@ void    redirect_io(t_cmd *cmd, bool redir_pipeline);
 void    close_pipe(int pipe[2]);
 char    *get_binary_path(char *command, char **envp, t_arena *arena);
 void    execute_builtin(t_vector *cmds, int index, bool should_exit, bool pipeline);
+void	update_cmd_pipes(t_cmd *cmd, int *curr_pipe, int *next_pipe);
 
 char **envp_vars(void);
 

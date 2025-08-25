@@ -44,59 +44,59 @@ char	*arena_int_to_string(t_arena *arena, int num)
 	return (str_num);
 }
 
-t_env_var    *get_var(char *variable)
+t_env_var	*get_var(char *variable)
 {
-    const t_local_vars *vars = get_local_vars();
-    t_env_var *var;
-    int i;
-    
-    i = -1;	
-    while (++i < vars->envp->size)
-    {
-        var = vars->envp->get(vars->envp, i);
-        if (strmatch(var->variable, variable))
-            return var;
-    }
-    return NULL;
+	const t_local_vars	*vars = get_local_vars();
+	t_env_var			*var;
+	int					i;
+
+	i = -1;
+	while (++i < vars->envp->size)
+	{
+		var = vars->envp->get(vars->envp, i);
+		if (strmatch(var->variable, variable))
+			return (var);
+	}
+	return (NULL);
 }
 
-void    remove_var(char *variable)
+void	remove_var(char *variable)
 {
-    const t_local_vars *vars = get_local_vars();
-    t_env_var *var;
-    int i;
-    
-    i = -1;
-    while (++i < vars->envp->size)
-    {
-        var = vars->envp->get(vars->envp, i);
-        if (strmatch(var->variable, variable))
-        {
-            vars->envp->remove(vars->envp, i);
-            return;
-        }
-    }
+	const t_local_vars	*vars = get_local_vars();
+	t_env_var			*var;
+	int					i;
+
+	i = -1;
+	while (++i < vars->envp->size)
+	{
+		var = vars->envp->get(vars->envp, i);
+		if (strmatch(var->variable, variable))
+		{
+			vars->envp->remove(vars->envp, i);
+			return ;
+		}
+	}
 }
 
-void    set_var(char *env_var)
+void	set_var(char *env_var)
 {
-    const t_allocators *allocs = get_allocators();
-    const t_local_vars *vars = get_local_vars();
-    t_env_var *var;
-    t_env_var *new_var;
-    int i;
+	const t_allocators	*allocs = get_allocators();
+	const t_local_vars	*vars = get_local_vars();
+	t_env_var			*var;
+	t_env_var			*new_var;
+	int					i;
 
-    i = -1;
-    new_var = init_var(env_var, allocs->global);
-    while (++i < vars->envp->size)
-    {
-        var = vars->envp->get(vars->envp, i);
-        if (strmatch(var->variable, new_var->variable))
-        {
-            vars->unset(var->variable);
-            break;
-        }
-    }
-    new_var = init_var(env_var, allocs->global);
-    vars->envp->push(vars->envp, new_var);
+	i = -1;
+	new_var = init_var(env_var, allocs->global);
+	while (++i < vars->envp->size)
+	{
+		var = vars->envp->get(vars->envp, i);
+		if (strmatch(var->variable, new_var->variable))
+		{
+			vars->unset(var->variable);
+			break ;
+		}
+	}
+	new_var = init_var(env_var, allocs->global);
+	vars->envp->push(vars->envp, new_var);
 }

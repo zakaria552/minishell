@@ -6,26 +6,26 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:49:04 by zfarah            #+#    #+#             */
-/*   Updated: 2025/08/23 22:36:17 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:44:13 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *get_exc_path(char *paths, char *cmd, t_arena *arena);
-static char *get_env_variable(char **envp, char *variable);
-static bool is_executable(char *path);
+static char	*get_exc_path(char *paths, char *cmd, t_arena *arena);
+static char	*get_env_variable(char **envp, char *variable);
+static bool	is_executable(char *path);
 
-void *set_errno(int err_code)
+void	*set_errno(int err_code)
 {
 	errno = err_code;
 	return (NULL);
 }
 
-char *get_binary_path(char *command, char **envp, t_arena *arena)
+char	*get_binary_path(char *command, char **envp, t_arena *arena)
 {
-	char *path;
-	char *exc_path;
+	char	*path;
+	char	*exc_path;
 
 	if (!*command)
 		cmd_not_found_err(127, command, false);
@@ -33,7 +33,7 @@ char *get_binary_path(char *command, char **envp, t_arena *arena)
 	{
 		if (!is_executable(command))
 			cmd_not_found_err(errno, command, false);
-		return command;
+		return (command);
 	}
 	path = get_env_variable(envp, "PATH=");
 	if (!path)
@@ -44,11 +44,11 @@ char *get_binary_path(char *command, char **envp, t_arena *arena)
 	return (exc_path);
 }
 
-char *get_exc_path(char *path, char *cmd, t_arena *arena)
+static char	*get_exc_path(char *path, char *cmd, t_arena *arena)
 {
-	const int len = strlen(cmd);
-	char *exc_path;
-	int i;
+	const int	len = strlen(cmd);
+	char		*exc_path;
+	int			i;
 
 	while (*path)
 	{
@@ -63,17 +63,17 @@ char *get_exc_path(char *path, char *cmd, t_arena *arena)
 		if (is_executable(exc_path))
 			return (exc_path);
 		if (!path[i])
-			break;
+			break ;
 		path = path + i + 1;
 	}
 	errno = 127;
 	return (NULL);
 }
 
-char *get_env_variable(char **envp, char *variable)
+static char	*get_env_variable(char **envp, char *variable)
 {
-	size_t len;
-	int i;
+	size_t	len;
+	int		i;
 
 	len = ft_strlen(variable);
 	i = -1;
@@ -85,23 +85,22 @@ char *get_env_variable(char **envp, char *variable)
 	return (NULL);
 }
 
-static bool is_executable(char *path)
+static bool	is_executable(char *path)
 {
-	struct stat p_stat;
-	const bool exec_access = access(path, X_OK) == 0;
+	struct stat	p_stat;
+	const bool	exec_access = access(path, X_OK) == 0;
 
-	
 	if (exec_access && stat(path, &p_stat) < 0)
 		runtime_err(errno, NULL);
 	if (exec_access && !S_ISREG(p_stat.st_mode))
 	{
 		errno = 126;
-		return false;
+		return (false);
 	}
 	if (!exec_access)
 	{
 		errno = 127;
-		return false;
+		return (false);
 	}
 	return (true);
 }
