@@ -4,7 +4,6 @@ void launch_shell(void)
 {
     t_allocators *allocs;
     t_vector *commands;
-    t_vector *vec;
     char *prompt;
 
 	allocs = get_allocators();
@@ -13,15 +12,16 @@ void launch_shell(void)
 		allocs->prompt = init_arena(ARENA_SIZE);
 		set_readline_handler();
 		prompt = int_tty_prompt("minishell> ", true, isatty(STDIN_FILENO));
-		if (!prompt)
+		if (!prompt && g_signal != 130)
 		   break;
-		vec = tokenize_input(prompt, allocs->prompt, '\0');
-		if (!vec)
-		   continue ;
-        commands = parse_tokens_to_commands(allocs->prompt, vec);
-		if (!commands)
-		   continue ;
-        handle_here_doc(commands);
+		commands = tokenize_input(prompt, allocs->prompt, '\0');
+		if (!commands)// || g_signal == 130)
+		{
+			clean_up(false, false);
+	//		g_signal = 0;
+			continue ;
+		}
+		handle_here_doc(commands);
         execute_commands(commands, allocs->prompt);
         clean_up(false, false);
     }
