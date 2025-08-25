@@ -105,19 +105,20 @@ static t_token	*get_next_token(char *s, t_arena *arena)
 	return (tok);
 }
 
-//tokenize the input string, return a vector of tokens
+//tokenize the input string int a vector of commands
 //delimiter is there so the function can be reused to tokenize quoted strings
 //for parsing. 
 t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 {
 	t_token		*tok;
-	t_vector	*vec;
+	t_vector	*tokens;
+	t_vector	*commands;
 
-	vec = init_vector(INIT_VECTOR_SIZE, NULL, arena);
+	tokens = init_vector(INIT_VECTOR_SIZE, NULL, arena);
 	while (s && *s && *s != delimiter)
 	{
 		tok = get_next_token(s, arena);
-		vec->push(vec, tok);
+		tokens->push(tokens, tok);
 		if (tok->read_chars > 0)
 			s += tok->read_chars;
 		else
@@ -126,5 +127,7 @@ t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 			return (NULL);
 		}
 	}
-	return (vec);
+	commands = init_vector(INIT_VECTOR_SIZE, NULL, arena);
+	commands = parse_tokens_to_commands(arena, tokens);
+	return (commands);
 }

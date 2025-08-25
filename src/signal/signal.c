@@ -88,12 +88,13 @@ void	signal_handler(int signum, siginfo_t *act, void *next)
 {
 	(void)next;
 	(void)act;
-	g_signal = 128 + signum;
 	if (signum == SIGINT)
 	{
+		set_status(130);
 		ft_printf("\n");
-		rl_replace_line("", 1);
+		rl_replace_line("", 0);
 		rl_on_new_line();
+		rl_redisplay();
 	}
 }
 
