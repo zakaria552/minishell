@@ -7,17 +7,17 @@ static void	wait_child_processes(t_vector *cmds);
 
 void	execute_commands(t_vector *cmds, t_arena *arena)
 {
-	bool	is_single_builtin;
-
-	is_single_builtin = cmds->size == 1 && is_builtin(((t_cmd *)cmds->get(cmds,
-					0))->cmd);
-	if (is_single_builtin && (g_signal == 0))
-		execute_builtin(cmds, 0, false, false);
-	if (!is_single_builtin && (g_signal == 0))
-		pipeline(cmds, arena);
-	close_open_here_docs(cmds, -1);
-	if (!is_single_builtin && (g_signal == 0))
-		wait_child_processes(cmds);
+    bool is_single_builtin;
+    
+    set_handler_to_ignore();
+    is_single_builtin = cmds->size == 1 && is_builtin(((t_cmd *) cmds->get(cmds, 0))->cmd);
+    if (is_single_builtin && (g_signal == 0))
+        execute_builtin(cmds, 0, false, false);
+    if (!is_single_builtin && (g_signal == 0))
+        pipeline(cmds, arena);
+    close_open_here_docs(cmds, -1);
+    if (!is_single_builtin && (g_signal == 0))
+        wait_child_processes(cmds);
 }
 
 static void	pipeline(t_vector *cmds, t_arena *arena)
