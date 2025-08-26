@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-static char	*read_prompt(char *prompt_msg, bool update_history);
-static void	display_working_dir(void);
-static char	*get_pwd(void);
+static char *read_prompt(char *prompt_msg, bool update_history);
+static void display_working_dir(void);
+static char *get_pwd(void);
 
-char	*int_tty_prompt(char *prompt_msg, bool update_history, bool interactive)
+char *int_tty_prompt(char *prompt_msg, bool update_history, bool interactive)
 {
-	t_allocators	*allocs;
-	char			*prompt;
-	char			*arena_prompt;
-	char			*line;
+	t_allocators *allocs;
+	char *prompt;
+	char *arena_prompt;
+	char *line;
 
 	allocs = get_allocators();
 	if (interactive)
@@ -29,12 +29,13 @@ char	*int_tty_prompt(char *prompt_msg, bool update_history, bool interactive)
 	return (arena_prompt);
 }
 
-static char	*read_prompt(char *prompt_msg, bool update_history)
+static char *read_prompt(char *prompt_msg, bool update_history)
 {
-	t_allocators	*allocs;
-	char			*prompt;
-	char			*arena_prompt;
+	t_allocators *allocs;
+	char *prompt;
+	char *arena_prompt;
 
+	(void)prompt_msg;
 	allocs = get_allocators();
 	if (update_history)
 		display_working_dir();
@@ -52,12 +53,12 @@ static char	*read_prompt(char *prompt_msg, bool update_history)
 	return (arena_prompt);
 }
 
-static char	*get_pwd(void)
+static char *get_pwd(void)
 {
-	const t_local_vars	*vars = get_local_vars();
-	const t_env_var		*home = vars->get("HOME");
-	int					len;
-	int					i;
+	const t_local_vars *vars = get_local_vars();
+	const t_env_var *home = vars->get("HOME");
+	int len;
+	int i;
 
 	if (!home)
 		return (vars->pwd);
@@ -71,21 +72,21 @@ static char	*get_pwd(void)
 	return (arena_strjoin(get_allocators()->prompt, "~", vars->pwd + i));
 }
 
-static void	display_working_dir(void)
+static void display_working_dir(void)
 {
-	char	*pwd;
-	char	*working_dir;
-	char	*tmp;
+	char *pwd;
+	char *working_dir;
+	char *tmp;
 
 	pwd = get_pwd();
 	working_dir = ft_strrchr(pwd, '/');
 	if (!working_dir)
 	{
-		ft_printf("\x1B[38;5;93m%s\e[0m\n", pwd);
-		return ;
+		ft_printf("\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n", pwd);
+		return;
 	}
 	tmp = working_dir;
 	working_dir++;
 	*tmp = '\0';
-	ft_printf("\x1B[38;5;135m%s/\e[0m\x1B[38;5;93m%s\e[0m\n", pwd, working_dir);
+	ft_printf("\001\x1b[38;5;135m\002%s/\001\x1b[0m\002\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n", pwd, working_dir);
 }
