@@ -7,19 +7,19 @@ static void	wait_child_processes(t_vector *cmds);
 
 void	execute_commands(t_vector *cmds, t_arena *arena)
 {
-	bool	is_single_builtin;
+	t_local_vars *vars;
 
-	is_single_builtin = cmds->size == 1 && is_builtin(((t_cmd *)cmds->get(cmds,
-					0))->cmd);
-	if (is_single_builtin && (g_signal == 0))
-		execute_builtin(cmds, 0, false, false);
-	if (!is_single_builtin && (g_signal == 0))
+	vars = get_local_vars();
+	vars->pipeline = !(cmds->size == 1 && is_builtin(((t_cmd *)cmds->get(cmds, 0))->cmd));
+	if (!vars->pipeline && (g_signal == 0))
+		execute_builtin(cmds, 0, false);
+	if (vars->pipeline && (g_signal == 0))
 	{
 		set_handler_to_ignore();
 		pipeline(cmds, arena);
 	}
 	close_open_here_docs(cmds, -1);
-	if (!is_single_builtin && (g_signal == 0))
+	if (vars->pipeline && (g_signal == 0))
 		wait_child_processes(cmds);
 	set_readline_handler();
 }
@@ -37,8 +37,6 @@ static void	pipeline(t_vector *cmds, t_arena *arena)
 	while (++i < cmds->size)
 	{
 		cmd = ((t_cmd *)cmds->get(cmds, i));
-		if (!cmd->cmd)
-			continue ;
 		if (pipe(next_pipe) < 0)
 			runtime_err(errno, NULL);
 		update_cmd_pipes(cmd, curr_pipe, next_pipe);
@@ -64,7 +62,7 @@ static void	execute_cmd(t_vector *cmds, int index, t_arena *arena)
 	set_handler_to_default();
 	close_open_here_docs((t_vector *)cmds, index);
 	redirect_io((t_cmd *)cmd, true);
-	execute_builtin(cmds, index, true, true);
+	execute_builtin(cmds, index, true);
 	path = get_binary_path(cmd->cmd, envp, arena);
 	args = execve_args(arena, (t_cmd *)cmd, path);
 	execve(path, args, envp);

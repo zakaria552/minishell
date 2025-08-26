@@ -33,6 +33,22 @@ void	runtime_err(int err_code, char *msg)
 	}
 	ft_putstr_fd(strerror(errno), 2);
 	ft_putstr_fd("\n", 2);
+	if (!get_local_vars()->pipeline)
+		return;
+	clean_up(true, true);
+	exit(err_code);
+}
+
+void	clean_exit(int err_code, char *msg)
+{
+	ft_putstr_fd("minishell: ", 2);
+	if (msg)
+	{
+		ft_putstr_fd(msg, 2);
+		ft_putstr_fd(":", 2);
+	}
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putstr_fd("\n", 2);
 	clean_up(true, true);
 	exit(err_code);
 }
