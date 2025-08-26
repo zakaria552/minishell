@@ -1,7 +1,7 @@
 #include "minishell.h"
 
-static void	redirect_stdin(char *file);
-static void	redirect_stdout(t_token *redirect);
+static void	redirect_stdin(t_cmd *cmd, char *file);
+static void	redirect_stdout(t_cmd *cmd, t_token *redirect);
 static void	redirect_here_doc(t_cmd *cmd);
 static void	pipe_redirect(t_cmd *cmd);
 
@@ -13,57 +13,72 @@ void	redirect_io(t_cmd *cmd, bool redir_pipeline)
 	int				i;
 
 	redirects = cmd->redirects;
+	get_local_vars()->io_err = false;
 	i = -1;
 	if (redir_pipeline)
 		pipe_redirect(cmd);
-	redirect_here_doc(cmd);
 	while (++i < redirects->size)
 	{
 		redir = (t_token *)redirects->get(redirects, i);
 		type = redir->type;
+		if (!redir_pipeline && get_local_vars()->io_err)
+			break;
 		if (type == INPUT_REDIR)
-			redirect_stdin(redir->content);
+			redirect_stdin(cmd, redir->content);
 		else if (type == OUTPUT_REDIR || type == OUTPUT_APPEND)
-			redirect_stdout(redir);
+			redirect_stdout(cmd, redir);
+		else if (type == HERE_DOC)
+			redirect_here_doc(cmd);
 	}
+	if (get_local_vars()->io_err)
+		set_status(1);
 }
 
-static void	redirect_stdin(char *file)
+static void	redirect_stdin(t_cmd *cmd, char *file)
 {
 	const int	fd = open(file, O_RDONLY);
 
 	if (fd < 0)
-		runtime_err(1, file);
+	{
+		get_local_vars()->io_err = true;
+		return runtime_err(1, file);
+	}
 	if (dup2(fd, STDIN_FILENO) < 0)
 	{
+		get_local_vars()->io_err = true;
+		if (cmd->fd_here_doc > 0)
+			close(cmd->fd_here_doc);
 		close(fd);
-		runtime_err(errno, NULL);
+		return runtime_err(errno, NULL);
 	}
 	close(fd);
 }
 
-static void	redirect_stdout(t_token *redirect)
+static void	redirect_stdout(t_cmd *cmd, t_token *redirect)
 {
 	int	fd;
 	int	flags;
-	int	mode;
 
 	flags = O_RDWR | O_CREAT;
-	mode = 0;
-	mode |= S_IRUSR | S_IWUSR;
-	mode |= S_IRGRP;
-	mode |= S_IROTH;
 	if (redirect->type == OUTPUT_APPEND)
 		flags |= O_APPEND;
 	else
 		flags |= O_TRUNC;
-	fd = open(redirect->content, flags, mode);
+	fd = open(redirect->content, flags, 0644);
 	if (fd < 0)
-		runtime_err(1, NULL);
+	{
+		get_local_vars()->io_err = true;
+		if (cmd->fd_here_doc > 0)
+			close(cmd->fd_here_doc);
+		return runtime_err(1, redirect->content);
+	}
 	if (dup2(fd, STDOUT_FILENO) < 0)
 	{
+		get_local_vars()->io_err = true;
+		if (cmd->fd_here_doc > 0)
+			close(cmd->fd_here_doc);
 		close(fd);
-		runtime_err(errno, NULL);
+		return runtime_err(errno, NULL);
 	}
 	close(fd);
 }
@@ -84,8 +99,9 @@ static void	redirect_here_doc(t_cmd *cmd)
 	}
 	if (dup2(fd, STDIN_FILENO) < 0)
 	{
+		get_local_vars()->io_err = true;
 		close(fd);
-		runtime_err(errno, NULL);
+		return runtime_err(errno, NULL);
 	}
 	close(fd);
 }
