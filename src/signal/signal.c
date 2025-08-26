@@ -15,7 +15,7 @@ void	reset_readline(char *msg, int status)
 	ft_putstr_fd(msg, STDERR_FILENO);
 	ft_putstr_fd("\n", STDOUT_FILENO);
 	rl_replace_line("", 0);
-	set_status(status);
+	set_status(status + 128);
 	set_handler_to_ignore();
 }
 //Ctrl-C handled by handler, ctrl-\ ignored
