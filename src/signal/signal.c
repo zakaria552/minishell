@@ -100,7 +100,7 @@ void	signal_handler(int signum, siginfo_t *act, void *next)
 	{
 		set_status(128 + signum);
 		ft_printf("\n");
-		rl_replace_line(PROMPT_MSG, 0);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
