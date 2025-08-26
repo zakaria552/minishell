@@ -14,10 +14,14 @@ void	execute_commands(t_vector *cmds, t_arena *arena)
 	if (is_single_builtin && (g_signal == 0))
 		execute_builtin(cmds, 0, false, false);
 	if (!is_single_builtin && (g_signal == 0))
+	{
+		set_handler_to_ignore();
 		pipeline(cmds, arena);
+	}
 	close_open_here_docs(cmds, -1);
 	if (!is_single_builtin && (g_signal == 0))
 		wait_child_processes(cmds);
+	set_readline_handler();
 }
 
 static void	pipeline(t_vector *cmds, t_arena *arena)
@@ -81,8 +85,19 @@ static void	wait_child_processes(t_vector *cmds)
 	{
 		cmd = ((t_cmd *)cmds->get(cmds, i));
 		waitpid(cmd->pid, &status, 0);
+		if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGQUIT)
+				reset_readline("Quit. Core dumped", SIGQUIT);
+			else if (WTERMSIG(status) == SIGINT)
+				reset_readline("", SIGINT);
+			else
+				vars->status = WEXITSTATUS(status);
+			set_handler_to_ignore();
+		}
+		else
+			vars->status = WEXITSTATUS(status);
 	}
-	vars->status = WEXITSTATUS(status);
 }
 
 static char	**execve_args(t_arena *arena, t_cmd *cmd, char *binary)

@@ -10,6 +10,14 @@ int here_doc_readline_flagger(void)
 	return (0);
 }
 
+void	reset_readline(char *msg, int status)
+{
+	ft_putstr_fd(msg, STDERR_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
+	rl_replace_line(PROMPT_MSG, 0);
+	set_status(status + 128);
+	set_handler_to_ignore();
+}
 //Ctrl-C handled by handler, ctrl-\ ignored
 //reset rl globals
 void	set_readline_handler(void)
@@ -23,7 +31,7 @@ void	set_readline_handler(void)
 	ft_memset(&s_signal, 0, sizeof(s_signal));
 	ft_memset(&s_ignore, 0, sizeof(s_ignore));
 	s_signal.sa_sigaction = signal_handler;
-	s_signal.sa_flags = SA_SIGINFO | SA_RESTART;
+	s_signal.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGINT, &s_signal, NULL) == -1)
 		runtime_err(errno, "registering signal handler");
 	s_ignore.sa_handler = SIG_IGN;
@@ -88,12 +96,13 @@ void	signal_handler(int signum, siginfo_t *act, void *next)
 {
 	(void)next;
 	(void)act;
-	g_signal = 128 + signum;
 	if (signum == SIGINT)
 	{
+		set_status(128 + signum);
 		ft_printf("\n");
-		rl_replace_line("", 1);
+		rl_replace_line("", 0);
 		rl_on_new_line();
+		rl_redisplay();
 	}
 }
 
