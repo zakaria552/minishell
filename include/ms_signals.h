@@ -1,6 +1,7 @@
 #ifndef MS_SIGNALS_H
 # define MS_SIGNALS_H
 
+void	reset_readline(char *msg, int status);
 void	set_readline_handler(void);
 void	set_here_doc_handler(void);
 void	signal_handler(int signum, siginfo_t *act, void *next);
