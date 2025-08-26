@@ -14,7 +14,7 @@ void	reset_readline(char *msg, int status)
 {
 	ft_putstr_fd(msg, STDERR_FILENO);
 	ft_putstr_fd("\n", STDOUT_FILENO);
-	rl_replace_line("", 0);
+	rl_replace_line(PROMPT_MSG, 0);
 	set_status(status + 128);
 	set_handler_to_ignore();
 }
@@ -100,7 +100,7 @@ void	signal_handler(int signum, siginfo_t *act, void *next)
 	{
 		set_status(128 + signum);
 		ft_printf("\n");
-		rl_replace_line("", 0);
+		rl_replace_line(PROMPT_MSG, 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
