@@ -19,7 +19,7 @@ t_arena	*init_arena(size_t size)
 	if (!arena->buffer)
 	{
 		free(arena);
-		runtime_err(ENOMEM, NULL);
+		clean_exit(ENOMEM, NULL);
 	}
 	ft_memset(arena->buffer, 0, size);
 	return (arena);

@@ -20,6 +20,8 @@ typedef struct s_local_vars
     void (*set)(char *var);
     void (*unset)(char *variable);
 	char	*pwd;
+    bool    pipeline;
+    bool    io_err;
 } t_local_vars;
 
 // local vars

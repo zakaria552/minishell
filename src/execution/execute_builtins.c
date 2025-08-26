@@ -2,8 +2,7 @@
 
 static void	exc_builtin(t_cmd *cmd, t_local_vars *vars, bool *should_exit);
 
-void	execute_builtin(t_vector *cmds, int index, bool should_exit,
-		bool pipeline)
+void	execute_builtin(t_vector *cmds, int index, bool should_exit)
 {
 	const t_cmd		*cmd = cmds->get(cmds, index);
 	t_local_vars	*vars;
@@ -20,10 +19,10 @@ void	execute_builtin(t_vector *cmds, int index, bool should_exit,
 		close(vars->stdin_cpy);
 		runtime_err(errno, NULL);
 	}
-	if (!pipeline)
+	if (!vars->pipeline)
 		redirect_io((t_cmd *)cmd, false);
 	exc_builtin((t_cmd *)cmd, vars, &should_exit);
-	if (should_exit || pipeline)
+	if (should_exit || vars->pipeline)
 	{
 		close_open_here_docs(cmds, -1);
 		clean_up(true, true);
@@ -33,26 +32,26 @@ void	execute_builtin(t_vector *cmds, int index, bool should_exit,
 
 static void	exc_builtin(t_cmd *cmd, t_local_vars *vars, bool *should_exit)
 {
-	if (strmatch(cmd->cmd, "export"))
+	if (!vars->io_err && strmatch(cmd->cmd, "export"))
 		export((t_cmd *)cmd);
-	else if (strmatch(cmd->cmd, "unset"))
+	else if (!vars->io_err && strmatch(cmd->cmd, "unset"))
 		unset((t_cmd *)cmd);
-	else if (strmatch(cmd->cmd, "env"))
+	else if (!vars->io_err && strmatch(cmd->cmd, "env"))
 		env();
-	else if (strmatch(cmd->cmd, "exit"))
+	else if (!vars->io_err && strmatch(cmd->cmd, "exit"))
 		builtin_exit((t_cmd *)cmd, should_exit);
-	else if (strmatch(cmd->cmd, "echo"))
+	else if (!vars->io_err && strmatch(cmd->cmd, "echo"))
 		echo(cmd);
-	else if (strmatch(cmd->cmd, "cd"))
+	else if (!vars->io_err && strmatch(cmd->cmd, "cd"))
 		cd(cmd);
-	else if (strmatch(cmd->cmd, "pwd"))
+	else if (!vars->io_err && strmatch(cmd->cmd, "pwd"))
 		pwd();
 	if (dup2(vars->stdin_cpy, STDIN_FILENO) < 0 || dup2(vars->stdout_cpy,
 			STDOUT_FILENO) < 0)
 	{
 		close(vars->stdin_cpy);
 		close(vars->stdout_cpy);
-		runtime_err(errno, NULL);
+		return runtime_err(errno, NULL);
 	}
 	close(vars->stdin_cpy);
 	close(vars->stdout_cpy);

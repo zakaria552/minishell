@@ -33,6 +33,8 @@ void	init_local_vars(char **envp)
 	vars->stdin_cpy = -1;
 	vars->stdout_cpy = -1;
 	vars->pwd = pwd_to_string(allocs->global);
+	vars->io_err = false;
+	vars->pipeline = false;
 	update_shell_level(vars);
 }
 
