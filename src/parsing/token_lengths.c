@@ -53,7 +53,7 @@ ssize_t expansion_length(char *s)
 	ssize_t length;
 
 	length = 1;
-	if (s[length] == '?')
+	if (s[length] == '?' || s[length] == '_' || ft_isdigit(s[length]))
 		return (2);
 	while (is_legal_expansion_char(s[length]))
 		++length;

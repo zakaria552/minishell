@@ -56,7 +56,15 @@ typedef struct s_redirect
 t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter);
 const char	*get_token_type(t_token_type type);
 //debug, remove before final submission
-void		print_token(t_token *tok);
+//void		print_token(t_token *tok);
+
+//concatenate_strings.c
+char	*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool x);
+
+//expansion.c
+char	*handle_expansion(t_arena *arena, char *s, char *start);
+char	*expand_variable(t_arena * arena, char *s, int len);
+void	expand_single_dollar(t_vector *vec, t_arena *arena);
 
 //token_lengths.c
 ssize_t 	single_quote_length(char *s);
@@ -70,10 +78,9 @@ int	is_legal_expansion_char(char c);
 
 //parsing.c
 t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec);
-char		*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool expand);
 bool		is_string_type(t_token_type type);
 bool		is_redirect_type(t_token_type type);
-void		remove_empty_tokens(t_vector *vec);
+//void		remove_empty_tokens(t_vector *vec);
 
 //arena_strings.c
 char	*arena_strdup(t_arena *arena, char *s);
@@ -83,8 +90,8 @@ char	*arena_strjoin(t_arena *arena, char *s1, char *s2);
 t_cmd	*init_command(t_arena *arena);
 void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i);
 //debug
-void	print_command(t_cmd *command);
-void	print_vector_commands(t_vector *vec);
+//void	print_command(t_cmd *command);
+//void	print_vector_commands(t_vector *vec);
 
 //syntax.c
 bool	check_redirect(t_arena *arena, t_token *token);

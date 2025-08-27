@@ -1,11 +1,12 @@
 #include "minishell.h"
-
+/*
 //debug function
 void	print_token(t_token *tok)
 {
 	ft_printf("Type:%s Length:%d Content:%s\n", get_token_type(tok->type),\
 		tok->read_chars, tok->content);
 }
+*/
 
 const char	*get_token_type(t_token_type type)
 {
@@ -14,23 +15,6 @@ const char	*get_token_type(t_token_type type)
 		"EXPANSION", "STRING"};
 
 	return (names[type]);
-}
-
-//Different functions for different token types
-static t_token_length_func	get_length_function(t_token_type type)
-{
-	if (type == QUOTE_SINGLE)
-		return single_quote_length;
-	if (type == QUOTE_DOUBLE)
-		return double_quote_length;
-	if (type == STRING)
-		return string_length;
-	if (type == EXPANSION)
-		return expansion_length;
-	if (type == EMPTY)
-		return empty_length;
-	else
-		return dummy_length;
 }
 
 /*
@@ -42,7 +26,18 @@ static ssize_t	token_length(char *s, t_token_type type)
 	t_token_length_func	token_length_func;
 	ssize_t				length;
 
-	token_length_func = get_length_function(type);
+	if (type == QUOTE_SINGLE)
+		token_length_func = single_quote_length;
+	else if (type == QUOTE_DOUBLE)
+		token_length_func = double_quote_length;
+	else if (type == STRING)
+		token_length_func = string_length;
+	else if (type == EXPANSION)
+		token_length_func = expansion_length;
+	else if (type == EMPTY)
+		token_length_func = empty_length;
+	else
+		token_length_func = dummy_length;
 	length = token_length_func(s);
 	return (length);
 }
@@ -52,34 +47,31 @@ static ssize_t	token_length(char *s, t_token_type type)
 */
 static t_token_type get_type(char *s)
 {
-	t_token_type	type;
-
-	type = EMPTY;
 	if (*s == '>')
 	{
 		if (*(s+1) == '>')
-			type = OUTPUT_APPEND;
+			return (OUTPUT_APPEND);
 		else
-			type = OUTPUT_REDIR;
+			return (OUTPUT_REDIR);
 	}
 	if (*s == '<')
 	{
 		if (*(s+1) == '<')
-			type = HERE_DOC;
+			return (HERE_DOC);
 		else
-			type = INPUT_REDIR;
+			return (INPUT_REDIR);
 	}
 	if (*s == '|')
-		type = PIPE;
+		return (PIPE);
 	if (*s == '\'')
-		type = QUOTE_SINGLE;
+		return (QUOTE_SINGLE);
 	if (*s == '"')
-		type = QUOTE_DOUBLE;
+		return (QUOTE_DOUBLE);
 	if (*s == '$')
-		type = EXPANSION;
+		return (EXPANSION);
 	if (!is_string_delimiter(*s))
-		type = STRING;
-	return (type);
+		return (STRING);
+	return (EMPTY);
 }
 
 /*
@@ -105,26 +97,28 @@ static t_token	*get_next_token(char *s, t_arena *arena)
 	return (tok);
 }
 
-//tokenize the input string, return a vector of tokens
-//delimiter is there so the function can be reused to tokenize quoted strings
-//for parsing. 
+//tokenize the input string, return a vector of commands by first making a 
+//a vector of tokens, and then calling a command to parse them to commands. 
 t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 {
 	t_token		*tok;
-	t_vector	*vec;
+	t_vector	*tokens;
+	t_vector	*commands;
 
-	vec = init_vector(INIT_VECTOR_SIZE, NULL, arena);
+	tokens = init_vector(INIT_VECTOR_SIZE, NULL, arena);
 	while (s && *s && *s != delimiter)
 	{
 		tok = get_next_token(s, arena);
-		vec->push(vec, tok);
+		tokens->push(tokens, tok);
 		if (tok->read_chars > 0)
 			s += tok->read_chars;
 		else
 		{ 
-			syntax_err(3, "unmatched quote");
+			syntax_err(2, "unmatched quote");
 			return (NULL);
 		}
 	}
-	return (vec);
+	expand_single_dollar(tokens, arena);
+	commands = parse_tokens_to_commands(arena, tokens);
+	return (commands);
 }
