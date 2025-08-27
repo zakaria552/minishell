@@ -17,10 +17,9 @@ void	expand_single_dollar(t_vector *vec, t_arena *arena)
 		{
 			next = vec->get(vec, i + 1);
 			if (!next || (next->type == EMPTY || next->type == PIPE))
-			{
-				tok->type = STRING;
-				tok->content = arena_strdup(arena, "");
-			}
+				continue ;
+			tok->type = STRING;
+			tok->content = arena_strdup(arena, "");
 		}
 	}
 }
