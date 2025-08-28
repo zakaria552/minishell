@@ -1,16 +1,19 @@
 #include "minishell.h"
 
-static void set_cmd_here_doc(t_cmd *cmd, char *limiter);
+static void set_cmd_here_doc(t_arena *arena, t_cmd *cmd, char *limiter);
 static bool    should_expand(char *line);
-static char* strip_quotes3(char *str);
+//static char* strip_quotes3(char *str);
+static char	*alt_strip_quotes(t_arena *arena, char *str);
 
 void    handle_here_doc(t_vector *cmds)
 {
+	t_arena *arena;
     t_cmd *cmd;
     t_token *token;
     int i;
     int j;
 
+	arena = get_allocators()->prompt;
     i = -1;
     while (++i < cmds->size)
     {
@@ -24,49 +27,26 @@ void    handle_here_doc(t_vector *cmds)
             token = (t_token *)cmd->redirects->get(cmd->redirects, j);
             if (token->type != HERE_DOC)
                 continue;
-            set_cmd_here_doc(cmd, token->content);
+            set_cmd_here_doc(arena, cmd, token->content);
         }
     }
 }
 
-static void exit_after_signal(int *hdoc_pipe)
+static void	clean_up_here_doc(t_cmd *cmd, int *hdoc_pipe, char *line)
 {
-	t_local_vars *vars = get_local_vars();
+	t_local_vars *vars;
 
-	vars->status = 128 + g_signal;
-	close_pipe(hdoc_pipe);
-}
-
-static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
-{
-    const t_arena *arena = get_allocators()->prompt;
-    const bool expand = should_expand(limiter);
-    int hdoc_pipe[2];
-    char *line;
-
-    limiter = strip_quotes3(limiter);
-	if (pipe(hdoc_pipe) < 0)
-		runtime_err(errno, NULL);
-	set_here_doc_handler();
-    while (g_signal == 0)
-    {
-        line = int_tty_prompt(PROMPT_HEREDOC_MSG, false, isatty(STDIN_FILENO));
-		if (!line)
-			break ;
-        if (expand)
-            line = expand_str(line, (t_arena *)arena);
-        if (strmatch(line, limiter))
-			break ;
-        if (write(hdoc_pipe[1], line, ft_strlen(line)) < 0 || write(hdoc_pipe[1], "\n", 1) < 0)
-            runtime_err(errno, NULL); 
-    }
+	vars = get_local_vars();
 	if (g_signal)
-		exit_after_signal(hdoc_pipe);
+	{
+		vars->status = 128 + g_signal;
+		close_pipe(hdoc_pipe);
+	}
 	else
 	{
 		if (!line)
 		{
-			rl_replace_line("", 1);
+			rl_replace_line("", 0);
 			rl_on_new_line();
 		}
 		close(cmd->fd_here_doc);
@@ -75,13 +55,50 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
 	}
 }
 
-char	*alt_strip_quotes(t_arena *arena, char *str)
+static void set_cmd_here_doc(t_arena *arena, t_cmd *cmd, char *limiter)
 {
-	t_vector	vec;
-	char		*limiter;
+    const bool expand = should_expand(limiter);
+    int hdoc_pipe[2];
+    char *line;
 
-	vec = tokenize_input(arena, str, '\0');
-	
+    limiter = alt_strip_quotes(arena, limiter);
+	if (pipe(hdoc_pipe) < 0)
+		runtime_err(errno, NULL);
+	set_here_doc_handler();
+    while (g_signal == 0)
+    {
+        line = int_tty_prompt(PROMPT_HEREDOC_MSG, false, isatty(STDIN_FILENO));
+		if (!line || strmatch(line, limiter))
+			break ;
+        if (expand)
+            line = alt_expand_str(arena, line);
+        if (write(hdoc_pipe[1], line, ft_strlen(line)) < 0 \
+			|| write(hdoc_pipe[1], "\n", 1) < 0)
+            runtime_err(errno, NULL); 
+    }
+	clean_up_here_doc(cmd, hdoc_pipe, line);
+}
+
+static char	*alt_strip_quotes(t_arena *arena, char *str)
+{
+	t_vector	*vec;
+	t_token		*tok;
+	char		*limiter;
+	int			i;
+
+	vec = tokenize_input(str, arena, '\0');
+	i = -1;
+	limiter = arena_strdup(arena, "");
+	while (++i < vec->size)
+	{
+		tok = vec->get(vec, i);
+		if (tok->type == QUOTE_SINGLE || tok->type == QUOTE_DOUBLE)
+			limiter = arena_strjoin(arena, limiter, strip_quotes(arena, \
+				tok->content, true));
+		else
+			limiter = arena_strjoin(arena, limiter, tok->content);
+	}
+	return (limiter);
 }
 
 void    close_open_here_docs(t_vector *cmds, int index)
@@ -107,7 +124,7 @@ static bool    should_expand(char *delimiter)
         return false;
     return true;
 }
-
+/*
 static char * strip_quotes3(char *str)
 {
     char *read;
@@ -151,3 +168,4 @@ static char * strip_quotes3(char *str)
     *write = *read;
     return str;
 }
+*/

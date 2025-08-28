@@ -26,16 +26,18 @@ void	expand_single_dollar(t_vector *vec, t_arena *arena)
 
 //expands the variable name of length len starting at s, 
 //returns empty string if no variable of that name exists.
-char	*expand_variable(t_arena * arena, char *s, int len)
+char	*expand_variable(t_arena * arena, char *s)
 {
 	t_local_vars *vars;
 	t_env_var *var;
 	char	*var_name;
+	int	len;
 	
+	len = expansion_length(s);
 	vars = get_local_vars();
-	if (expansion_length(s) == 2 && *(s + 1) == '?')
+	if (len == 2 && *(s + 1) == '?')
 		return (arena_int_to_string(arena, vars->status));
-	if (expansion_length(s) == 1)
+	if (len == 1)
 		return (arena_strdup(arena, "$"));
 	var_name = arena_alloc(arena, len, s + 1);
 	var_name[len - 1] = '\0';
@@ -62,7 +64,7 @@ char	*handle_expansion(t_arena *arena, char *s, char *start)
 		string = arena_alloc(arena, (start - s) + 1, s);
 		string[(start - s)] = '\0';
 		len = expansion_length(start);
-		temp = arena_strjoin(arena, string, expand_variable(arena, start, len));
+		temp = arena_strjoin(arena, string, expand_variable(arena, start));
 		string = temp;
 		temp = arena_strjoin(arena, string, handle_expansion(arena, \
 			start + len, ft_strchr(start + len, '$')));
