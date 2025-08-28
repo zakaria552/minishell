@@ -4,7 +4,6 @@ void launch_shell(void)
 {
     t_allocators *allocs;
     t_vector *commands;
-    t_vector *vec;
     char *prompt;
 
 	allocs = get_allocators();
@@ -15,12 +14,12 @@ void launch_shell(void)
 		prompt = int_tty_prompt(PROMPT_MSG, true, isatty(STDIN_FILENO));
 		if (!prompt)
 		   break;
-		vec = tokenize_input(prompt, allocs->prompt, '\0');
-		if (!vec)
-		   continue ;
-        commands = parse_tokens_to_commands(allocs->prompt, vec);
+		commands = tokenize_input(prompt, allocs->prompt, '\0');
 		if (!commands)
-		   continue ;
+		{
+			clean_up(false, false);
+			continue ;
+		}
         handle_here_doc(commands);
         execute_commands(commands, allocs->prompt);
         clean_up(false, false);
