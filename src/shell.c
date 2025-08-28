@@ -14,7 +14,7 @@ void launch_shell(void)
 		prompt = int_tty_prompt(PROMPT_MSG, true, isatty(STDIN_FILENO));
 		if (!prompt)
 		   break;
-		commands = tokenize_input(prompt, allocs->prompt, '\0');
+		commands = tokenize_and_parse(prompt, allocs->prompt, '\0');
 		if (!commands)
 		{
 			clean_up(false, false);

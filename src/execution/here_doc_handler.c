@@ -75,6 +75,15 @@ static void set_cmd_here_doc(t_cmd *cmd, char *limiter)
 	}
 }
 
+char	*alt_strip_quotes(t_arena *arena, char *str)
+{
+	t_vector	vec;
+	char		*limiter;
+
+	vec = tokenize_input(arena, str, '\0');
+	
+}
+
 void    close_open_here_docs(t_vector *cmds, int index)
 {
     t_cmd *cmd;

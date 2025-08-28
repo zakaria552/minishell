@@ -1,5 +1,18 @@
 #include "minishell.h"
 
+t_vector	*tokenize_and_parse(char *s, t_arena *arena, char delimiter)
+{
+	t_vector	*tokens;
+	t_vector	*commands;
+
+	tokens = tokenize_input(s, arena, delimiter);
+	if (!tokens)
+		return (NULL);
+	commands = parse_tokens_to_commands(arena, tokens);
+	return (commands);
+	
+}
+
 bool	is_string_type(t_token_type type)
 {
 	if (type == QUOTE_SINGLE || type == QUOTE_DOUBLE)

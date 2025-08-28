@@ -103,7 +103,6 @@ t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 {
 	t_token		*tok;
 	t_vector	*tokens;
-	t_vector	*commands;
 
 	tokens = init_vector(INIT_VECTOR_SIZE, NULL, arena);
 	while (s && *s && *s != delimiter)
@@ -119,6 +118,5 @@ t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 		}
 	}
 	expand_single_dollar(tokens, arena);
-	commands = parse_tokens_to_commands(arena, tokens);
-	return (commands);
+	return (tokens);
 }
