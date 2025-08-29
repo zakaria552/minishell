@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static char	*strip_quotes(t_arena *arena, char *str, bool should_strip)
+char	*strip_quotes(t_arena *arena, char *str, bool should_strip)
 {
 	char	*stripped;
 

@@ -15,4 +15,7 @@ char *int_tty_prompt(char *prompt_msg, bool update_history, bool interactive);
 
 // expand string
 char *expand_str(char *str, t_arena *arena);
+char	*alt_expand_str(t_arena *arena, char *str);
+
+
 #endif

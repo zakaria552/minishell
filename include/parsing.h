@@ -60,10 +60,11 @@ const char	*get_token_type(t_token_type type);
 
 //concatenate_strings.c
 char	*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool x);
+char	*strip_quotes(t_arena *arena, char *str, bool should_strip);
 
 //expansion.c
 char	*handle_expansion(t_arena *arena, char *s, char *start);
-char	*expand_variable(t_arena * arena, char *s, int len);
+char	*expand_variable(t_arena *arena, char *s);
 void	expand_single_dollar(t_vector *vec, t_arena *arena);
 
 //token_lengths.c
@@ -77,6 +78,7 @@ int 		is_string_delimiter(char c);
 int	is_legal_expansion_char(char c);
 
 //parsing.c
+t_vector	*tokenize_and_parse(char *s, t_arena *arena, char delimiter);
 t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec);
 bool		is_string_type(t_token_type type);
 bool		is_redirect_type(t_token_type type);

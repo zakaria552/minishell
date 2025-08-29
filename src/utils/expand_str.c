@@ -4,6 +4,31 @@ static char			*append_till_next_char(char *dest, char **src, char c,
 						t_arena *arena);
 static t_env_var	*expand_var(char *str, char c, t_arena *arena);
 
+char	*alt_expand_str(t_arena *arena, char *str)
+{
+	char		*expanded;
+	char		*temp;
+	size_t		index;
+
+	temp = ft_strchr(str, '$');
+	if (!temp)
+		return (str);
+	expanded = arena_strdup(arena, "");
+	while (temp)
+	{
+		index = temp - str;
+		temp = arena_alloc(arena, index + 1, str);
+		temp[index] = '\0';
+		expanded = arena_strjoin(arena, expanded, temp);
+		str += index;
+		index = expansion_length(str);
+		expanded = arena_strjoin(arena, expanded, expand_variable(arena, str));
+		str += index;
+		temp =  ft_strchr(str, '$');
+	}
+	return (arena_strjoin(arena, expanded, str));
+}
+
 char	*expand_str(char *str, t_arena *arena)
 {
 	char		*expanded;
