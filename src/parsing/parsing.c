@@ -10,7 +10,6 @@ t_vector	*tokenize_and_parse(char *s, t_arena *arena, char delimiter)
 		return (NULL);
 	commands = parse_tokens_to_commands(arena, tokens);
 	return (commands);
-	
 }
 
 bool	is_string_type(t_token_type type)
@@ -31,7 +30,7 @@ bool	is_redirect_type(t_token_type type)
 	return (false);
 }
 
-static t_cmd *parse_single_command(t_arena *arena, t_vector *vec, int *i)
+static t_cmd	*parse_single_command(t_arena *arena, t_vector *vec, int *i)
 {
 	t_cmd		*command;
 	t_token		*tok;
@@ -42,7 +41,7 @@ static t_cmd *parse_single_command(t_arena *arena, t_vector *vec, int *i)
 	{
 		tok = vec->get(vec, *i);
 		if (tok->type == EMPTY)
-			continue;
+			continue ;
 		if (tok->type == PIPE)
 			return (command);
 		if (is_string_type(tok->type) || is_redirect_type(tok->type))

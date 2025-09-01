@@ -1,18 +1,10 @@
 #include "minishell.h"
-/*
-//debug function
-void	print_token(t_token *tok)
-{
-	ft_printf("Type:%s Length:%d Content:%s\n", get_token_type(tok->type),\
-		tok->read_chars, tok->content);
-}
-*/
 
 const char	*get_token_type(t_token_type type)
 {
-	const char *names[] = {"EMPTY", "PIPE", "INPUT_REDIR", "OUTPUT_REDIR",\
-		"OUTPUT_APPEND", "HERE_DOC", "QUOTE_SINGLE", "QUOTE_DOUBLE", \
-		"EXPANSION", "STRING"};
+	const char	*names[] = {"EMPTY", "PIPE", "INPUT_REDIR", "OUTPUT_REDIR", \
+"OUTPUT_APPEND", "HERE_DOC", "QUOTE_SINGLE", "QUOTE_DOUBLE", "EXPANSION", \
+"STRING"};
 
 	return (names[type]);
 }
@@ -45,18 +37,18 @@ static ssize_t	token_length(char *s, t_token_type type)
 /*
 	Return the type of token, which is determined by the first 1 or 2 characters
 */
-static t_token_type get_type(char *s)
+static t_token_type	get_type(char *s)
 {
 	if (*s == '>')
 	{
-		if (*(s+1) == '>')
+		if (*(s + 1) == '>')
 			return (OUTPUT_APPEND);
 		else
 			return (OUTPUT_REDIR);
 	}
 	if (*s == '<')
 	{
-		if (*(s+1) == '<')
+		if (*(s + 1) == '<')
 			return (HERE_DOC);
 		else
 			return (INPUT_REDIR);
@@ -112,7 +104,7 @@ t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 		if (tok->read_chars > 0)
 			s += tok->read_chars;
 		else
-		{ 
+		{
 			syntax_err(2, "unmatched quote");
 			return (NULL);
 		}

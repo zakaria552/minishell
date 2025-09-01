@@ -6,11 +6,11 @@ char	*strip_quotes(t_arena *arena, char *str, bool should_strip)
 
 	if (should_strip)
 	{
-		stripped =  arena_alloc(arena, ft_strlen(str) - 1, str + 1);
+		stripped = arena_alloc(arena, ft_strlen(str) - 1, str + 1);
 		stripped[ft_strlen(str) - 2] = '\0';
 		return (stripped);
 	}
-	else 
+	else
 		return (str);
 }
 
@@ -21,7 +21,7 @@ static char	*strip_expand(t_token *tok, t_arena *arena, bool expand)
 	char	*str;
 	char	*start;
 
-	if (tok->type == QUOTE_DOUBLE || tok->type == QUOTE_SINGLE )
+	if (tok->type == QUOTE_DOUBLE || tok->type == QUOTE_SINGLE)
 	{
 		str = strip_quotes(arena, tok->content, expand);
 		if (tok->type == QUOTE_DOUBLE)
@@ -53,12 +53,12 @@ char	*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool x)
 	char		*string;
 	char		*temp;
 	t_token		*tok;
-	
+
 	string = arena_strdup(arena, "");
 	skip_empties(vec, i);
 	while (*i < vec->size)
 	{
-	 	tok = vec->get(vec, *i);
+		tok = vec->get(vec, *i);
 		if (is_string_type(tok->type))
 		{
 			temp = arena_strjoin(arena, string, strip_expand(tok, arena, x));
@@ -67,8 +67,8 @@ char	*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool x)
 		else
 		{
 			*i -= 1;
-			break;
-		}	
+			break ;
+		}
 		*i += 1;
 	}
 	return (string);
