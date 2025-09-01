@@ -1,8 +1,16 @@
 {                                            
-   <dl_open>                                 
+   readline-reachable                                 
    Memcheck:Leak                             
    match-leak-kinds: reachable               
    ...                                       
    fun:readline
    ...
-}      
+}
+{                                            
+   add_history-reachable
+   Memcheck:Leak                             
+   match-leak-kinds: reachable               
+   ...                                       
+   fun:add_history
+   ...
+}           
