@@ -30,6 +30,7 @@ static void	change_directory(char *path)
 	else
 	{
 		vars->pwd = pwd_to_string(allocs->global);
+		vars->set(arena_strjoin(allocs->global, "PWD=", vars->pwd));
 		set_status(0);
 	}
 }

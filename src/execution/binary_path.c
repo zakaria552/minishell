@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:49:04 by zfarah            #+#    #+#             */
-/*   Updated: 2025/08/25 14:44:13 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/02 14:46:50 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	*get_binary_path(char *command, char **envp, t_arena *arena)
 			cmd_not_found_err(errno, command, false);
 		return (command);
 	}
+	if (is_executable(command))
+		return (command);
 	path = get_env_variable(envp, "PATH=");
 	if (!path)
 		cmd_not_found_err(127, command, false);
