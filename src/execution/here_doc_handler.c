@@ -28,6 +28,8 @@ void	handle_here_doc(t_vector *cmds)
 			if (token->type != HERE_DOC)
 				continue ;
 			set_cmd_here_doc(arena, cmd, token->content);
+			if (g_signal)
+				return ;
 		}
 	}
 }
@@ -49,7 +51,8 @@ static void	clean_up_here_doc(t_cmd *cmd, int *hdoc_pipe, char *line)
 			rl_replace_line("", 0);
 			rl_on_new_line();
 		}
-		close(cmd->fd_here_doc);
+		if (cmd->fd_here_doc > 0)
+			close(cmd->fd_here_doc);
 		cmd->fd_here_doc = hdoc_pipe[0];
 		close(hdoc_pipe[1]);
 	}
@@ -124,48 +127,3 @@ static bool	should_expand(char *delimiter)
 		return (false);
 	return (true);
 }
-/*
-static char * strip_quotes3(char *str)
-{
-	char *read;
-	char *write;
-	bool  quoted = {0};
-	char type = '\0';
-	const int len = ft_strlen(str);
-
-	read = str;
-	write = str;
-	if ((str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '\"' && str[len - 1] == '\"'))
-	{
-		str[len - 1] = '\0';
-		str++;
-		return str;
-	}
-	while (read && *read)
-	{
-		if (!quoted && (*read == '\'' || *read == '\"'))
-		{
-			quoted = true;
-			type = *read;
-		}
-		while (quoted)
-		{
-			if (*read == type)
-			{
-				quoted = false;
-				read++;
-			}
-			read++;
-		}
-		if (!quoted)
-		{
-			*write = *read;
-			write++;
-		}
-		if (*read)
-		  read++;
-	}
-	*write = *read;
-	return str;
-}
-*/
