@@ -16,7 +16,8 @@ void	expand_single_dollar(t_vector *vec, t_arena *arena)
 		if (tok->type == EXPANSION && strmatch(tok->content, "$"))
 		{
 			next = vec->get(vec, i + 1);
-			if (!next || (next->type == EMPTY || next->type == PIPE))
+			if (!next || !(next->type == QUOTE_DOUBLE || next->type \
+== QUOTE_SINGLE))
 				continue ;
 			tok->type = STRING;
 			tok->content = arena_strdup(arena, "");

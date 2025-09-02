@@ -110,5 +110,8 @@ t_vector	*tokenize_input(char *s, t_arena *arena, char delimiter)
 		}
 	}
 	expand_single_dollar(tokens, arena);
+	empty_empty_expansion(tokens, arena);
+	if (check_all_empty(tokens))
+		return (NULL);
 	return (tokens);
 }
