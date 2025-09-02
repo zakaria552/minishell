@@ -2,7 +2,6 @@
 
 static char *read_prompt(char *prompt_msg, bool update_history);
 static void display_working_dir(void);
-static char *get_pwd(void);
 
 char *int_tty_prompt(char *prompt_msg, bool update_history, bool interactive)
 {
@@ -53,32 +52,13 @@ static char *read_prompt(char *prompt_msg, bool update_history)
 	return (arena_prompt);
 }
 
-static char *get_pwd(void)
-{
-	const t_local_vars *vars = get_local_vars();
-	const t_env_var *home = vars->get("HOME");
-	int len;
-	int i;
-
-	if (!home)
-		return (vars->pwd);
-	len = ft_strlen(home->value);
-	i = -1;
-	while (++i < len)
-	{
-		if (vars->pwd[i] != home->value[i])
-			return (vars->pwd);
-	}
-	return (arena_strjoin(get_allocators()->prompt, "~", vars->pwd + i));
-}
-
 static void display_working_dir(void)
 {
 	char *pwd;
 	char *working_dir;
 	char *tmp;
 
-	pwd = get_pwd();
+	pwd = pwd_to_string(get_allocators()->prompt);
 	working_dir = ft_strrchr(pwd, '/');
 	if (!working_dir)
 	{
