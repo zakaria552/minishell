@@ -27,9 +27,8 @@ void	redirect_io(t_cmd *cmd, bool redir_pipeline)
 			redirect_stdin(cmd, redir->content);
 		else if (type == OUTPUT_REDIR || type == OUTPUT_APPEND)
 			redirect_stdout(cmd, redir);
-		else if (type == HERE_DOC)
-			redirect_here_doc(cmd);
 	}
+	redirect_here_doc(cmd);
 	if (get_local_vars()->io_err)
 		set_status(1);
 }
