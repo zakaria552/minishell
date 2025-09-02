@@ -1,5 +1,27 @@
 #include "minishell.h"
 
+//if expansion results in an empty string, change token to empty if it's 
+//not followed by a string
+void	empty_empty_expansion(t_vector *tokens, t_arena *arena)
+{
+	t_token	*tok;
+	t_token	*next;
+	int		i;
+
+	i = -1;
+	while (++i < tokens->size)
+	{
+		tok = tokens->get(tokens, i);
+		if (tok->type == EXPANSION && strmatch(expand_variable(arena, \
+tok->content), ""))
+		{
+			next = tokens->get(tokens, i + 1);
+			if (!next || (next && (next->type == EMPTY || next->type == PIPE)))
+				tok->type = EMPTY;
+		}
+	}
+}
+
 int	is_string_delimiter(char c)
 {
 	if (ft_isspace(c))

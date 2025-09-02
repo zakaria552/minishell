@@ -10,17 +10,33 @@ t_cmd	*init_command(t_arena *arena)
 	return (command);
 }
 
-static void	add_string_to_command(t_cmd *command, char *str, t_token *tok)
+static t_vector *split_string(char *str, t_arena *arena)
 {
-	if (str)
+	t_vector	*output;
+	int			len;
+
+	output = init_vector(INIT_VECTOR_SIZE, NULL, arena);
+	while (str && *str)
 	{
-		if (command->cmd == NULL)
-			command->cmd = str;
+		len = length_to_delim
+	}
+	return (output);
+}
+
+static void	add_string_to_command(t_cmd *c, char *s, t_token *t, t_arena *a)
+{
+	t_vector	*temp;
+
+	if (s)
+	{
+		temp = split_string(s, a);
+		if (c->cmd == NULL)
+			c->cmd = s;
 		else
-			append(command->args, str);
+			append(c->args, s);
 	}
 	else
-		command->unmatched_quote = tok->type;
+		c->unmatched_quote = t->type;
 }
 
 //updates a command with either a command, an argument, or a redirect
