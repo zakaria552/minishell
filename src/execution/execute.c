@@ -62,6 +62,8 @@ static void	execute_cmd(t_vector *cmds, int index, t_arena *arena)
 	set_handler_to_default();
 	close_open_here_docs((t_vector *)cmds, index);
 	redirect_io((t_cmd *)cmd, true);
+	if (!cmd->cmd || !*cmd->cmd)
+		exit(0);
 	execute_builtin(cmds, index, true);
 	path = get_binary_path(cmd->cmd, envp, arena);
 	args = execve_args(arena, (t_cmd *)cmd, path);
@@ -76,23 +78,17 @@ static void	wait_child_processes(t_vector *cmds)
 	t_cmd			*cmd;
 	int				status;
 	int				i;
+	bool			signalled;
 
 	i = -1;
 	vars = get_local_vars();
+	signalled = false;
 	while (++i < cmds->size)
 	{
 		cmd = ((t_cmd *)cmds->get(cmds, i));
 		waitpid(cmd->pid, &status, 0);
 		if (WIFSIGNALED(status))
-		{
-			if (WTERMSIG(status) == SIGQUIT)
-				reset_readline("Quit. Core dumped", SIGQUIT);
-			else if (WTERMSIG(status) == SIGINT)
-				reset_readline("", SIGINT);
-			else
-				vars->status = WEXITSTATUS(status);
-			set_handler_to_ignore();
-		}
+			handle_child_signal(vars, &signalled, status);
 		else
 			vars->status = WEXITSTATUS(status);
 	}
