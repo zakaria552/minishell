@@ -35,6 +35,6 @@ char	*pwd_to_string(t_arena *arena)
 		temp = getcwd(pwd, length);
 	}
 	if (!temp)
-		return (arena_strdup(arena, "pwd error"));
+		return (get_local_vars()->pwd);
 	return (pwd);
 }
