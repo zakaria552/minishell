@@ -6,9 +6,15 @@ void	clean_up(bool clean_global, bool clean_history)
 
 	allocs = get_allocators();
 	if (allocs->global && clean_global)
+	{
 		allocs->global->destroy(allocs->global);
+		allocs->global = NULL;
+	}
 	if (allocs->prompt)
+	{
 		allocs->prompt->destroy(allocs->prompt);
+		allocs->prompt = NULL;
+	}
 	if (clean_history)
 		clear_history();
 }

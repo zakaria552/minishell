@@ -10,6 +10,18 @@ t_cmd	*init_command(t_arena *arena)
 	return (command);
 }
 
+static void	add_string_to_command(t_cmd *command, char *str, t_token *tok)
+{
+	if (str)
+	{
+		if (command->cmd == NULL)
+			command->cmd = str;
+		else
+			append(command->args, str);
+	}
+	else
+		command->unmatched_quote = tok->type;
+}
 
 //updates a command with either a command, an argument, or a redirect
 //and moves the index forward by however many tokens were used to do so
@@ -19,20 +31,12 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 	char	*temp;
 
 	tok = vec->get(vec, *i);
-	if(is_string_type(tok->type))
+	if (is_string_type(tok->type))
 	{
 		temp = concat_string_types(arena, vec, i, true);
-		if (temp)
-		{
-			if (command->cmd == NULL)
-				command->cmd = temp;
-			else
-				append(command->args, temp);
-		}
-		else
-			command->unmatched_quote = tok->type;
+		add_string_to_command(command, temp, tok);
 	}
-	if(is_redirect_type(tok->type))
+	if (is_redirect_type(tok->type))
 	{
 		*i += 1;
 		temp = concat_string_types(arena, vec, i, (tok->type != HERE_DOC));
@@ -48,30 +52,3 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 		}
 	}
 }
-
-/*
-void	print_vector_commands(t_vector *vec)
-{
-	int i;
-
-	i = -1;
-	while (++i < vec->size)
-		print_command((t_cmd *)vec->get(vec, i));
-}
-
-void	print_command(t_cmd *command)
-{
-	int	i;
-
-	ft_printf("\n***\ncommand: %s\n", command->cmd);
-	i = -1;
-	while (++i < command->args->size)
-		ft_printf("arg%d: %s\n", i, (char *)command->args->get(command->args, i));
-	i = -1;
-	if (command->redirects->size > 0)
-		ft_printf("redirects:\n");
-	while (++i < command->redirects->size)
-		print_token((t_token *)command->redirects->get(command->redirects, i));
-	ft_printf("***\n");
-}
-*/

@@ -7,7 +7,7 @@ typedef struct s_arena		t_arena;
 typedef struct s_vector		t_vector;
 
 //token length counting functions for all types conform to this typedef
-typedef ssize_t (*t_token_length_func)(char *);
+typedef ssize_t				(*t_token_length_func)(char *);
 
 typedef enum e_token_type
 {
@@ -29,20 +29,20 @@ typedef struct s_token
 	char			*content;
 	int				read_chars;
 	t_vector		*redirects;
-	char 			**args;
+	char			**args;
 }	t_token;
 
 typedef struct s_cmd
 {
 	char		*cmd;
 	t_vector	*args;
-	t_vector 	*redirects;
+	t_vector	*redirects;
 	int			unmatched_quote;
 	int			fd_here_doc;
-    int 		curr_pipe[2];
-    int 		next_pipe[2];
-    int 		pid;
-    bool 		is_last_cmd;
+	int			curr_pipe[2];
+	int			next_pipe[2];
+	int			pid;
+	bool		is_last_cmd;
 	bool		is_first_cmd;
 }	t_cmd;
 
@@ -59,23 +59,23 @@ const char	*get_token_type(t_token_type type);
 //void		print_token(t_token *tok);
 
 //concatenate_strings.c
-char	*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool x);
-char	*strip_quotes(t_arena *arena, char *str, bool should_strip);
+char		*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool x);
+char		*strip_quotes(t_arena *arena, char *str, bool should_strip);
 
 //expansion.c
-char	*handle_expansion(t_arena *arena, char *s, char *start);
-char	*expand_variable(t_arena *arena, char *s);
-void	expand_single_dollar(t_vector *vec, t_arena *arena);
+char		*handle_expansion(t_arena *arena, char *s, char *start);
+char		*expand_variable(t_arena *arena, char *s);
+void		expand_single_dollar(t_vector *vec, t_arena *arena);
 
 //token_lengths.c
-ssize_t 	single_quote_length(char *s);
-ssize_t 	double_quote_length(char *s);
-ssize_t 	string_length(char *s);
-ssize_t 	expansion_length(char *s);
+ssize_t		single_quote_length(char *s);
+ssize_t		double_quote_length(char *s);
+ssize_t		string_length(char *s);
+ssize_t		expansion_length(char *s);
 ssize_t		empty_length(char *s);
-ssize_t 	dummy_length(char *s);
-int 		is_string_delimiter(char c);
-int	is_legal_expansion_char(char c);
+ssize_t		dummy_length(char *s);
+int			is_string_delimiter(char c);
+int			is_legal_expansion_char(char c);
 
 //parsing.c
 t_vector	*tokenize_and_parse(char *s, t_arena *arena, char delimiter);
@@ -85,17 +85,18 @@ bool		is_redirect_type(t_token_type type);
 //void		remove_empty_tokens(t_vector *vec);
 
 //arena_strings.c
-char	*arena_strdup(t_arena *arena, char *s);
-char	*arena_strjoin(t_arena *arena, char *s1, char *s2);
+char		*arena_strdup(t_arena *arena, char *s);
+char		*arena_strjoin(t_arena *arena, char *s1, char *s2);
 
 //command.c
-t_cmd	*init_command(t_arena *arena);
-void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i);
+t_cmd		*init_command(t_arena *arena);
+void		update_command(t_arena *arena, t_cmd *command, t_vector *vec,\
+				int *i);
 //debug
 //void	print_command(t_cmd *command);
 //void	print_vector_commands(t_vector *vec);
 
 //syntax.c
-bool	check_redirect(t_arena *arena, t_token *token);
-bool 	check_command(t_arena *arena, t_cmd *command);
+bool		check_redirect(t_arena *arena, t_token *token);
+bool		check_command(t_arena *arena, t_cmd *command);
 #endif

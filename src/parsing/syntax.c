@@ -1,18 +1,18 @@
 #include "minishell.h"
 
-bool check_redirect(t_arena *arena, t_token *token)
+bool	check_redirect(t_arena *arena, t_token *token)
 {
-	char *error;
+	char	*error;
 
 	if (ft_strlen(token->content) >= 1)
 		return (true);
-	error = arena_strjoin(arena, "syntax error, empty redirect: ",\
-	 (char *)get_token_type(token->type));
+	error = arena_strjoin(arena, "syntax error, empty redirect: ", \
+(char *)get_token_type(token->type));
 	syntax_err(2, error);
 	return (false);
 }
 
-bool check_command(t_arena *arena, t_cmd *command)
+bool	check_command(t_arena *arena, t_cmd *command)
 {
 	int		i;
 

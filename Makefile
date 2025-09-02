@@ -17,9 +17,9 @@ VPATH 		:= src:src/arena_allocator:src/utils:src/vector:src/parsing:src/executio
 SRC_ARENA	:= arena.c arena_utils.c
 SRC_UTILS	:= error_handlers.c prompt.c expand_str.c
 SRC_VECTOR	:= vector.c utils.c
-SRC_SIGNAL	:= signal.c
+SRC_SIGNAL	:= signal.c here_doc_signals.c
 SRC_PARSING	:= tokenize.c token_lengths.c parsing.c arena_strings.c command.c\
-				syntax.c expansion.c concatenate_strings.c
+				syntax.c expansion.c concatenate_strings.c token_utils.c
 SRC_EXEC	:= io_redirets.c execute.c execute_builtins.c binary_path.c here_doc_handler.c execute_utils.c
 SRC_BUILTINS:= local_vars.c local_var_utils.c b_utils.c env.c unset.c exit.c export.c echo.c cd.c pwd.c
 SRC 		:= \
