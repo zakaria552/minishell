@@ -70,3 +70,11 @@ static void display_working_dir(void)
 	*tmp = '\0';
 	ft_printf("\001\x1b[38;5;135m\002%s/\001\x1b[0m\002\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n", pwd, working_dir);
 }
+
+void	border_message(void)
+{
+	if (!isatty(STDIN_FILENO))
+		return;
+	ft_printf(MINISHELL_ASCII_TITLE);
+	ft_printf(MINISHELL_BORDER_MSG);
+}
