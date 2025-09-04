@@ -19,6 +19,6 @@ t_arena	*tail_arena(t_arena *arena);
 size_t	allign_p(t_arena *arena, size_t size);
 void	destroy_arena(t_arena *arena);
 
-# define ALIGNMENT (sizeof(void *)
+# define ALIGNMENT (sizeof(void *))
 # define ARENA_SIZE (32 * 1024)
 #endif
