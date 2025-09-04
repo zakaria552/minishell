@@ -10,6 +10,7 @@ t_cmd	*init_command(t_arena *arena)
 	return (command);
 }
 
+<<<<<<< HEAD
 static size_t split_length(char *str)
 {
 	size_t	len;
@@ -25,10 +26,17 @@ static t_vector *split_string(char *str, t_arena *arena)
 	t_vector	*output;
 	char		*temp;
 	ssize_t		len;
+=======
+static t_vector *split_string(char *str, t_arena *arena)
+{
+	t_vector	*output;
+	int			len;
+>>>>>>> 91deef871ff5b16bbd7e8d906ccf884eca57575e
 
 	output = init_vector(INIT_VECTOR_SIZE, NULL, arena);
 	while (str && *str)
 	{
+<<<<<<< HEAD
 		while (*str && ft_isspace(*str))
 			++str;
 		if (!*str && output->size > 0)
@@ -38,6 +46,9 @@ static t_vector *split_string(char *str, t_arena *arena)
 		temp[len] = '\0';
 		append(output, temp);
 		str += len;
+=======
+		len = length_to_delim
+>>>>>>> 91deef871ff5b16bbd7e8d906ccf884eca57575e
 	}
 	return (output);
 }
@@ -45,11 +56,15 @@ static t_vector *split_string(char *str, t_arena *arena)
 static void	add_string_to_command(t_cmd *c, char *s, t_token *t, t_arena *a)
 {
 	t_vector	*temp;
+<<<<<<< HEAD
 	int			i;
+=======
+>>>>>>> 91deef871ff5b16bbd7e8d906ccf884eca57575e
 
 	if (s)
 	{
 		temp = split_string(s, a);
+<<<<<<< HEAD
 		i = -1;
 		while (++i < temp->size)
 		{	
@@ -58,6 +73,12 @@ static void	add_string_to_command(t_cmd *c, char *s, t_token *t, t_arena *a)
 			else
 				append(c->args, (char *)temp->get(temp, i));
 		}
+=======
+		if (c->cmd == NULL)
+			c->cmd = s;
+		else
+			append(c->args, s);
+>>>>>>> 91deef871ff5b16bbd7e8d906ccf884eca57575e
 	}
 	else
 		c->unmatched_quote = t->type;
