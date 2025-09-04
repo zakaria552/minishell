@@ -71,6 +71,8 @@ char	**envp_vars(void)
 	while (++i < vars->envp->size)
 	{
 		var = vars->envp->get(vars->envp, i);
+		if (!var->value)
+			continue;
 		envp[i] = var->joint;
 	}
 	envp[i] = NULL;
