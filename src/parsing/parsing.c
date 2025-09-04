@@ -4,35 +4,41 @@ t_vector	*tokenize_and_parse(char *s, t_arena *arena, char delimiter)
 {
 	t_vector	*tokens;
 	t_vector	*commands;
-	t_cmd		*temp;
+//	t_cmd		*temp;
 
 	tokens = tokenize_input(s, arena, delimiter);
 	if (!tokens)
 		return (NULL);
 	commands = parse_tokens_to_commands(arena, tokens);
+/*
 	if (commands && commands->size == 1)
 	{
 		temp = commands->get(commands, 0);
 		if (temp->redirects->size == 0 && strmatch(temp->cmd, "") && temp->args->size == 0)
 			return (NULL);
 	}
+*/
 	return (commands);
 }
 
-bool	is_string_type(t_token_type type)
+bool	is_string_type(t_token *tok)
 {
-	if (type == QUOTE_SINGLE || type == QUOTE_DOUBLE)
+	if (!tok)
+		return (false);
+	if (tok->type == QUOTE_SINGLE || tok->type == QUOTE_DOUBLE)
 		return (true);
-	if (type == STRING || type == EXPANSION)
+	if (tok->type == STRING || tok->type == EXPANSION)
 		return (true);
 	return (false);
 }
 
-bool	is_redirect_type(t_token_type type)
+bool	is_redirect_type(t_token *tok)
 {
-	if (type == INPUT_REDIR || type == HERE_DOC)
+	if (!tok)
+		return (false);
+	if (tok->type == INPUT_REDIR || tok->type == HERE_DOC)
 		return (true);
-	if (type == OUTPUT_REDIR || type == OUTPUT_APPEND)
+	if (tok->type == OUTPUT_REDIR || tok->type == OUTPUT_APPEND)
 		return (true);
 	return (false);
 }
@@ -51,7 +57,7 @@ static t_cmd	*parse_single_command(t_arena *arena, t_vector *vec, int *i)
 			continue ;
 		if (tok->type == PIPE)
 			return (command);
-		if (is_string_type(tok->type) || is_redirect_type(tok->type))
+		if (is_string_type(tok) || is_redirect_type(tok))
 			update_command(arena, command, vec, i);
 	}
 	return (command);

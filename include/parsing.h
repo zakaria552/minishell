@@ -37,7 +37,7 @@ typedef struct s_cmd
 	char		*cmd;
 	t_vector	*args;
 	t_vector	*redirects;
-	int			unmatched_quote;
+	bool		unmatched_quote;
 	int			fd_here_doc;
 	int			curr_pipe[2];
 	int			next_pipe[2];
@@ -59,7 +59,7 @@ const char	*get_token_type(t_token_type type);
 //void		print_token(t_token *tok);
 
 //concatenate_strings.c
-char		*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool x);
+char		*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool *x);
 char		*strip_quotes(t_arena *arena, char *str, bool should_strip);
 
 //expansion.c
@@ -71,18 +71,20 @@ void		expand_single_dollar(t_vector *vec, t_arena *arena);
 ssize_t		single_quote_length(char *s);
 ssize_t		double_quote_length(char *s);
 ssize_t		string_length(char *s);
-ssize_t		expansion_length(char *s);
 ssize_t		empty_length(char *s);
-ssize_t		dummy_length(char *s);
+
+//token_utils.c
+void		empty_empty_expansion(t_vector *tokens, t_arena *arena);
 int			is_string_delimiter(char c);
 int			is_legal_expansion_char(char c);
+ssize_t		expansion_length(char *s);
+ssize_t		dummy_length(char *s);
 
 //parsing.c
 t_vector	*tokenize_and_parse(char *s, t_arena *arena, char delimiter);
 t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec);
-bool		is_string_type(t_token_type type);
-bool		is_redirect_type(t_token_type type);
-//void		remove_empty_tokens(t_vector *vec);
+bool		is_string_type(t_token *tok);
+bool		is_redirect_type(t_token *tok);
 
 //arena_strings.c
 char		*arena_strdup(t_arena *arena, char *s);
@@ -97,6 +99,11 @@ void		update_command(t_arena *arena, t_cmd *command, t_vector *vec,\
 //void	print_vector_commands(t_vector *vec);
 
 //syntax.c
+bool		check_all_empty(t_vector *tokens);
 bool		check_redirect(t_arena *arena, t_token *token);
 bool		check_command(t_arena *arena, t_cmd *command);
+
+//split_string.c
+t_vector 	*split_string(char *str, t_arena *arena, bool split);
+
 #endif
