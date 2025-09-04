@@ -62,7 +62,7 @@ static void	execute_cmd(t_vector *cmds, int index, t_arena *arena)
 	set_handler_to_default();
 	close_open_here_docs((t_vector *)cmds, index);
 	redirect_io((t_cmd *)cmd, true);
-	if (!cmd->cmd || !*cmd->cmd)
+	if (!cmd->cmd)
 		exit(0);
 	execute_builtin(cmds, index, true);
 	path = get_binary_path(cmd->cmd, envp, arena);

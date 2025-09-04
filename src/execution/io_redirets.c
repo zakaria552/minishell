@@ -40,6 +40,8 @@ static void	redirect_stdin(t_cmd *cmd, char *file)
 	if (fd < 0)
 	{
 		get_local_vars()->io_err = true;
+		if (cmd->fd_here_doc > 0)
+			close(cmd->fd_here_doc);	
 		return runtime_err(1, file);
 	}
 	if (dup2(fd, STDIN_FILENO) < 0)
