@@ -3,6 +3,20 @@
 
 # include "minishell.h"
 
+# define MINISHELL_ASCII_TITLE \
+" __ __    __  __  _         _       _            _  _    __ __\n" \
+" \\ \\\\ \\  |  \\/  |(_) _ __  (_) ___ | |__    ___ | || |  / // /\n" \
+"  \\ \\\\ \\ | |\\/| || || '_ \\ | |/ __|| '_ \\  / _ \\| || | / // / \n" \
+"  / // / | |  | || || | | || |\\__ \\| | | ||  __/| || | \\ \\\\ \\ \n" \
+" /_//_/  |_|  |_||_||_| |_||_||___/|_| |_| \\___||_||_|  \\_\\\\_\\\n" \
+"\n"
+
+# define MINISHELL_BORDER_MSG \
+" * Description: A simple Unix shell developed in C language\n" \
+" * Repository:	https://github.com/zakaria552/minishell\n" \
+" * Authers:	Zakaria, Niklas\n" \
+" * Issues:	Feel free to raise any issues or bugs you encounter\n"
+
 // error handlers
 void	runtime_err(int err_code, char *msg);
 void	syntax_err(int err_code, char *msg);
@@ -13,6 +27,7 @@ void	clean_exit(int err_code, char *msg);
 //  prompt utils
 char	*int_tty_prompt(char *prompt_msg, bool update_history,\
 			bool interactive);
+void	border_message(void);
 
 // expand string
 char	*expand_str(char *str, t_arena *arena);
