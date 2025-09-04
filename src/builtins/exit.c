@@ -29,8 +29,11 @@ static int	get_exit_status(t_cmd *cmd, bool *should_exit)
 {
 	long		num;
 	bool		error;
-	const char	*arg1 = cmd->args->get(cmd->args, 0);
+	char		*arg1;
 
+	arg1 = cmd->args->get(cmd->args, 0);
+	if(!arg1)
+		arg1 = "";
 	error = false;
 	num = long_atoi((char *)arg1, &error);
 	if (error || !*arg1)
