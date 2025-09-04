@@ -47,17 +47,23 @@ static void	echo_args(t_cmd *cmd, bool remove_line)
 	char	*arg;
 	int		i;
 
-	i = -1;
+	i = 0;
 	if (remove_line)
 		i++;
-	while (++i < cmd->args->size)
+	while (remove_line && i < cmd->args->size)	
 	{
 		arg = cmd->args->get(cmd->args, i);
-		if (i != (cmd->args->size - 1) && should_remove_line(arg) && remove_line)
-			continue ;
+		if (!should_remove_line(arg))
+			break;
+		i++;
+	}
+	while (i < cmd->args->size)
+	{
+		arg = cmd->args->get(cmd->args, i);
 		ft_printf("%s", arg);
 		if (i != cmd->args->size - 1)
 			ft_printf(" ");
+		i++;
 	}
 	if (!remove_line)
 		ft_printf("\n");
