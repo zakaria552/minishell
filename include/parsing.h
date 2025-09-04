@@ -59,7 +59,7 @@ const char	*get_token_type(t_token_type type);
 //void		print_token(t_token *tok);
 
 //concatenate_strings.c
-char		*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool x);
+char		*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool *x);
 char		*strip_quotes(t_arena *arena, char *str, bool should_strip);
 
 //expansion.c
@@ -83,8 +83,8 @@ ssize_t		dummy_length(char *s);
 //parsing.c
 t_vector	*tokenize_and_parse(char *s, t_arena *arena, char delimiter);
 t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec);
-bool		is_string_type(t_token_type type);
-bool		is_redirect_type(t_token_type type);
+bool		is_string_type(t_token *tok);
+bool		is_redirect_type(t_token *tok);
 
 //arena_strings.c
 char		*arena_strdup(t_arena *arena, char *s);

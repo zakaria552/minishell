@@ -48,27 +48,28 @@ static void	skip_empties(t_vector *vec, int *i)
 //skips any leading empty tokens
 //returns NULL if it encounters string-type tokens with NULL content,
 //which happens only with unmatched quotes.
-char	*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool x)
+char	*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool *x)
 {
 	char		*string;
 	char		*temp;
 	t_token		*tok;
+	bool		loc;
 
 	string = arena_strdup(arena, "");
 	skip_empties(vec, i);
+	loc = *x;
 	while (*i < vec->size)
 	{
 		tok = vec->get(vec, *i);
-		if (is_string_type(tok->type))
+		if (is_string_type(tok))
 		{
-			temp = arena_strjoin(arena, string, strip_expand(tok, arena, x));
+			temp = arena_strjoin(arena, string, strip_expand(tok, arena, loc));
+			if (tok->type == QUOTE_DOUBLE)
+				*x = false;
 			string = temp;
 		}
-		else
-		{
-			*i -= 1;
+		if (!is_string_type((t_token *)vec->get(vec, *i + 1)))
 			break ;
-		}
 		*i += 1;
 	}
 	return (string);
