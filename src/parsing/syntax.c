@@ -20,7 +20,7 @@ void	split_and_clean_command(t_cmd *cmd, t_arena *arena)
 		temp = tokenize_input(get_vector_elem(cmd->args, i), arena, '\0');
 	}
 }
-*/
+
 
 bool	check_all_empty(t_vector *tokens)
 {
@@ -37,6 +37,7 @@ bool	check_all_empty(t_vector *tokens)
 	return (true);
 }
 
+
 void	split_and_clean_command(t_cmd *cmd, t_arena *arena)
 {
 	t_vector	*args;
@@ -48,7 +49,7 @@ void	split_and_clean_command(t_cmd *cmd, t_arena *arena)
 	temp = tokenize_input(cmd->cmd, arena, '\0');
 	if (temp->size > 1)
 	{
-		cmd->cmd = (t_token *)temp->get(temp, 0)->content;
+		cmd->cmd = ((t_token *)temp->get(temp, 0))->content;
 		clean_command(cmd, temp, true);
 	}
 	i = -1;
@@ -57,6 +58,7 @@ void	split_and_clean_command(t_cmd *cmd, t_arena *arena)
 		temp = tokenize_input(get_vector_elem(cmd->args, i), arena, '\0');
 	}
 }
+*/
 
 bool	check_all_empty(t_vector *tokens)
 {

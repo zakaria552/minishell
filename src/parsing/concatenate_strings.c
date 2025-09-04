@@ -64,7 +64,7 @@ char	*concat_string_types(t_arena *arena, t_vector *vec, int *i, bool *x)
 		if (is_string_type(tok))
 		{
 			temp = arena_strjoin(arena, string, strip_expand(tok, arena, loc));
-			if (tok->type == QUOTE_DOUBLE)
+			if (tok->type == QUOTE_DOUBLE || tok->type == QUOTE_SINGLE)
 				*x = false;
 			string = temp;
 		}

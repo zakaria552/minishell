@@ -37,7 +37,7 @@ typedef struct s_cmd
 	char		*cmd;
 	t_vector	*args;
 	t_vector	*redirects;
-	int			unmatched_quote;
+	bool		unmatched_quote;
 	int			fd_here_doc;
 	int			curr_pipe[2];
 	int			next_pipe[2];
@@ -102,4 +102,8 @@ void		update_command(t_arena *arena, t_cmd *command, t_vector *vec,\
 bool		check_all_empty(t_vector *tokens);
 bool		check_redirect(t_arena *arena, t_token *token);
 bool		check_command(t_arena *arena, t_cmd *command);
+
+//split_string.c
+t_vector 	*split_string(char *str, t_arena *arena, bool split);
+
 #endif

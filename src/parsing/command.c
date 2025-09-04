@@ -10,61 +10,25 @@ t_cmd	*init_command(t_arena *arena)
 	return (command);
 }
 
-<<<<<<< HEAD
-static size_t split_length(char *str)
+static void	add_redirect_to_command(t_cmd *command, char *str, t_token *tok)
 {
-	size_t	len;
-
-	len = 0;
-	while (str && str[len] && !ft_isspace(str[len]))
-		len++;
-	return (len);
-}
-
-static t_vector *split_string(char *str, t_arena *arena)
-{
-	t_vector	*output;
-	char		*temp;
-	ssize_t		len;
-=======
-static t_vector *split_string(char *str, t_arena *arena)
-{
-	t_vector	*output;
-	int			len;
->>>>>>> 91deef871ff5b16bbd7e8d906ccf884eca57575e
-
-	output = init_vector(INIT_VECTOR_SIZE, NULL, arena);
-	while (str && *str)
+	if (str)
 	{
-<<<<<<< HEAD
-		while (*str && ft_isspace(*str))
-			++str;
-		if (!*str && output->size > 0)
-			break ;
-		len = split_length(str);
-		temp = arena_alloc(arena, len + 1, str);
-		temp[len] = '\0';
-		append(output, temp);
-		str += len;
-=======
-		len = length_to_delim
->>>>>>> 91deef871ff5b16bbd7e8d906ccf884eca57575e
+		tok->content = str;
+		append(command->redirects, tok);
 	}
-	return (output);
+	else
+		command->unmatched_quote = true;
 }
 
-static void	add_string_to_command(t_cmd *c, char *s, t_token *t, t_arena *a)
+static void	add_string_to_command(t_cmd *c, char *s, t_arena *a, bool split)
 {
 	t_vector	*temp;
-<<<<<<< HEAD
 	int			i;
-=======
->>>>>>> 91deef871ff5b16bbd7e8d906ccf884eca57575e
 
 	if (s)
 	{
-		temp = split_string(s, a);
-<<<<<<< HEAD
+		temp = split_string(s, a, split);
 		i = -1;
 		while (++i < temp->size)
 		{	
@@ -73,15 +37,9 @@ static void	add_string_to_command(t_cmd *c, char *s, t_token *t, t_arena *a)
 			else
 				append(c->args, (char *)temp->get(temp, i));
 		}
-=======
-		if (c->cmd == NULL)
-			c->cmd = s;
-		else
-			append(c->args, s);
->>>>>>> 91deef871ff5b16bbd7e8d906ccf884eca57575e
 	}
 	else
-		c->unmatched_quote = t->type;
+		c->unmatched_quote = true;
 }
 
 //updates a command with either a command, an argument, or a redirect
@@ -90,26 +48,20 @@ void	update_command(t_arena *arena, t_cmd *command, t_vector *vec, int *i)
 {
 	t_token	*tok;
 	char	*temp;
+	bool	should_split;
 
 	tok = vec->get(vec, *i);
-	if (is_string_type(tok->type))
+	if (is_string_type(tok))
 	{
-		temp = concat_string_types(arena, vec, i, true);
-		add_string_to_command(command, temp, tok, arena);
+		should_split = true;
+		temp = concat_string_types(arena, vec, i, &should_split);
+		add_string_to_command(command, temp, arena, should_split);
 	}
-	if (is_redirect_type(tok->type))
+	if (is_redirect_type(tok))
 	{
 		*i += 1;
-		temp = concat_string_types(arena, vec, i, (tok->type != HERE_DOC));
-		if (temp)
-		{
-			tok->content = temp;
-			append(command->redirects, tok);
-		}
-		else
-		{
-			command->unmatched_quote = tok->type;
-			return ;
-		}
+		should_split = (tok->type != HERE_DOC);
+		temp = concat_string_types(arena, vec, i, &should_split);
+		add_redirect_to_command(command, temp, tok);
 	}
 }
