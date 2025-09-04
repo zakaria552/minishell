@@ -63,7 +63,10 @@ void	cmd_not_found_err(int err_code, char *cmd, bool path_exist)
 	if (err_code != 127 && err_code != 126)
 		runtime_err(errno, cmd);
 	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
+	if (ft_strlen(cmd))
+		ft_putstr_fd(cmd, 2);
+	else
+		ft_putstr_fd("'' ", 2);
 	ft_putstr_fd(":", 2);
 	if (err_code == 126)
 		ft_putstr_fd("Is a directory\n", 2);
