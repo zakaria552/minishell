@@ -7,6 +7,7 @@ void	launch_shell(void)
 	char			*prompt;
 
 	allocs = get_allocators();
+	border_message();
 	while (true)
 	{
 		allocs->prompt = init_arena(ARENA_SIZE);
