@@ -18,6 +18,7 @@
   * Authers:	Zakaria, Niklas\n\
   * Issues:	Feel free to raise any issues or bugs you encounter\n"
 
+# define PROMPT_PWD "\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n"
 # define PROMPT_HOME "\001\x1b[38;5;135m\002%s/\001\x1b[0m\002"
 # define PROMPT_CURRENT_DIR "\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n"
 
