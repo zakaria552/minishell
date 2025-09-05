@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc_handler.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:30:20 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:30:21 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	set_cmd_here_doc(t_arena *arena, t_cmd *cmd, char *limiter);
-static bool	should_expand(char *line);
-//static char* strip_quotes3(char *str);
 static char	*alt_strip_quotes(t_arena *arena, char *str);
+static void	clean_up_here_doc(t_cmd *cmd, int *hdoc_pipe, char *line);
+static bool	should_expand(char *delimiter);
 
 void	handle_here_doc(t_vector *cmds)
 {
@@ -102,23 +114,6 @@ tok->content, true));
 			limiter = arena_strjoin(arena, limiter, tok->content);
 	}
 	return (limiter);
-}
-
-void	close_open_here_docs(t_vector *cmds, int index)
-{
-	t_cmd	*cmd;
-	int		i;
-
-	i = -1;
-	while (++i < cmds->size)
-	{
-		cmd = (t_cmd *)(cmds->get(cmds, i));
-		if (cmd->fd_here_doc > 0 && i != index)
-		{
-			close(cmd->fd_here_doc);
-			cmd->fd_here_doc = -1;
-		}
-	}
 }
 
 static bool	should_expand(char *delimiter)

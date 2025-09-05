@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:30:41 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:30:42 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_vector	*tokenize_and_parse(char *s, t_arena *arena, char delimiter)
@@ -36,8 +48,8 @@ bool	is_redirect_type(t_token *tok)
 
 static t_cmd	*parse_single_command(t_arena *arena, t_vector *vec, int *i)
 {
-	t_cmd		*command;
-	t_token		*tok;
+	t_cmd	*command;
+	t_token	*tok;
 
 	command = init_command(arena);
 	*i -= 1;
@@ -54,9 +66,9 @@ static t_cmd	*parse_single_command(t_arena *arena, t_vector *vec, int *i)
 	return (command);
 }
 
-//loops through the vector of tokens. 
-//update command moves the index forward to the first non-string token 
-//after any redirect token and any leading empty tokens
+// loops through the vector of tokens.
+// update command moves the index forward to the first non-string token
+// after any redirect token and any leading empty tokens
 t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec)
 {
 	t_cmd		*command;

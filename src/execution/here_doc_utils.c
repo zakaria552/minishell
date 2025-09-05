@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 10:28:20 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:28:21 by zfarah           ###   ########.fr       */
+/*   Created: 2025/09/05 10:30:23 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:30:24 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	env(void)
+void	close_open_here_docs(t_vector *cmds, int index)
 {
-	t_local_vars	*vars;
-	t_env_var		*var;
-	int				i;
+	t_cmd	*cmd;
+	int		i;
 
 	i = -1;
-	vars = get_local_vars();
-	while (++i < vars->envp->size)
+	while (++i < cmds->size)
 	{
-		var = vars->envp->get(vars->envp, i);
-		if (var->value)
-			ft_printf("%s\n", var->joint);
+		cmd = (t_cmd *)(cmds->get(cmds, i));
+		if (cmd->fd_here_doc > 0 && i != index)
+		{
+			close(cmd->fd_here_doc);
+			cmd->fd_here_doc = -1;
+		}
 	}
-	vars->status = 0;
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:30:18 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:30:19 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	execute_cmd(t_vector *cmds, int index, t_arena *arena);
@@ -7,10 +19,11 @@ static void	wait_child_processes(t_vector *cmds);
 
 void	execute_commands(t_vector *cmds, t_arena *arena)
 {
-	t_local_vars *vars;
+	t_local_vars	*vars;
 
 	vars = get_local_vars();
-	vars->pipeline = !(cmds->size == 1 && is_builtin(((t_cmd *)cmds->get(cmds, 0))->cmd));
+	vars->pipeline = !(cmds->size == 1 && is_builtin(((t_cmd *)cmds->get(cmds,
+						0))->cmd));
 	if (!vars->pipeline && (g_signal == 0))
 		execute_builtin(cmds, 0, false);
 	if (vars->pipeline && (g_signal == 0))

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:30:32 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:30:33 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_cmd	*init_command(t_arena *arena)
@@ -31,7 +43,7 @@ static void	add_string_to_command(t_cmd *c, char *s, t_arena *a, bool split)
 		temp = split_string(s, a, split);
 		i = -1;
 		while (++i < temp->size)
-		{	
+		{
 			if (c->cmd == NULL)
 				c->cmd = (char *)temp->get(temp, i);
 			else

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   io_redirets.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:30:25 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 12:04:34 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	redirect_stdin(t_cmd *cmd, char *file);
@@ -7,12 +19,11 @@ static void	pipe_redirect(t_cmd *cmd);
 
 void	redirect_io(t_cmd *cmd, bool redir_pipeline)
 {
-	t_vector		*redirects;
-	t_token			*redir;
-	t_token_type	type;
-	int				i;
+	const t_vector		*redirects = cmd->redirects;
+	t_token				*redir;
+	t_token_type		type;
+	int					i;
 
-	redirects = cmd->redirects;
 	get_local_vars()->io_err = false;
 	i = -1;
 	if (redir_pipeline)
@@ -22,7 +33,7 @@ void	redirect_io(t_cmd *cmd, bool redir_pipeline)
 		redir = (t_token *)redirects->get(redirects, i);
 		type = redir->type;
 		if (!redir_pipeline && get_local_vars()->io_err)
-			break;
+			break ;
 		if (type == INPUT_REDIR)
 			redirect_stdin(cmd, redir->content);
 		else if (type == OUTPUT_REDIR || type == OUTPUT_APPEND)
@@ -43,8 +54,8 @@ static void	redirect_stdin(t_cmd *cmd, char *file)
 	{
 		get_local_vars()->io_err = true;
 		if (cmd->fd_here_doc > 0)
-			close(cmd->fd_here_doc);	
-		return runtime_err(1, file);
+			close(cmd->fd_here_doc);
+		return (runtime_err(1, file));
 	}
 	if (dup2(fd, STDIN_FILENO) < 0)
 	{
@@ -52,7 +63,7 @@ static void	redirect_stdin(t_cmd *cmd, char *file)
 		if (cmd->fd_here_doc > 0)
 			close(cmd->fd_here_doc);
 		close(fd);
-		return runtime_err(errno, NULL);
+		return (runtime_err(errno, NULL));
 	}
 	close(fd);
 }
@@ -73,7 +84,7 @@ static void	redirect_stdout(t_cmd *cmd, t_token *redirect)
 		get_local_vars()->io_err = true;
 		if (cmd->fd_here_doc > 0)
 			close(cmd->fd_here_doc);
-		return runtime_err(1, redirect->content);
+		return (runtime_err(1, redirect->content));
 	}
 	if (dup2(fd, STDOUT_FILENO) < 0)
 	{
@@ -81,7 +92,7 @@ static void	redirect_stdout(t_cmd *cmd, t_token *redirect)
 		if (cmd->fd_here_doc > 0)
 			close(cmd->fd_here_doc);
 		close(fd);
-		return runtime_err(errno, NULL);
+		return (runtime_err(errno, NULL));
 	}
 	close(fd);
 }
@@ -101,7 +112,7 @@ static void	redirect_here_doc(t_cmd *cmd)
 	{
 		get_local_vars()->io_err = true;
 		close(fd);
-		return runtime_err(errno, NULL);
+		return (runtime_err(errno, NULL));
 	}
 	close(fd);
 }

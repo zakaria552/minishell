@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error_handlers.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:31:11 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:31:12 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	clean_up(bool clean_global, bool clean_history)
@@ -39,7 +51,7 @@ void	runtime_err(int err_code, char *msg)
 	ft_putstr_fd(strerror(errno), 2);
 	ft_putstr_fd("\n", 2);
 	if (!get_local_vars()->pipeline)
-		return;
+		return ;
 	clean_up(true, true);
 	exit(err_code);
 }

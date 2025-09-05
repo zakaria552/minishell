@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:28:14 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:28:15 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static bool	should_remove_line(char *flag);
@@ -50,11 +62,11 @@ static void	echo_args(t_cmd *cmd, bool remove_line)
 	i = 0;
 	if (remove_line)
 		i++;
-	while (remove_line && i < cmd->args->size)	
+	while (remove_line && i < cmd->args->size)
 	{
 		arg = cmd->args->get(cmd->args, i);
 		if (!should_remove_line(arg))
-			break;
+			break ;
 		i++;
 	}
 	while (i < cmd->args->size)

@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prompt.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:31:17 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 11:14:52 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static char *read_prompt(char *prompt_msg, bool update_history);
-static void display_working_dir(void);
+static char	*read_prompt(char *prompt_msg, bool update_history);
+static void	display_working_dir(void);
 
-char *int_tty_prompt(char *prompt_msg, bool update_history, bool interactive)
+char	*int_tty_prompt(char *prompt_msg, bool update_history, bool interactive)
 {
-	t_allocators *allocs;
-	char *prompt;
-	char *arena_prompt;
-	char *line;
+	t_allocators	*allocs;
+	char			*prompt;
+	char			*arena_prompt;
+	char			*line;
 
 	allocs = get_allocators();
 	if (interactive)
@@ -28,11 +40,11 @@ char *int_tty_prompt(char *prompt_msg, bool update_history, bool interactive)
 	return (arena_prompt);
 }
 
-static char *read_prompt(char *prompt_msg, bool update_history)
+static char	*read_prompt(char *prompt_msg, bool update_history)
 {
-	t_allocators *allocs;
-	char *prompt;
-	char *arena_prompt;
+	t_allocators	*allocs;
+	char			*prompt;
+	char			*arena_prompt;
 
 	(void)prompt_msg;
 	allocs = get_allocators();
@@ -52,29 +64,30 @@ static char *read_prompt(char *prompt_msg, bool update_history)
 	return (arena_prompt);
 }
 
-static void display_working_dir(void)
+static void	display_working_dir(void)
 {
-	char *pwd;
-	char *working_dir;
-	char *tmp;
+	char	*pwd;
+	char	*working_dir;
+	char	*tmp;
 
 	pwd = pwd_to_string(get_allocators()->prompt);
 	working_dir = ft_strrchr(pwd, '/');
 	if (!working_dir)
 	{
-		ft_printf("\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n", pwd);
-		return;
+		ft_printf(PROMPT_PWD, pwd);
+		return ;
 	}
 	tmp = working_dir;
 	working_dir++;
 	*tmp = '\0';
-	ft_printf("\001\x1b[38;5;135m\002%s/\001\x1b[0m\002\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n", pwd, working_dir);
+	ft_printf(PROMPT_HOME, pwd);
+	ft_printf(PROMPT_CURRENT_DIR, working_dir);
 }
 
 void	border_message(void)
 {
 	if (!isatty(STDIN_FILENO))
-		return;
+		return ;
 	ft_printf(MINISHELL_ASCII_TITLE);
 	ft_printf(MINISHELL_BORDER_MSG);
 }

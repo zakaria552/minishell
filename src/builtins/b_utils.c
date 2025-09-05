@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   b_utils.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:28:04 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:28:05 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 bool	is_builtin(char *cmd)
 {
-	const char	*builtins[7] = {"echo", "cd", "pwd", "export", "unset", "env",
-        "exit"};
+	const char	*builtins[7] = {"echo", "cd", "pwd",\
+		"export", "unset", "env", "exit"};
 	int			i;
 
 	i = -1;
@@ -85,7 +97,7 @@ int	long_atoi(const char *nptr, bool *error)
 
 void	set_status(int status)
 {
-	t_local_vars *vars;
+	t_local_vars	*vars;
 
 	vars = get_local_vars();
 	vars->status = status;

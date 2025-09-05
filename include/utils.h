@@ -1,21 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 11:16:27 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 11:16:28 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef UTILS_H
 # define UTILS_H
 
 # include "minishell.h"
 
 # define MINISHELL_ASCII_TITLE \
-" __ __    __  __  _         _       _            _  _    __ __\n" \
-" \\ \\\\ \\  |  \\/  |(_) _ __  (_) ___ | |__    ___ | || |  / // /\n" \
-"  \\ \\\\ \\ | |\\/| || || '_ \\ | |/ __|| '_ \\  / _ \\| || | / // / \n" \
-"  / // / | |  | || || | | || |\\__ \\| | | ||  __/| || | \\ \\\\ \\ \n" \
-" /_//_/  |_|  |_||_||_| |_||_||___/|_| |_| \\___||_||_|  \\_\\\\_\\\n" \
-"\n"
+" __ __    __  __  _         _       _            _  _    __ __\n\
+ \\ \\\\ \\  |  \\/  |(_) _ __  (_) ___ | |__    ___ | || |  / // /\n\
+  \\ \\\\ \\ | |\\/| || || '_ \\ | |/ __|| '_ \\  / _ \\| || | / // / \n\
+  / // / | |  | || || | | || |\\__ \\| | | ||  __/| || | \\ \\\\ \\ \n\
+ /_//_/  |_|  |_||_||_| |_||_||___/|_| |_| \\___||_||_|  \\_\\\\_\\\n\
+\n"
 
 # define MINISHELL_BORDER_MSG \
-" * Description: A simple Unix shell developed in C language\n" \
-" * Repository:	https://github.com/zakaria552/minishell\n" \
-" * Authers:	Zakaria, Niklas\n" \
-" * Issues:	Feel free to raise any issues or bugs you encounter\n"
+"\
+  * Description: A simple Unix shell developed in C language\n\
+  * Repository:	https://github.com/zakaria552/minishell\n\
+  * Authers:	Zakaria, Niklas\n\
+  * Issues:	Feel free to raise any issues or bugs you encounter\n"
+
+# define PROMPT_PWD "\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n"
+# define PROMPT_HOME "\001\x1b[38;5;135m\002%s/\001\x1b[0m\002"
+# define PROMPT_CURRENT_DIR "\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n"
 
 // error handlers
 void	runtime_err(int err_code, char *msg);

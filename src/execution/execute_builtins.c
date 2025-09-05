@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_builtins.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:30:12 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:30:13 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	exc_builtin(t_cmd *cmd, t_local_vars *vars, bool *should_exit);
@@ -51,7 +63,7 @@ static void	exc_builtin(t_cmd *cmd, t_local_vars *vars, bool *should_exit)
 	{
 		close(vars->stdin_cpy);
 		close(vars->stdout_cpy);
-		return runtime_err(errno, NULL);
+		return (runtime_err(errno, NULL));
 	}
 	close(vars->stdin_cpy);
 	close(vars->stdout_cpy);
@@ -72,7 +84,7 @@ char	**envp_vars(void)
 	{
 		var = vars->envp->get(vars->envp, i);
 		if (!var->value)
-			continue;
+			continue ;
 		envp[i] = var->joint;
 	}
 	envp[i] = NULL;

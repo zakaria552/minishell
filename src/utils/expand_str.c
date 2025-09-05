@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_str.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:31:14 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:31:15 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char			*append_till_next_char(char *dest, char **src, char c,
@@ -6,9 +18,9 @@ static t_env_var	*expand_var(char *str, char c, t_arena *arena);
 
 char	*alt_expand_str(t_arena *arena, char *str)
 {
-	char		*expanded;
-	char		*temp;
-	size_t		index;
+	char	*expanded;
+	char	*temp;
+	size_t	index;
 
 	temp = ft_strchr(str, '$');
 	if (!temp)
@@ -24,7 +36,7 @@ char	*alt_expand_str(t_arena *arena, char *str)
 		index = expansion_length(str);
 		expanded = arena_strjoin(arena, expanded, expand_variable(arena, str));
 		str += index;
-		temp =  ft_strchr(str, '$');
+		temp = ft_strchr(str, '$');
 	}
 	return (arena_strjoin(arena, expanded, str));
 }

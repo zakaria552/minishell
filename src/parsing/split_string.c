@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_string.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/05 10:30:43 by zfarah            #+#    #+#             */
+/*   Updated: 2025/09/05 10:30:44 by zfarah           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static size_t split_length(char *str)
+static size_t	split_length(char *str)
 {
 	size_t	len;
 
@@ -10,7 +22,7 @@ static size_t split_length(char *str)
 	return (len);
 }
 
-t_vector *split_string(char *str, t_arena *arena, bool split)
+t_vector	*split_string(char *str, t_arena *arena, bool split)
 {
 	t_vector	*output;
 	char		*temp;
