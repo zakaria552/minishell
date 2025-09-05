@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:31:17 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:31:18 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/05 11:14:52 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,14 @@ static void	display_working_dir(void)
 	working_dir = ft_strrchr(pwd, '/');
 	if (!working_dir)
 	{
-		ft_printf("\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n", pwd);
+		ft_printf(PROMPT_PWD, pwd);
 		return ;
 	}
 	tmp = working_dir;
 	working_dir++;
 	*tmp = '\0';
-	ft_printf(PWD_PROMPT_MSG, pwd, working_dir);
+	ft_printf(PROMPT_HOME, pwd);
+	ft_printf(PROMPT_CURRENT_DIR, working_dir);
 }
 
 void	border_message(void)
