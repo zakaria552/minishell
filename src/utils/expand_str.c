@@ -6,9 +6,9 @@ static t_env_var	*expand_var(char *str, char c, t_arena *arena);
 
 char	*alt_expand_str(t_arena *arena, char *str)
 {
-	char		*expanded;
-	char		*temp;
-	size_t		index;
+	char	*expanded;
+	char	*temp;
+	size_t	index;
 
 	temp = ft_strchr(str, '$');
 	if (!temp)
@@ -24,7 +24,7 @@ char	*alt_expand_str(t_arena *arena, char *str)
 		index = expansion_length(str);
 		expanded = arena_strjoin(arena, expanded, expand_variable(arena, str));
 		str += index;
-		temp =  ft_strchr(str, '$');
+		temp = ft_strchr(str, '$');
 	}
 	return (arena_strjoin(arena, expanded, str));
 }
