@@ -4,20 +4,11 @@ t_vector	*tokenize_and_parse(char *s, t_arena *arena, char delimiter)
 {
 	t_vector	*tokens;
 	t_vector	*commands;
-//	t_cmd		*temp;
 
 	tokens = tokenize_input(s, arena, delimiter);
 	if (!tokens)
 		return (NULL);
 	commands = parse_tokens_to_commands(arena, tokens);
-/*
-	if (commands && commands->size == 1)
-	{
-		temp = commands->get(commands, 0);
-		if (temp->redirects->size == 0 && strmatch(temp->cmd, "") && temp->args->size == 0)
-			return (NULL);
-	}
-*/
 	return (commands);
 }
 

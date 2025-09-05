@@ -9,11 +9,15 @@ void	pwd(void)
 	ft_memset(pwd, 0, 1024);
 	getcwd(pwd, 1024);
 	if (ft_strlen(pwd) > 0)
-		ft_printf("%s\n", pwd);
+	{
+		ft_putstr_fd(pwd, 1);
+		ft_putstr_fd("\n", 1);
+	}
 	else
 	{
 		vars = get_local_vars();
-		ft_printf("%s\n", vars->pwd);
+		ft_putstr_fd(vars->pwd, 1);
+		ft_putstr_fd("\n", 1);
 	}
 	set_status(0);
 }
@@ -35,6 +39,6 @@ char	*pwd_to_string(t_arena *arena)
 		temp = getcwd(pwd, length);
 	}
 	if (!temp)
-		return (get_local_vars()->pwd);
+		return (arena_strdup(arena, get_local_vars()->pwd));
 	return (pwd);
 }

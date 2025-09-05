@@ -39,6 +39,7 @@ typedef struct s_cmd
 	t_vector	*redirects;
 	bool		unmatched_quote;
 	int			fd_here_doc;
+	t_token_type		last_input_redir;
 	int			curr_pipe[2];
 	int			next_pipe[2];
 	int			pid;

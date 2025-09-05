@@ -35,19 +35,33 @@ static void	change_directory(char *path)
 	}
 }
 
+static bool	should_go_home(t_cmd *cmd)
+{
+	if (cmd->args->size == 0 && get_var("HOME"))
+		return (true);
+	if (cmd->args->size > 0 && strmatch((char *)cmd->args->get(cmd->args, 0), \
+"~") && get_var("HOME"))
+		return (true);
+	return (false);
+}
+
 void	cd(t_cmd *cmd)
 {
 	struct stat	directory;
 	char		*arg;
 	int			test;
 
-	if (cmd->args->size == 0 || cmd->args->size > 1)
+	if (cmd->args->size > 1)
 	{
-		if (cmd->args->size > 1)
-			invalid_directory_msg(NULL, "too many arguments");
+		invalid_directory_msg(NULL, "too many arguments");
 		return ;
 	}
-	arg = (char *)cmd->args->get(cmd->args, 0);
+	if (should_go_home(cmd))
+		arg = get_var("HOME")->value;
+	else if (cmd->args->size > 0)
+		arg = (char *)cmd->args->get(cmd->args, 0);
+	else
+		return ;
 	test = stat(arg, &directory);
 	if (test == -1)
 		invalid_directory_msg(arg, "no such file or directory");

@@ -27,6 +27,8 @@ void	redirect_io(t_cmd *cmd, bool redir_pipeline)
 			redirect_stdin(cmd, redir->content);
 		else if (type == OUTPUT_REDIR || type == OUTPUT_APPEND)
 			redirect_stdout(cmd, redir);
+		if (type == INPUT_REDIR || type == HERE_DOC)
+			cmd->last_input_redir = type;
 	}
 	redirect_here_doc(cmd);
 	if (get_local_vars()->io_err)
@@ -86,14 +88,11 @@ static void	redirect_stdout(t_cmd *cmd, t_token *redirect)
 
 static void	redirect_here_doc(t_cmd *cmd)
 {
-	t_token		*last_redirect;
 	const int	fd = cmd->fd_here_doc;
 
 	if (cmd->redirects->size == 0 || fd < 0)
 		return ;
-	last_redirect = (t_token *)cmd->redirects->get(cmd->redirects,
-			cmd->redirects->size - 1);
-	if (last_redirect->type != HERE_DOC)
+	if (cmd->last_input_redir != HERE_DOC)
 	{
 		close(fd);
 		return ;
