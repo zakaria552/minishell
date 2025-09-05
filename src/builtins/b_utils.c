@@ -2,8 +2,8 @@
 
 bool	is_builtin(char *cmd)
 {
-	const char	*builtins[7] = {"echo", "cd", "pwd", "export", "unset", "env",
-        "exit"};
+	const char	*builtins[7] = {"echo", "cd", "pwd",\
+		"export", "unset", "env", "exit"};
 	int			i;
 
 	i = -1;
@@ -85,7 +85,7 @@ int	long_atoi(const char *nptr, bool *error)
 
 void	set_status(int status)
 {
-	t_local_vars *vars;
+	t_local_vars	*vars;
 
 	vars = get_local_vars();
 	vars->status = status;
