@@ -42,7 +42,6 @@ static bool	should_go_home(t_cmd *cmd)
 	if (cmd->args->size > 0 && strmatch((char *)cmd->args->get(cmd->args, 0), \
 "~") && get_var("HOME"))
 		return (true);
-	invalid_directory_msg(NULL, "$HOME not set");
 	return (false);
 }
 
