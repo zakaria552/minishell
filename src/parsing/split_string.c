@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static size_t split_length(char *str)
+static size_t	split_length(char *str)
 {
 	size_t	len;
 
@@ -10,7 +10,7 @@ static size_t split_length(char *str)
 	return (len);
 }
 
-t_vector *split_string(char *str, t_arena *arena, bool split)
+t_vector	*split_string(char *str, t_arena *arena, bool split)
 {
 	t_vector	*output;
 	char		*temp;

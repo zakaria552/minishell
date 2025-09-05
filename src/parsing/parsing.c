@@ -36,8 +36,8 @@ bool	is_redirect_type(t_token *tok)
 
 static t_cmd	*parse_single_command(t_arena *arena, t_vector *vec, int *i)
 {
-	t_cmd		*command;
-	t_token		*tok;
+	t_cmd	*command;
+	t_token	*tok;
 
 	command = init_command(arena);
 	*i -= 1;
@@ -54,9 +54,9 @@ static t_cmd	*parse_single_command(t_arena *arena, t_vector *vec, int *i)
 	return (command);
 }
 
-//loops through the vector of tokens. 
-//update command moves the index forward to the first non-string token 
-//after any redirect token and any leading empty tokens
+// loops through the vector of tokens.
+// update command moves the index forward to the first non-string token
+// after any redirect token and any leading empty tokens
 t_vector	*parse_tokens_to_commands(t_arena *arena, t_vector *vec)
 {
 	t_cmd		*command;

@@ -31,7 +31,7 @@ static void	add_string_to_command(t_cmd *c, char *s, t_arena *a, bool split)
 		temp = split_string(s, a, split);
 		i = -1;
 		while (++i < temp->size)
-		{	
+		{
 			if (c->cmd == NULL)
 				c->cmd = (char *)temp->get(temp, i);
 			else
