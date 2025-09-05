@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:28:24 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:28:25 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/05 12:03:16 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	get_exit_status(t_cmd *cmd, bool *should_exit)
 	char		*arg1;
 
 	arg1 = cmd->args->get(cmd->args, 0);
-	if(!arg1)
+	if (!arg1)
 		arg1 = "";
 	error = false;
 	num = long_atoi((char *)arg1, &error);

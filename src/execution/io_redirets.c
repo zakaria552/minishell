@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:30:25 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:30:26 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/05 12:04:34 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@ static void	pipe_redirect(t_cmd *cmd);
 
 void	redirect_io(t_cmd *cmd, bool redir_pipeline)
 {
-	t_vector		*redirects;
-	t_token			*redir;
-	t_token_type	type;
-	int				i;
+	const t_vector		*redirects = cmd->redirects;
+	t_token				*redir;
+	t_token_type		type;
+	int					i;
 
-	redirects = cmd->redirects;
 	get_local_vars()->io_err = false;
 	i = -1;
 	if (redir_pipeline)
