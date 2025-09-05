@@ -63,7 +63,7 @@ int	long_atoi(const char *nptr, bool *error)
 	i = 0;
 	num = 0;
 	sign = 1;
-	while (nptr && ft_isspace(nptr[i]))
+	while (ft_isspace(nptr[i]))
 		i++;
 	if (nptr[i] == '-' || nptr[i] == '+')
 	{
