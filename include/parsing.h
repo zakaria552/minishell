@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 11:16:25 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 11:16:26 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/05 12:00:28 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_cmd
 	int					curr_pipe[2];
 	int					next_pipe[2];
 	int					pid;
+	t_token_type		last_input_redir;
 	bool				is_last_cmd;
 	bool				is_first_cmd;
 }						t_cmd;
