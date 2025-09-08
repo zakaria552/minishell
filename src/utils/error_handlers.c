@@ -6,30 +6,11 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:31:11 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:31:12 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/06 17:14:42 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	clean_up(bool clean_global, bool clean_history)
-{
-	t_allocators	*allocs;
-
-	allocs = get_allocators();
-	if (allocs->global && clean_global)
-	{
-		allocs->global->destroy(allocs->global);
-		allocs->global = NULL;
-	}
-	if (allocs->prompt)
-	{
-		allocs->prompt->destroy(allocs->prompt);
-		allocs->prompt = NULL;
-	}
-	if (clean_history)
-		clear_history();
-}
 
 void	syntax_err(int err_code, char *msg)
 {
