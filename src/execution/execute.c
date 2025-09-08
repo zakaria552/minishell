@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:30:18 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:30:19 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/06 17:14:27 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	execute_cmd(t_vector *cmds, int index, t_arena *arena)
 	close_open_here_docs((t_vector *)cmds, index);
 	redirect_io((t_cmd *)cmd, true);
 	if (!cmd->cmd)
-		exit(0);
+		clean_up_and_exit(0);
 	execute_builtin(cmds, index, true);
 	path = get_binary_path(cmd->cmd, envp, arena);
 	args = execve_args(arena, (t_cmd *)cmd, path);
