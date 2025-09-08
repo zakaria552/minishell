@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:28:10 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:28:11 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/06 16:31:10 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,14 @@ static void	change_directory(char *path)
 	t_local_vars		*vars;
 	const t_allocators	*allocs = get_allocators();
 	int					temp;
+	char				pwd[1024];
 
 	vars = get_local_vars();
 	temp = chdir(path);
-	if (temp == -1)
+	getcwd(pwd, 1024);
+	if (ft_strlen(pwd) <= 0)
+		invalid_directory_msg(NULL, "error retrieving current directory");
+	else if (temp == -1)
 		invalid_directory_msg(path, "Couldn't access directory");
 	else
 	{
@@ -51,8 +55,8 @@ static bool	should_go_home(t_cmd *cmd)
 {
 	if (cmd->args->size == 0 && get_var("HOME"))
 		return (true);
-	if (cmd->args->size > 0 && strmatch((char *)cmd->args->get(cmd->args, 0), \
-"~") && get_var("HOME"))
+	if (cmd->args->size > 0 && strmatch((char *)cmd->args->get(cmd->args, 0),
+			"~") && get_var("HOME"))
 		return (true);
 	return (false);
 }

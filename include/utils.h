@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 11:16:27 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 11:16:28 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/06 22:38:11 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@
 # define MINISHELL_BORDER_MSG \
 "\
   * Description: A simple Unix shell developed in C language\n\
-  * Repository:	https://github.com/zakaria552/minishell\n\
-  * Authers:	Zakaria, Niklas\n\
-  * Issues:	Feel free to raise any issues or bugs you encounter\n"
+  * Repository:	 https://github.com/zakaria552/minishell\n\
+  * Authers:	 Zakaria, Niklas\n\
+  * Issues:	 Feel free to raise any issues or bugs you encounter\n\
+  * TTY:         %s\n"
 
 # define PROMPT_PWD "\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n"
 # define PROMPT_HOME "\001\x1b[38;5;135m\002%s/\001\x1b[0m\002"
@@ -37,9 +38,12 @@
 // error handlers
 void	runtime_err(int err_code, char *msg);
 void	syntax_err(int err_code, char *msg);
-void	clean_up(bool clean_global, bool clean_history);
 void	cmd_not_found_err(int err_code, char *cmd, bool path_exist);
 void	clean_exit(int err_code, char *msg);
+
+// clean ups
+void	clean_up_and_exit(int err_code);
+void	clean_up(bool clean_global, bool clean_history);
 
 //  prompt utils
 char	*int_tty_prompt(char *prompt_msg, bool update_history,\

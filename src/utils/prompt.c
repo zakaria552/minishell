@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:31:17 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 11:14:52 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/06 18:45:56 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,5 @@ void	border_message(void)
 	if (!isatty(STDIN_FILENO))
 		return ;
 	ft_printf(MINISHELL_ASCII_TITLE);
-	ft_printf(MINISHELL_BORDER_MSG);
+	ft_printf(MINISHELL_BORDER_MSG, ttyname(STDIN_FILENO));
 }

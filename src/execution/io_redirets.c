@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:30:25 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 12:04:34 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/06 14:27:52 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	redirect_io(t_cmd *cmd, bool redir_pipeline)
 		pipe_redirect(cmd);
 	while (++i < redirects->size)
 	{
-		redir = (t_token *)redirects->get(redirects, i);
+		redir = (t_token *)redirects->get((t_vector *)redirects, i);
 		type = redir->type;
 		if (!redir_pipeline && get_local_vars()->io_err)
 			break ;

@@ -6,16 +6,13 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 11:16:20 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 11:16:21 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/08 10:55:46 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
@@ -23,9 +20,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-# include <unistd.h>
 # include <errno.h>
-# include <string.h>
 # include "libft.h"
 # include "arena.h"
 # include "utils.h"
