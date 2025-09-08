@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:28:37 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:28:38 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/08 10:48:34 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 void	pwd(void)
 {
 	char			pwd[1024];
+	const char		*msg = "Couldn't access parent directory on path: ";
 	t_local_vars	*vars;
 
 	ft_memset(pwd, 0, 1024);
@@ -24,14 +25,16 @@ void	pwd(void)
 	{
 		ft_putstr_fd(pwd, 1);
 		ft_putstr_fd("\n", 1);
+		set_status(0);
 	}
 	else
 	{
 		vars = get_local_vars();
-		ft_putstr_fd(vars->pwd, 1);
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd((char *)msg, 2);
+		ft_putstr_fd(vars->pwd, 2);
+		ft_putstr_fd("\n", 2);
+		set_status(1);
 	}
-	set_status(0);
 }
 
 // creates a string of current working directory
