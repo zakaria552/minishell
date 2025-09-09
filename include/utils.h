@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 11:16:27 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/06 22:38:11 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/09 17:03:45 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	runtime_err(int err_code, char *msg);
 void	syntax_err(int err_code, char *msg);
 void	cmd_not_found_err(int err_code, char *cmd, bool path_exist);
 void	clean_exit(int err_code, char *msg);
+void	shell_err(char *msg);
 
 // clean ups
 void	clean_up_and_exit(int err_code);
