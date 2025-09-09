@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:30:20 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:30:21 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/09 17:10:25 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	set_cmd_here_doc(t_arena *arena, t_cmd *cmd, char *limiter);
 static char	*alt_strip_quotes(t_arena *arena, char *str);
-static void	clean_up_here_doc(t_cmd *cmd, int *hdoc_pipe, char *line);
+static void	clean_up_here_doc(t_cmd *cmd, char *file, char *line);
 static bool	should_expand(char *delimiter);
 
 void	handle_here_doc(t_vector *cmds)
@@ -46,16 +46,13 @@ void	handle_here_doc(t_vector *cmds)
 	}
 }
 
-static void	clean_up_here_doc(t_cmd *cmd, int *hdoc_pipe, char *line)
+static void	clean_up_here_doc(t_cmd *cmd, char *file, char *line)
 {
 	t_local_vars	*vars;
 
 	vars = get_local_vars();
 	if (g_signal)
-	{
 		vars->status = 128 + g_signal;
-		close_pipe(hdoc_pipe);
-	}
 	else
 	{
 		if (!line)
@@ -65,20 +62,26 @@ static void	clean_up_here_doc(t_cmd *cmd, int *hdoc_pipe, char *line)
 		}
 		if (cmd->fd_here_doc > 0)
 			close(cmd->fd_here_doc);
-		cmd->fd_here_doc = hdoc_pipe[0];
-		close(hdoc_pipe[1]);
+		cmd->fd_here_doc = open(file, O_RDWR);
+		if (cmd->fd_here_doc < 0)
+			shell_err(file);
 	}
 }
 
 static void	set_cmd_here_doc(t_arena *arena, t_cmd *cmd, char *limiter)
 {
 	const bool	expand = should_expand(limiter);
-	int			hdoc_pipe[2];
+	const char *file = here_doc_file();
+	int fd;
 	char		*line;
 
 	limiter = alt_strip_quotes(arena, limiter);
-	if (pipe(hdoc_pipe) < 0)
-		runtime_err(errno, NULL);
+	fd = open((char *)file, O_RDWR | O_CREAT, 0644);
+	if (fd < 0)
+	{
+		shell_err((char *)file);
+		return;
+	}
 	set_here_doc_handler();
 	while (g_signal == 0)
 	{
@@ -87,11 +90,11 @@ static void	set_cmd_here_doc(t_arena *arena, t_cmd *cmd, char *limiter)
 			break ;
 		if (expand)
 			line = alt_expand_str(arena, line);
-		if (write(hdoc_pipe[1], line, ft_strlen(line)) < 0 \
-|| write(hdoc_pipe[1], "\n", 1) < 0)
+		if (write(fd, line, ft_strlen(line)) < 0 || write(fd, "\n", 1) < 0)
 			runtime_err(errno, NULL);
 	}
-	clean_up_here_doc(cmd, hdoc_pipe, line);
+	close(fd);
+	clean_up_here_doc(cmd, (char *)file, line);
 }
 
 static char	*alt_strip_quotes(t_arena *arena, char *str)
