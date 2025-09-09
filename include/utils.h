@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 11:16:27 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/09 17:03:45 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/09 20:13:29 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "minishell.h"
 
 # define MINISHELL_ASCII_TITLE \
-" __ __    __  __  _         _       _            _  _    __ __\n\
+	" __ __    __  __  _         _       _            _  _    __ __\n\
  \\ \\\\ \\  |  \\/  |(_) _ __  (_) ___ | |__    ___ | || |  / // /\n\
   \\ \\\\ \\ | |\\/| || || '_ \\ | |/ __|| '_ \\  / _ \\| || | / // / \n\
   / // / | |  | || || | | || |\\__ \\| | | ||  __/| || | \\ \\\\ \\ \n\
@@ -24,11 +24,11 @@
 \n"
 
 # define MINISHELL_BORDER_MSG \
-"\
+	"\
   * Description: A simple Unix shell developed in C language\n\
-  * Repository:	 https://github.com/zakaria552/minishell\n\
-  * Authers:	 Zakaria, Niklas\n\
-  * Issues:	 Feel free to raise any issues or bugs you encounter\n\
+  * Repository:		https://github.com/zakaria552/minishell\n\
+  * Authers:		Zakaria, Niklas\n\
+  * Issues:		Feel free to raise any issues or bugs you encounter\n\
   * TTY:         %s\n"
 
 # define PROMPT_PWD "\001\x1b[38;5;93m\002%s\001\x1b[0m\002\n"
@@ -47,7 +47,7 @@ void	clean_up_and_exit(int err_code);
 void	clean_up(bool clean_global, bool clean_history);
 
 //  prompt utils
-char	*int_tty_prompt(char *prompt_msg, bool update_history,\
+char	*int_tty_prompt(char *prompt_msg, bool update_history,
 			bool interactive);
 void	border_message(void);
 

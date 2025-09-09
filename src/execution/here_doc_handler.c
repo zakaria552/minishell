@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:30:20 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/09 17:10:25 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/09 20:10:36 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ static void	clean_up_here_doc(t_cmd *cmd, char *file, char *line)
 static void	set_cmd_here_doc(t_arena *arena, t_cmd *cmd, char *limiter)
 {
 	const bool	expand = should_expand(limiter);
-	const char *file = here_doc_file();
-	int fd;
+	const char	*file = here_doc_file();
+	int			fd;
 	char		*line;
 
 	limiter = alt_strip_quotes(arena, limiter);
@@ -80,7 +80,7 @@ static void	set_cmd_here_doc(t_arena *arena, t_cmd *cmd, char *limiter)
 	if (fd < 0)
 	{
 		shell_err((char *)file);
-		return;
+		return ;
 	}
 	set_here_doc_handler();
 	while (g_signal == 0)
@@ -111,8 +111,8 @@ static char	*alt_strip_quotes(t_arena *arena, char *str)
 	{
 		tok = vec->get(vec, i);
 		if (tok->type == QUOTE_SINGLE || tok->type == QUOTE_DOUBLE)
-			limiter = arena_strjoin(arena, limiter, strip_quotes(arena, \
-tok->content, true));
+			limiter = arena_strjoin(arena, limiter, strip_quotes(arena,
+						tok->content, true));
 		else
 			limiter = arena_strjoin(arena, limiter, tok->content);
 	}

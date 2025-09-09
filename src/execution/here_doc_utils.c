@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:30:23 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/09 16:53:31 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/09 20:12:39 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static char	*arena_itoa(int num, t_arena *arena);
 static int	str_num_length(int num);
-static char *file_name_by_index(int index);
+static char	*file_name_by_index(int index);
 
 void	close_open_here_docs(t_vector *cmds, int index)
 {
 	t_cmd	*cmd;
 	int		i;
-	char *file;
+	char	*file;
 
 	i = -1;
 	while (++i < cmds->size)
@@ -33,26 +33,26 @@ void	close_open_here_docs(t_vector *cmds, int index)
 		}
 	}
 	i = 0;
-	while (index == -1  && ++i)
+	while (index == -1 && ++i)
 	{
 		file = file_name_by_index(i);
 		if (access(file, F_OK) < 0)
-			break;
+			break ;
 		unlink(file);
 	}
 }
 
-char *here_doc_file(void)
+char	*here_doc_file(void)
 {
-	char *file;
-	int i;	
-	
+	char	*file;
+	int		i;
+
 	i = 0;
 	while (++i)
 	{
 		file = file_name_by_index(i);
 		if (access(file, F_OK) < 0)
-			break;
+			break ;
 	}
 	return (file);
 }
@@ -99,10 +99,11 @@ static int	str_num_length(int num)
 	return (i);
 }
 
-static char *file_name_by_index(int index)
+static char	*file_name_by_index(int index)
 {
-	t_arena *arena = get_allocators()->prompt;
-	char *file = "/tmp/.mini-here-doc-";
-	
-	return arena_strjoin(arena, file, arena_itoa(index, arena));
+	const t_arena	*arena = get_allocators()->prompt;
+	const char		*file = "/tmp/.mini-here-doc-";
+
+	return (arena_strjoin((t_arena *)arena, (char *)file, arena_itoa(index,
+				(char *)arena)));
 }
