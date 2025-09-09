@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 11:16:18 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 11:16:19 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/09 18:33:32 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ char	**envp_vars(void);
 // here_doc handler
 void	handle_here_doc(t_vector *cmds);
 void	close_open_here_docs(t_vector *cmds, int index);
+char    *here_doc_file(void);
 
 #endif
