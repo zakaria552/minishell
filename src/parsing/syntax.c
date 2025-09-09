@@ -6,71 +6,11 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:30:46 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:30:47 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/09 10:25:38 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-void	split_and_clean_command(t_cmd *cmd, t_arena *arena)
-{
-	t_vector	*args;
-	t_vector	*temp;
-	int			i;
-	int			j;
-
-	args = init_vector(INIT_VECTOR_SIZE, NULL, arena);
-	temp = tokenize_input(cmd->cmd, arena, '\0');
-	if (temp->size > 1)
-	{
-		cmd->cmd = ((t_token *)temp->get(temp, 0))->content;
-		clean_command(cmd, temp, true);
-	}
-	i = -1;
-	while (++i < cmd->args->size)
-	{
-		temp = tokenize_input(get_vector_elem(cmd->args, i), arena, '\0');
-	}
-}
-
-
-bool	check_all_empty(t_vector *tokens)
-{
-	t_token	*tok;
-	int		i;
-
-	i = -1;
-	while (++i < tokens->size)
-	{
-		tok = tokens->get(tokens, i);
-		if (tok->type != EMPTY)
-			return (false);
-	}
-	return (true);
-}
-
-
-void	split_and_clean_command(t_cmd *cmd, t_arena *arena)
-{
-	t_vector	*args;
-	t_vector	*temp;
-	int			i;
-	int			j;
-
-	args = init_vector(INIT_VECTOR_SIZE, NULL, arena);
-	temp = tokenize_input(cmd->cmd, arena, '\0');
-	if (temp->size > 1)
-	{
-		cmd->cmd = ((t_token *)temp->get(temp, 0))->content;
-		clean_command(cmd, temp, true);
-	}
-	i = -1;
-	while (++i < cmd->args->size)
-	{
-		temp = tokenize_input(get_vector_elem(cmd->args, i), arena, '\0');
-	}
-}
-*/
 
 bool	check_all_empty(t_vector *tokens)
 {
