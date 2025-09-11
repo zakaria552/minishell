@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:31:11 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/09 18:31:38 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/11 10:43:28 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,4 @@ void	shell_err(char *msg)
 	}
 	ft_putstr_fd(strerror(errno), 2);
 	ft_putstr_fd("\n", 2);
-	if (!get_local_vars()->pipeline)
-		return ;
 }
