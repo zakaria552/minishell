@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:31:11 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/06 17:14:42 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/09 18:31:38 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,18 @@ void	cmd_not_found_err(int err_code, char *cmd, bool path_exist)
 		ft_putstr_fd("No such file or directory\n", 2);
 	clean_up(true, true);
 	exit(err_code);
+}
+
+void	shell_err(char *msg)
+{
+	ft_putstr_fd("minishell: ", 2);
+	if (msg)
+	{
+		ft_putstr_fd(msg, 2);
+		ft_putstr_fd(":", 2);
+	}
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putstr_fd("\n", 2);
+	if (!get_local_vars()->pipeline)
+		return ;
 }
