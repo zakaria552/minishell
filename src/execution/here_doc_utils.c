@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:30:23 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/09 20:12:39 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/11 10:46:37 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,5 @@ static char	*file_name_by_index(int index)
 	const char		*file = "/tmp/.mini-here-doc-";
 
 	return (arena_strjoin((t_arena *)arena, (char *)file, arena_itoa(index,
-				(char *)arena)));
+				(t_arena *)arena)));
 }
