@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:28:27 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:28:28 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/09 16:23:44 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	print_exported_vars(t_local_vars *vars)
 	while (++i < sorted->size)
 	{
 		var = sorted->get((t_vector *)sorted, i);
-		if (*var->variable == '_')
+		if (*var->variable == '_' && !*(var->variable + 1))
 			continue ;
 		tmp = ft_strrchr(var->joint, '=');
 		if (var->value && tmp && *(tmp + 1))
