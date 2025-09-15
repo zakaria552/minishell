@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:30:18 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/06 17:14:27 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/15 11:04:35 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static void	wait_child_processes(t_vector *cmds)
 		cmd = ((t_cmd *)cmds->get(cmds, i));
 		waitpid(cmd->pid, &status, 0);
 		if (WIFSIGNALED(status))
-			handle_child_signal(vars, &signalled, status);
+			handle_child_signal(&signalled, status);
 		else
 			vars->status = WEXITSTATUS(status);
 	}
