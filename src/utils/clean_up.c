@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 17:08:07 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/12 20:18:08 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/15 14:05:09 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	clean_up_and_exit(int err_code)
 	exit(err_code);
 }
 
-void	clean_runtime_err(int err_code, char *msg, int *curr_pipe, int *next_pipe)
+void	clean_runtime_err(int err_code, char *msg, int *curr_pipe,
+		int *next_pipe)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if (msg)
