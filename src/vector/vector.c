@@ -63,7 +63,7 @@ void	*append(t_vector *vector, void *content)
 	{
 		*(vector->data + vector->size) = content;
 		vector->size++;
-		return (*(vector->data + vector->size - 1));
+		return (*(vector->data + (vector->size - 1)));
 	}
 	tmp_data = vector->data;
 	vector->capacity = vector->capacity * 2;

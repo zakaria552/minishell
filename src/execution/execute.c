@@ -102,7 +102,7 @@ static void	wait_child_processes(t_vector *cmds)
 		cmd = ((t_cmd *)cmds->get(cmds, i));
 		waitpid(cmd->pid, &status, 0);
 		if (WIFSIGNALED(status))
-			handle_child_signal(vars, &signalled, status);
+			handle_child_signal(&signalled, status);
 		else
 			vars->status = WEXITSTATUS(status);
 	}
