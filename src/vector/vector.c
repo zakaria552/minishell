@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:31:24 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/05 10:31:25 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/15 11:13:58 by nraatika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	*append(t_vector *vector, void *content)
 	{
 		*(vector->data + vector->size) = content;
 		vector->size++;
-		return (*(vector->data + vector->size));
+		return (*(vector->data + (vector->size - 1)));
 	}
 	tmp_data = vector->data;
 	vector->capacity = vector->capacity * 2;
