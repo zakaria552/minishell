@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:28:10 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/06 16:31:10 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/15 13:36:39 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	change_directory(char *path)
 	int					temp;
 	char				pwd[1024];
 
+	ft_memset(pwd, 0, 1024);
 	vars = get_local_vars();
 	temp = chdir(path);
 	getcwd(pwd, 1024);
