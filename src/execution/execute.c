@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:30:18 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/15 11:04:35 by nraatika         ###   ########.fr       */
+/*   Updated: 2025/09/16 10:18:45 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,18 @@ static void	pipeline(t_vector *cmds, t_arena *arena)
 	int		i;
 
 	i = -1;
+	init_pipes(curr_pipe, next_pipe);
 	if (pipe(curr_pipe) < 0)
-		runtime_err(errno, NULL);
+		clean_runtime_err(errno, NULL, curr_pipe, next_pipe);
 	while (++i < cmds->size)
 	{
 		cmd = ((t_cmd *)cmds->get(cmds, i));
 		if (pipe(next_pipe) < 0)
-			runtime_err(errno, NULL);
+			clean_runtime_err(errno, NULL, curr_pipe, next_pipe);
 		update_cmd_pipes(cmd, curr_pipe, next_pipe);
 		cmd->pid = fork();
 		if (cmd->pid < 0)
-			runtime_err(errno, NULL);
+			clean_runtime_err(errno, NULL, curr_pipe, next_pipe);
 		if (cmd->pid == 0)
 			execute_cmd(cmds, i, arena);
 		close_pipe(curr_pipe);

@@ -6,7 +6,7 @@
 /*   By: zfarah <zfarah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 11:16:18 by zfarah            #+#    #+#             */
-/*   Updated: 2025/09/09 20:13:14 by zfarah           ###   ########.fr       */
+/*   Updated: 2025/09/12 20:17:24 by zfarah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	close_pipe(int pipe[2]);
 char	*get_binary_path(char *command, char **envp, t_arena *arena);
 void	execute_builtin(t_vector *cmds, int index, bool should_exit);
 void	update_cmd_pipes(t_cmd *cmd, int *curr_pipe, int *next_pipe);
+void	init_pipes(int *curr, int *next);
 
 char	**envp_vars(void);
 
