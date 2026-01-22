@@ -57,7 +57,7 @@ $(LIBFT):
 	@git clone -q --depth 1 \
 	--branch v1.0.0 \
 	--single-branch \
-	git@github.com:zakaria552/libft.git $(LIBFT_DIR) > /dev/null 2>&1
+	https://github.com/zakaria552/minishell.git $(LIBFT_DIR) > /dev/null 2>&1
 	make -C $(LIBFT_DIR) all
 
 #╔════════════════════════════════════════════╗
